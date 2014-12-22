@@ -1,0 +1,11 @@
+class CreateDjs < ActiveRecord::Migration
+  def change
+    create_table :djs do |t|
+      t.integer :maxCapacity
+      t.reference :userService
+      t.reference :category
+
+      t.timestamps
+    end
+  end
+end

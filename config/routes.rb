@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  resources :bands
+
+  resources :djs
+
+  resources :user_services
+
+  resources :categories
+
   devise_for :users
   resources :welcomes
 

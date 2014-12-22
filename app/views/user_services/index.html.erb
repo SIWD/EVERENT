@@ -1,0 +1,33 @@
+<h1>Listing user_services</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Name</th>
+      <th>Premiumserviceenddate</th>
+      <th>Teaser</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @user_services.each do |user_service| %>
+      <tr>
+        <td><%= user_service.description %></td>
+        <td><%= user_service.name %></td>
+        <td><%= user_service.premiumServiceEndDate %></td>
+        <td><%= user_service.teaser %></td>
+        <td><%= user_service.user %></td>
+        <td><%= link_to 'Show', user_service %></td>
+        <td><%= link_to 'Edit', edit_user_service_path(user_service) %></td>
+        <td><%= link_to 'Destroy', user_service, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New User service', new_user_service_path %>

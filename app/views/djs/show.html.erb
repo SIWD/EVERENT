@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Maxcapacity:</strong>
+  <%= @dj.maxCapacity %>
+</p>
+
+<p>
+  <strong>Userservice:</strong>
+  <%= @dj.userService %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @dj.category %>
+</p>
+
+<%= link_to 'Edit', edit_dj_path(@dj) %> |
+<%= link_to 'Back', djs_path %>

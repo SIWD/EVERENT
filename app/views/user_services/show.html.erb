@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @user_service.description %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @user_service.name %>
+</p>
+
+<p>
+  <strong>Premiumserviceenddate:</strong>
+  <%= @user_service.premiumServiceEndDate %>
+</p>
+
+<p>
+  <strong>Teaser:</strong>
+  <%= @user_service.teaser %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @user_service.user %>
+</p>
+
+<%= link_to 'Edit', edit_user_service_path(@user_service) %> |
+<%= link_to 'Back', user_services_path %>

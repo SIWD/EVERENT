@@ -11,7 +11,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141219164340) do
+ActiveRecord::Schema.define(version: 20141222114415) do
+
+  create_table "bands", force: true do |t|
+    t.integer  "maxCapacity"
+    t.integer  "members"
+    t.integer  "userService_id"
+    t.integer  "category_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "bands", ["category_id"], name: "index_bands_on_category_id"
+  add_index "bands", ["userService_id"], name: "index_bands_on_userService_id"
+
+  create_table "categories", force: true do |t|
+    t.string   "teaser"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "djs", force: true do |t|
+    t.integer  "maxCapacity"
+    t.integer  "userService_id"
+    t.integer  "category_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_services", force: true do |t|
+    t.text     "description"
+    t.string   "name"
+    t.date     "premiumServiceEndDate"
+    t.string   "teaser"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_services", ["user_id"], name: "index_user_services_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

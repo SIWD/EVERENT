@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Maxcapacity:</strong>
+  <%= @band.maxCapacity %>
+</p>
+
+<p>
+  <strong>Members:</strong>
+  <%= @band.members %>
+</p>
+
+<p>
+  <strong>Userservice:</strong>
+  <%= @band.userService %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @band.category %>
+</p>
+
+<%= link_to 'Edit', edit_band_path(@band) %> |
+<%= link_to 'Back', bands_path %>
