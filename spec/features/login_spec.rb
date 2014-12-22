@@ -11,7 +11,7 @@ describe 'Sign in' do
       fill_in 'user_password', with: 'Helge123'
       click_button 'Sign in'
 
-      expect(page).to have_content "Willkommen, #{user.email}"
+      expect(page).to have_content "#{user.email}"
     end
   end
 end
