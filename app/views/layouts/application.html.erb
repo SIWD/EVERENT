@@ -51,7 +51,11 @@
             <li><%= link_to "Registrieren", new_user_registration_path  %></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+            <% unless current_user %>
             <li><%= link_to "Login", new_user_session_path %></li>
+            <% else %>
+            <li><%= link_to "Logout (#{ current_user.email })", destroy_user_session_path, method: :delete %></li>
+            <% end %>
           </ul>
         </div>
       </div>
