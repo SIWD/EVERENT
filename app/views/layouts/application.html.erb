@@ -48,13 +48,27 @@
         <%= link_to "EVERENT", root_path, class: "navbar-brand" %>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
+            <% unless current_user %>
             <li><%= link_to "Registrieren", new_user_registration_path  %></li>
+            <% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <% unless current_user %>
             <li><%= link_to "Login", new_user_session_path %></li>
             <% else %>
-            <li><%= link_to "Logout (#{ current_user.email })", destroy_user_session_path, method: :delete %></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" aria-expanded="false" role="button" data-toggle="dropdown" href="#">
+                <%= current_user.email %>
+                <span class="caret"></span>
+              <ul class="dropdown-menu" role="menu">
+                <% if Profil.find_by_user_id(current_user) %>
+                <li><%= link_to "Profil zeigen", profil_path(Profil.find_by_user_id(current_user)) %></li>
+                <% else %>
+                <li><%= link_to "Profil anlegen", new_profil_path %></li>
+                <% end %>
+                <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
+              </ul>
+            </li>
             <% end %>
           </ul>
         </div>
