@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :services
+
+  resources :user_businesses
+
+  resources :businesses
+
   resources :profils
 
   resources :bands
