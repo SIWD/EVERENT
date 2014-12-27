@@ -5,8 +5,6 @@ Rails.application.routes.draw do
 
   resources :djs
 
-  resources :user_services
-
   resources :categories
 
   devise_for :users

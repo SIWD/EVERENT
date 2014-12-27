@@ -13,8 +13,15 @@ class ProfilsController < ApplicationController
   end
 
   def new
-    @profil = Profil.new
-    respond_with(@profil)
+    # if !current_user
+    #  redirect_to(new_user_session_path)
+    # elsif User.find(current_user).profil
+    #  redirect_to(edit_profil_path(User.find(current_user).profil))
+    # else
+      @profil = Profil.new
+      respond_with(@profil)
+   # end
+
   end
 
   def edit
