@@ -11,19 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141227154924) do
-
-  create_table "bands", force: true do |t|
-    t.integer  "maxCapacity"
-    t.integer  "members"
-    t.integer  "userService_id"
-    t.integer  "category_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "bands", ["category_id"], name: "index_bands_on_category_id"
-  add_index "bands", ["userService_id"], name: "index_bands_on_userService_id"
+ActiveRecord::Schema.define(version: 20141228125709) do
 
   create_table "businesses", force: true do |t|
     t.string   "name"
@@ -31,22 +19,31 @@ ActiveRecord::Schema.define(version: 20141227154924) do
     t.datetime "updated_at"
   end
 
-  create_table "categories", force: true do |t|
-    t.string   "teaser"
+  create_table "foods", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "music_types", force: true do |t|
     t.string   "name"
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "djs", force: true do |t|
-    t.integer  "maxCapacity"
-    t.integer  "userService_id"
-    t.integer  "category_id"
+  create_table "musician_music_types", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "profils", force: true do |t|
+  create_table "musicians", force: true do |t|
+    t.boolean  "hasEquipment"
+    t.integer  "musicianType"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "profiles", force: true do |t|
     t.string   "gender"
     t.string   "firstname"
     t.string   "lastname"
@@ -60,7 +57,7 @@ ActiveRecord::Schema.define(version: 20141227154924) do
     t.datetime "updated_at"
   end
 
-  add_index "profils", ["user_id"], name: "index_profils_on_user_id"
+  add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
 
   create_table "services", force: true do |t|
     t.text     "description"

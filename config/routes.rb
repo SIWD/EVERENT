@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  resources :music_types
+
+  resources :musician_music_types
+
+  resources :musicians
+
+  resources :foods
+
   resources :profiles
 
   resources :services
@@ -6,8 +14,6 @@ Rails.application.routes.draw do
   resources :user_businesses
 
   resources :businesses
-
-  resources :profils
 
   devise_for :users
   resources :welcomes
