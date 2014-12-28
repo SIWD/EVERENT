@@ -21,7 +21,6 @@ class ProfilsController < ApplicationController
       @profil = Profil.new
       respond_with(@profil)
    # end
-
   end
 
   def edit

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :profiles
+
   resources :services
 
   resources :user_businesses
@@ -6,12 +8,6 @@ Rails.application.routes.draw do
   resources :businesses
 
   resources :profils
-
-  resources :bands
-
-  resources :djs
-
-  resources :categories
 
   devise_for :users
   resources :welcomes

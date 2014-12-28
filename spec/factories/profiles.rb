@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :profil do
+  factory :profile do
     gender "MyString"
     firstname "MyString"
     lastname "MyString"
@@ -8,6 +8,7 @@ FactoryGirl.define do
     postcode "MyString"
     streetname "MyString"
     housenumber "MyString"
+
     user nil
   end
 end
