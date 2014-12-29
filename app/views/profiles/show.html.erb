@@ -46,18 +46,15 @@
 </p>
 
 <p>
-  <strong>User:</strong>
-  <%= @profile.user %>
-</p>
-
-<p>
   <strong>Geschäfte:</strong>
-  <ul>
-    <% @usrBusiness.each do |business| %>
-        <li><%= link_to business.name, business %> </li>
-    <% end %>
-  </ul>
 </p>
-
-<%= link_to 'Edit', edit_profile_path(@profile) %> |
-<%= link_to 'Back', profiles_path %>
+<div class="row">
+  <% @profile.user.businesses.each do |business| %>
+    <%= link_to business, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' do %>
+      <%= business.name %>
+    <% end %>
+  <% end %>
+  <%= link_to 'Geschäft anlegen', new_business_path, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' %>
+</div>
+<br>
+<%= link_to 'Edit', edit_profile_path(@profile) %>

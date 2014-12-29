@@ -23,7 +23,9 @@ class BusinessesController < ApplicationController
   def create
     @business = Business.new(business_params)
     @business.save
+    @business.user_businesses.create([{ user_id: current_user.id }, { business_id: @business.id }])
     respond_with(@business)
+
   end
 
   def update

@@ -11,8 +11,6 @@ Rails.application.routes.draw do
 
   resources :services
 
-  resources :user_businesses
-
   resources :businesses
 
   devise_for :users

@@ -1,4 +1,0 @@
-json.array!(@user_businesses) do |user_business|
-  json.extract! user_business, :id, :position, :User_id, :Business_id
-  json.url user_business_url(user_business, format: :json)
-end
