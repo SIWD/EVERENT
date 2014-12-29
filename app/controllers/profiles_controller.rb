@@ -9,7 +9,10 @@ class ProfilesController < ApplicationController
   end
 
   def show
-    respond_with(@profile)
+    @usr = @profile.user
+    @usrBusiness = @usr.businesses
+
+    #respond_with(@profile)
   end
 
   def new

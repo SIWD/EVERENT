@@ -1,4 +1,4 @@
 class UserBusiness < ActiveRecord::Base
-  belongs_to :User
-  belongs_to :Business
+  belongs_to :user
+  belongs_to :business
 end
