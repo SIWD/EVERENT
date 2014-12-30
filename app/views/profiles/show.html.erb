@@ -1,60 +1,65 @@
 <p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Gender:</strong>
-  <%= @profile.gender %>
-</p>
-
-<p>
-  <strong>Firstname:</strong>
-  <%= @profile.firstname %>
-</p>
-
-<p>
-  <strong>Lastname:</strong>
-  <%= @profile.lastname %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @profile.user.email %>
-</p>
-
-<p>
-  <strong>Phone:</strong>
-  <%= @profile.phone %>
-</p>
-
-<p>
-  <strong>City:</strong>
-  <%= @profile.city %>
-</p>
-
-<p>
-  <strong>Postcode:</strong>
-  <%= @profile.postcode %>
-</p>
-
-<p>
-  <strong>Streetname:</strong>
-  <%= @profile.streetname %>
-</p>
-
-<p>
-  <strong>Housenumber:</strong>
-  <%= @profile.housenumber %>
-</p>
-
-<p>
-  <strong>Geschäfte:</strong>
-</p>
 <div class="row">
-  <% @profile.user.businesses.each do |business| %>
-    <%= link_to business, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' do %>
-      <%= business.name %>
-    <% end %>
-  <% end %>
-  <%= link_to 'Geschäft anlegen', new_business_path, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' %>
+    <div class="col-md-6">
+        <p>
+          <strong>Gender:</strong>
+          <%= @profile.gender %>
+        </p>
+
+        <p>
+          <strong>Firstname:</strong>
+          <%= @profile.firstname %>
+        </p>
+
+        <p>
+          <strong>Lastname:</strong>
+          <%= @profile.lastname %>
+        </p>
+
+        <p>
+          <strong>Email:</strong>
+          <%= @profile.user.email %>
+        </p>
+
+        <p>
+          <strong>Phone:</strong>
+          <%= @profile.phone %>
+        </p>
+
+        <p>
+          <strong>City:</strong>
+          <%= @profile.city %>
+        </p>
+
+        <p>
+          <strong>Postcode:</strong>
+          <%= @profile.postcode %>
+        </p>
+
+        <p>
+          <strong>Streetname:</strong>
+          <%= @profile.streetname %>
+        </p>
+
+        <p>
+          <strong>Housenumber:</strong>
+          <%= @profile.housenumber %>
+        </p>
+    </div>
+    <div class="col-md-6">
+      <%= image_tag @profile.photo(:medium) %>
+    </div>
 </div>
+  <p>
+    <strong>Geschäfte:</strong>
+  </p>
+  <div class="row">
+    <% @profile.user.businesses.each do |business| %>
+        <%= link_to business, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' do %>
+            <%= business.name %>
+        <% end %>
+    <% end %>
+    <%= link_to 'Geschäft anlegen', new_business_path, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' %>
+  </div>
 <br>
 <%= link_to 'Edit', edit_profile_path(@profile) %>
