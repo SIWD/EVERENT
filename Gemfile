@@ -29,6 +29,10 @@ gem 'therubyracer',  platforms: :ruby
 gem 'twitter-bootstrap-rails'
 gem 'less-rails'
 
+# Upload Pictures
+gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
+
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
