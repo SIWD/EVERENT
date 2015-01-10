@@ -1,41 +1,51 @@
 <%= form_for(@service) do |f| %>
-  <% if @service.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@service.errors.count, "error") %> prohibited this service from being saved:</h2>
+    <% if @service.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@service.errors.count, "error") %> prohibited this service from being saved:</h2>
 
-      <ul>
-      <% @service.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+          <ul>
+            <% @service.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+    <p>
+      <strong>Neue Dienstleistung für:</strong><br>
+      <% @businesses.each do |b| %>
+          <%= f.radio_button :business_id, b.id %>
+          <%= f.label "business_id_#{b.id}", b.name %><br>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
+    </p>
 
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_area :description %>
-  </div>
-  <div class="field">
-    <%= f.label :maxCapacity %><br>
-    <%= f.text_field :maxCapacity %>
-  </div>
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :premiumServiceEnd %><br>
-    <%= f.date_select :premiumServiceEnd %>
-  </div>
-  <div class="field">
-    <%= f.label :teaser %><br>
-    <%= f.text_field :teaser %>
-  </div>
-  <div class="field">
-    <%= f.label :Business_id %><br>
-    <%= f.text_field :Business_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <div class="field">
+      <%= f.label :name %><br>
+      <%= f.text_field :name %>
+    </div>
+    <div class="field">
+      <%= f.label :teaser %><br>
+      <%= f.text_field :teaser %>
+    </div>
+    <div class="field">
+      <%= f.label :description %><br>
+      <%= f.text_area :description %>
+    </div>
+    <div class="field">
+      <div class="row">
+        <div class="portfolio">
+          <% BranchCategory.all.each do |sc| %>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 item">
+                <%= sc.name %><br>
+                <% Branch.where(branchCategory_id: sc.id).each do |ssc| %>
+                    <%= f.radio_button :branch_id, ssc.id %>
+                    <%= f.label "branch_id_#{ssc.id}", ssc.name %><br>
+                <% end %>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
 <% end %>

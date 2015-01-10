@@ -16,10 +16,13 @@
  *= require fonts/font-awesome/css/font-awesome
  *= require animations
  *= require superfish
- *= require revolution-slider/css/settings
  *= require prettyPhoto
+ *= require revolution-slider/css/settings
+
+
  *= require style
- *= require global
  *= require colors/blue
+
+ *= require global
  *= require theme-responsive
  */

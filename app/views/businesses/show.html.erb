@@ -4,6 +4,25 @@
   <strong>Name:</strong>
   <%= @business.name %>
 </p>
+<p>
+  <strong>Dienstleistungen:</strong>
+</p>
+<div class="row">
+  <% if Service.where(business_id: @business.id).count > 0 %>
+      <% servicessting = "" %>
+      <% Service.where(business_id: @business.id).each do |s| %>
+          <% servicessting << "\n - " + s.name %>
+      <% end %>
+      <%= render 'services/index' %>
+  <% end %>
+  <%= link_to 'New Service', new_service_path %>
+</div>
+
 
 <%= link_to 'Edit', edit_business_path(@business) %> |
-<%= link_to 'Back', businesses_path %>
+<%= link_to 'Back', businesses_path %> |
+<% if Service.where(business_id: @business.id).count > 0 %>
+    <%= link_to 'Destroy', @business, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Firma '#{@business.name}' löschen?\nDamit löscht du auch folgende Dienstleistungen:\n#{servicessting}" } %>
+<% else %>
+    <%= link_to 'Destroy', @business, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Firma '#{@business.name}' löschen?" } %>
+<% end %>

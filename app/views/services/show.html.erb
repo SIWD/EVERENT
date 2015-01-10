@@ -1,23 +1,9 @@
+<% content_for :title, "#{@service.name}" %>
 <p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @service.description %>
-</p>
-
-<p>
-  <strong>Maxcapacity:</strong>
-  <%= @service.maxCapacity %>
-</p>
 
 <p>
   <strong>Name:</strong>
   <%= @service.name %>
-</p>
-
-<p>
-  <strong>Premiumserviceend:</strong>
-  <%= @service.premiumServiceEnd %>
 </p>
 
 <p>
@@ -26,9 +12,9 @@
 </p>
 
 <p>
-  <strong>Business:</strong>
-  <%= @service.Business %>
+  <strong>Description:</strong>
+  <%= @service.description %>
 </p>
 
 <%= link_to 'Edit', edit_service_path(@service) %> |
-<%= link_to 'Back', services_path %>
+<%= link_to 'Business', business_path(@service.business) %>

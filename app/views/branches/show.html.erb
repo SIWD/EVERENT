@@ -1,0 +1,19 @@
+<% content_for :title, "Branche: #{@branch.name}" %>
+<p id="notice"><%= notice %></p>
+
+<div>
+  <h3 class="title">Branchecategory:</h3>
+  <%= @branch.branchCategory.name %>
+</div>
+
+<div>
+  <h3 class="title">Anbieter:</h3>
+  <% if Service.where(branch_id: @branch.id).count == 0 %>
+      <span>Keine Anbieter vorhanden</span>
+  <% else %>
+      <%= render 'services/index' %>
+  <% end %>
+</div>
+
+<%= link_to 'Edit', edit_branch_path(@branch) %> |
+<%= link_to 'Back', branches_path %>
