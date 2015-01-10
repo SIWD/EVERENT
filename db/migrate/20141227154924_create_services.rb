@@ -1,12 +1,12 @@
 class CreateServices < ActiveRecord::Migration
   def change
     create_table :services do |t|
-      t.text :description
-      t.integer :maxCapacity
       t.string :name
-      t.date :premiumServiceEnd
       t.string :teaser
-      t.references :Business, index: true
+      t.text :description
+      t.references :business, index: true
+      t.references :serviceSubCategory, index: true
+      t.references :branch, index: true
 
       t.timestamps
     end

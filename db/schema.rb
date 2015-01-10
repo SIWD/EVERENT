@@ -11,7 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141229234315) do
+ActiveRecord::Schema.define(version: 20150116222825) do
+
+  create_table "branch_categories", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "branches", force: true do |t|
+    t.string   "name"
+    t.integer  "branchCategory_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "branches", ["branchCategory_id"], name: "index_branches_on_branchCategory_id"
 
   create_table "businesses", force: true do |t|
     t.string   "name"
@@ -63,18 +78,35 @@ ActiveRecord::Schema.define(version: 20141229234315) do
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
 
-  create_table "services", force: true do |t|
-    t.text     "description"
-    t.integer  "maxCapacity"
+  create_table "service_categories", force: true do |t|
     t.string   "name"
-    t.date     "premiumServiceEnd"
-    t.string   "teaser"
-    t.integer  "Business_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "services", ["Business_id"], name: "index_services_on_Business_id"
+  create_table "service_sub_categories", force: true do |t|
+    t.string   "name"
+    t.integer  "serviceCategories_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "service_sub_categories", ["serviceCategories_id"], name: "index_service_sub_categories_on_serviceCategories_id"
+
+  create_table "services", force: true do |t|
+    t.string   "name"
+    t.string   "teaser"
+    t.text     "description"
+    t.integer  "business_id"
+    t.integer  "serviceSubCategory_id"
+    t.integer  "branch_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "services", ["branch_id"], name: "index_services_on_branch_id"
+  add_index "services", ["business_id"], name: "index_services_on_business_id"
+  add_index "services", ["serviceSubCategory_id"], name: "index_services_on_serviceSubCategory_id"
 
   create_table "user_businesses", force: true do |t|
     t.string   "position"

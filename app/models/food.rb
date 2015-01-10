@@ -1,3 +1,3 @@
 class Food < ActiveRecord::Base
-  belongs_to :Service
+  belongs_to :service
 end
