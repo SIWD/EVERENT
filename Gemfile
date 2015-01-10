@@ -31,7 +31,6 @@ gem 'less-rails'
 
 # Upload Pictures
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
-gem 'imagemagick-identify'
 
 
 # Use SCSS for stylesheets
