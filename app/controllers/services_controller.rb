@@ -1,5 +1,6 @@
 class ServicesController < ApplicationController
   before_action :set_service, only: [:show, :edit, :update, :destroy]
+  before_action :set_businesses, only: [:new]
 
   respond_to :html
 
@@ -37,11 +38,15 @@ class ServicesController < ApplicationController
   end
 
   private
-    def set_service
-      @service = Service.find(params[:id])
-    end
+  def set_service
+    @service = Service.find(params[:id])
+  end
+  def set_businesses
+    @businesses = User.find(current_user).businesses.all
+
+  end
 
     def service_params
-      params.require(:service).permit(:description, :maxCapacity, :name, :premiumServiceEnd, :teaser, :Business_id)
+      params.require(:service).permit(:description, :name, :teaser, :business_id, :serviceSubCategory_id)
     end
 end

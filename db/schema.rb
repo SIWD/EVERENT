@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141229234315) do
+ActiveRecord::Schema.define(version: 20150110111958) do
 
   create_table "businesses", force: true do |t|
     t.string   "name"
@@ -63,18 +63,32 @@ ActiveRecord::Schema.define(version: 20141229234315) do
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
 
-  create_table "services", force: true do |t|
-    t.text     "description"
-    t.integer  "maxCapacity"
+  create_table "service_categories", force: true do |t|
     t.string   "name"
-    t.date     "premiumServiceEnd"
-    t.string   "teaser"
-    t.integer  "Business_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "services", ["Business_id"], name: "index_services_on_Business_id"
+  create_table "service_sub_categories", force: true do |t|
+    t.string   "name"
+    t.integer  "serviceCategory_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "service_sub_categories", ["serviceCategory_id"], name: "index_service_sub_categories_on_serviceCategory_id"
+
+  create_table "services", force: true do |t|
+    t.string   "name"
+    t.string   "teaser"
+    t.text     "description"
+    t.integer  "business_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "serviceSubCategory_id"
+  end
+
+  add_index "services", ["business_id"], name: "index_services_on_business_id"
 
   create_table "user_businesses", force: true do |t|
     t.string   "position"
