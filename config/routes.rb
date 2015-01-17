@@ -1,4 +1,19 @@
 Rails.application.routes.draw do
+
+  resources :branches
+
+  devise_scope :user do
+    match '/users/sign_out' => 'devise/sessions#destroy', via: [:get, :delete]
+  end
+
+  devise_for :users, :controllers => {:registrations => "registrations"}
+
+  get 'Branchen', to: 'branches#index'
+  get 'Branche/:name', to: 'branches#show'
+  get 'Branche/:name/bearbeiten', to:'branches#edit'
+  get 'Branche/neu', to:'branches#new'
+  patch 'Branche/:name',to: 'branches#update'
+
   resources :music_types
 
   resources :musician_music_types
@@ -13,14 +28,13 @@ Rails.application.routes.draw do
 
   resources :businesses
 
-  devise_for :users, :controllers => {:registrations => "registrations"}
   resources :welcomes
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-   root 'welcomes#index'
+   root to: 'welcomes#index'
 
 
   # Example of regular route:

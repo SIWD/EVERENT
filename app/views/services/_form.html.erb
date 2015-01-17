@@ -33,12 +33,12 @@
     <div class="field">
       <div class="row">
         <div class="portfolio">
-          <% ServiceCategory.all.each do |sc| %>
+          <% BranchCategory.all.each do |sc| %>
               <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 item">
                 <%= sc.name %><br>
-                <% ServiceSubCategory.where(serviceCategory_id: sc.id).each do |ssc| %>
-                    <%= f.radio_button :serviceSubCategory_id, ssc.id %>
-                    <%= f.label "serviceSubCategory_id_#{ssc.id}", ssc.name %><br>
+                <% Branch.where(branchCategory_id: sc.id).each do |ssc| %>
+                    <%= f.radio_button :branch_id, ssc.id %>
+                    <%= f.label "branch_id_#{ssc.id}", ssc.name %><br>
                 <% end %>
               </div>
           <% end %>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= content_for?(:title) ? yield(:title) : "EVERENT" %></title>
+  <title><%= content_for?(:title) ? "#{yield(:title)} | EVERENT" : "EVERENT" %></title>
   <%= csrf_meta_tags %>
 
   <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -37,7 +37,7 @@
 
   <%= javascript_include_tag "application" %>
 </head>
-<body>
+<body class="page">
 <!--
 <div class="page-mask">
   <div class="page-loader">
@@ -87,7 +87,7 @@
         <div class="logo pull-left">
           <h1>
             <%= link_to (welcomes_path) do %>
-              <%= image_tag ('everent_logo.png'), alt: "EVERENT", width:"125"%>
+                <%= image_tag ('everent_logo.png'), alt: "EVERENT", width:"125"%>
             <% end %>
           </h1>
         </div>
@@ -104,16 +104,14 @@
           <ul class="nav navbar-nav sf-menu">
             <% unless current_user %>
                 <li><%= link_to "Registrieren", new_user_registration_path  %></li>
-            <% end %>
-            <% unless current_user %>
                 <li><%= link_to "Login", new_user_session_path %></li>
             <% else %>
                 <li>
                   <a id="current" href="">
                     <%= current_user.email %>
                     <span class="sf-sub-indicator">
-                           <i class="fa fa-angle-down "></i>
-                           </span>
+                      <i class="fa fa-angle-down "></i>
+                    </span>
                   </a>
                   <ul>
                     <% if Profile.find_by_user_id(current_user) %>
@@ -121,7 +119,7 @@
                     <% else %>
                         <li><%= link_to "Profil anlegen", new_profile_path, class: 'sf-with-ul' %></li>
                     <% end %>
-                    <li><%= link_to "Logout", destroy_user_session_path, class: 'sf-with-ul', method: :delete %></li>
+                    <li><%= link_to "Logout", destroy_user_session_path, method: :delete, class: 'sf-with-ul' %></li>
                   </ul>
                 </li>
             <% end %>
@@ -133,55 +131,100 @@
     <!-- Main Header End -->
   </header>
   <!-- Header End -->
-  <!--
-  <div class="navbar navbar-default navbar-static-top">
+
+  <!-- Content Start -->
+  <div id="main">
+    <!-- Title, Breadcrumb Start-->
+    <div class="breadcrumb-wrapper">
       <div class="container">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <%= link_to "EVERENT", root_path, class: "navbar-brand" %>
-        <div class="navbar-collapse collapse navbar-responsive-collapse">
-          <ul class="nav navbar-nav">
-            <% unless current_user %>
-            <li><%= link_to "Registrieren", new_user_registration_path  %></li>
-            <% end %>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <% unless current_user %>
-            <li><%= link_to "Login", new_user_session_path %></li>
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <% if content_for?(:title) %>
+                <h2 class="title"><%= yield(:title) %></h2>
             <% else %>
-            <li class="dropdown">
-              <a class="dropdown-toggle" aria-expanded="false" role="button" data-toggle="dropdown" href="#">
-                <%= current_user.email %>
-                <span class="caret"></span>
-              <ul class="dropdown-menu" role="menu">
-                <% if Profile.find_by_user_id(current_user) %>
-                <li><%= link_to "Profil zeigen", profile_path(Profile.find_by_user_id(current_user)) %></li>
-                <% else %>
-                <li><%= link_to "Profil anlegen", new_profile_path %></li>
-                <% end %>
-                <li><%= link_to "Logout", destroy_user_session_path, method: :delete %></li>
-              </ul>
-            </li>
+                <h2 class="title" style="color:red; background:yellow">NO HEADLINE</h2>
             <% end %>
-          </ul>
+          </div>
+          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+            <div class="breadcrumbs pull-right">
+              <ul>
+                <li>Sie Sind hier:</li>
+                <li><%= link_to 'EVERENT', root_path %></li>
+                <% unless params[:action] == 'index' %>
+                    <li><%= link_to params[:controller].titleize, "/#{params[:controller]}" %></li>
+                    <% end %>
+
+                <li><%= yield(:title) %></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
--->
-  <div class="container">
-    <div class="row">
-      <%= bootstrap_flash %>
-      <%= yield %>
-    </div><!--/row-->
-
-    <footer>
-      <p>&copy; EVERENT 2014</p>
-    </footer>
-
-  </div> <!-- /container -->
+    <!-- Title, Breadcrumb End-->
+    <!-- Main Content start-->
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          <% bootstrap_flash %>
+          <%= yield %>
+        </div>
+      </div> <!-- /container -->
+    </div>
+  </div>
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+          <section class="col-lg-6 col-md-6 col-xs-12 col-sm-6 footer-one">
+            <h3>About</h3>
+            <p>
+              Everent - Suchen Finden Feiern <br>
+              Hier finden Sie alles für Ihr Event!
+            </p>
+          </section>
+          <section class="col-lg-6 col-md-6 col-xs-12 col-sm-6 footer-two">
+            <h3>Contact Us</h3>
+            <ul class="contact-us">
+              <li>
+                <i class="fa fa-map-marker"></i>
+                <p>
+                  <strong class="contact-pad">Address:</strong>
+                  Everent UG Haftungsbeschränkt<br>
+                  Straßennamen 43<br>
+                  56669 Steinhagen
+                </p>
+              </li>
+              <li>
+                <i class="fa fa-phone"></i>
+                <p><strong>Phone:</strong> +49 17623721037</p>
+              </li>
+              <li>
+                <i class="fa fa-envelope"></i>
+                <p><strong>Email:</strong><a href="mailto:info@everent.de">info@everent.de</a></p>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </div>
+    <!-- Footer Top End -->
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 ">&copy; EVERENT 2014. All Rights Reserved.</div>
+          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 ">
+            <ul class="social social-icons-footer-bottom">
+              <li class="facebook"><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+              <li class="twitter"><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- Scroll To Top -->
+  <a href="#" class="scrollup"><i class="fa fa-angle-up"></i></a>
 </div> <!-- /wrap -->
 
 </body>

@@ -7,29 +7,29 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-cat = ServiceCategory.create(name: 'Musik')
-ServiceSubCategory.create(name: 'DJ', serviceCategory: cat)
-ServiceSubCategory.create(name: 'Band', serviceCategory: cat)
-ServiceSubCategory.create(name: 'Soloist', serviceCategory: cat)
+cat = BranchCategory.create(name: 'Musik')
+Branch.create(name: 'DJ', branchCategory: cat)
+Branch.create(name: 'Band', branchCategory: cat)
+Branch.create(name: 'Soloist', branchCategory: cat)
 
 
-cat = ServiceCategory.create(name: 'Essen')
-ServiceSubCategory.create(name: 'Koch', serviceCategory: cat)
-ServiceSubCategory.create(name: 'Buffet-Caterer', serviceCategory: cat)
-ServiceSubCategory.create(name: 'Lieferservice', serviceCategory: cat)
+cat = BranchCategory.create(name: 'Essen')
+Branch.create(name: 'Koch', branchCategory: cat)
+Branch.create(name: 'Buffet-Caterer', branchCategory: cat)
+Branch.create(name: 'Lieferservice', branchCategory: cat)
 
 
-cat = ServiceCategory.create(name: 'Transport')
-ServiceSubCategory.create(name: 'Kutsche', serviceCategory: cat)
-ServiceSubCategory.create(name: 'Taxi', serviceCategory: cat)
-ServiceSubCategory.create(name: 'Limousinen Service', serviceCategory: cat)
-ServiceSubCategory.create(name: 'Bus', serviceCategory: cat)
+cat = BranchCategory.create(name: 'Transport')
+Branch.create(name: 'Kutsche', branchCategory: cat)
+Branch.create(name: 'Taxi', branchCategory: cat)
+Branch.create(name: 'Limousinen Service', branchCategory: cat)
+Branch.create(name: 'Bus', branchCategory: cat)
 
 
-cat = ServiceCategory.create(name: 'Dekorateur')
-ServiceSubCategory.create(name: 'Florist', serviceCategory: cat)
+cat = BranchCategory.create(name: 'Dekorateur')
+Branch.create(name: 'Florist', branchCategory: cat)
 
 
-cat = ServiceCategory.create(name: 'Trinken')
-ServiceSubCategory.create(name: 'Cocktailmixer', serviceCategory: cat)
-ServiceSubCategory.create(name: 'Barkeeper', serviceCategory: cat)
+cat = BranchCategory.create(name: 'Trinken')
+Branch.create(name: 'Cocktailmixer', branchCategory: cat)
+Branch.create(name: 'Barkeeper', branchCategory: cat)

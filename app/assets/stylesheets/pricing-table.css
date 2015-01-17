@@ -1,4 +1,4 @@
-* ==================== PRICING TABLE  ==================== */
+/* ==================== PRICING TABLE  ==================== */
 /* --- base --- */
 div.p_table {
     width: 100%;
@@ -214,7 +214,7 @@ div.p_table.three-col div.column_1, div.p_table.three-col div.column_2, div.p_ta
     height: 100%;
     float: left;
     position: relative;
-	background: url("../img/bg_off.png") repeat scroll 0 0 transparent;
+	background: url("bg_off.png") repeat scroll 0 0 transparent;
     border: 1px solid #DDDDDD;
 	margin: 0 1%;
     padding: 4px;
@@ -228,7 +228,7 @@ div.p_table div.column_1, div.p_table div.column_2, div.p_table div.column_3, di
     height: 100%;
     float: left;
     position: relative;
-	background: url("../img/bg_off.png") repeat scroll 0 0 transparent;
+	background: url("bg_off.png") repeat scroll 0 0 transparent;
     border: 1px solid #DDDDDD;
 	margin: 0 1%;
     padding: 4px;

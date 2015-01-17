@@ -40,13 +40,17 @@ class ServicesController < ApplicationController
   private
   def set_service
     @service = Service.find(params[:id])
+    if current_user
+      @profile = Profile.find_by_user_id(current_user.id)
+    end
   end
+
   def set_businesses
     @businesses = User.find(current_user).businesses.all
 
   end
 
     def service_params
-      params.require(:service).permit(:description, :name, :teaser, :business_id, :serviceSubCategory_id)
+      params.require(:service).permit(:description, :name, :teaser, :business_id, :branch_id)
     end
 end
