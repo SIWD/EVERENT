@@ -13,7 +13,7 @@
  *= require_self
  *= require bootstrap
  *= require bootstrap-theme
- *= require fonts/font-awesome/css/font-awesome
+ *= # require fonts/font-awesome/css/font-awesome
  *= require animations
  *= require superfish
  *= require prettyPhoto

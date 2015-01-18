@@ -86,43 +86,27 @@ ActiveRecord::Schema.define(version: 20150116222825) do
 
   create_table "service_sub_categories", force: true do |t|
     t.string   "name"
-<<<<<<< HEAD
-    t.integer  "serviceCategory_id"
-=======
     t.integer  "serviceCategories_id"
->>>>>>> service
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-<<<<<<< HEAD
-  add_index "service_sub_categories", ["serviceCategory_id"], name: "index_service_sub_categories_on_serviceCategory_id"
-=======
   add_index "service_sub_categories", ["serviceCategories_id"], name: "index_service_sub_categories_on_serviceCategories_id"
->>>>>>> service
 
   create_table "services", force: true do |t|
     t.string   "name"
     t.string   "teaser"
     t.text     "description"
     t.integer  "business_id"
-<<<<<<< HEAD
-=======
     t.integer  "serviceSubCategory_id"
     t.integer  "branch_id"
->>>>>>> service
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "serviceSubCategory_id"
   end
 
-<<<<<<< HEAD
-  add_index "services", ["business_id"], name: "index_services_on_business_id"
-=======
   add_index "services", ["branch_id"], name: "index_services_on_branch_id"
   add_index "services", ["business_id"], name: "index_services_on_business_id"
   add_index "services", ["serviceSubCategory_id"], name: "index_services_on_serviceSubCategory_id"
->>>>>>> service
 
   create_table "user_businesses", force: true do |t|
     t.string   "position"
