@@ -59,15 +59,20 @@ class BranchesController < ApplicationController
     @branch = Branch.where(name: name).first
   end
 
-    def set_branch
-      @branch = Branch.find(params[:id])
-    end
+  def set_branch
+    @branch = Branch.find(params[:id])
+  end
 
   def set_service
     @services = Service.where(branch_id: @branch)
+    if defined? zip = params['filter']['zipcode']
+      unless zip == ''
+        #@services = Service.where(branch_id: @branch).where(address: Address.where(zipcode: zip))
+      end
+    end
   end
 
-    def branch_params
-      params.require(:branch).permit(:name, :branchCategory_id)
-    end
+  def branch_params
+    params.require(:branch).permit(:name, :branchCategory_id)
+  end
 end

@@ -1,6 +1,13 @@
 <% content_for :title, "Branche: #{@branch.name}" %>
 <p id="notice"><%= notice %></p>
 
+<%= form_for( "Branche/#{@branch.name}", method: :get ) do |f| %>
+
+  <input type="text" name="filter[zipcode]" value="<%= if defined? params['filter']['zipcode'] then params['filter']['zipcode'] end %>" />
+  <button type="submit">Filtern</button>
+
+    <% end %>
+
 <div>
   <h3 class="title">Branchecategory:</h3>
   <%= @branch.branchCategory.name %>

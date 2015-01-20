@@ -6,11 +6,12 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-
+BranchCategory.destroy_all
+Branch.destroy_all
 cat = BranchCategory.create(name: 'Musik')
 Branch.create(name: 'DJ', branchCategory: cat)
 Branch.create(name: 'Band', branchCategory: cat)
-Branch.create(name: 'Soloist', branchCategory: cat)
+Branch.create(name: 'Solist', branchCategory: cat)
 
 
 cat = BranchCategory.create(name: 'Essen')
@@ -33,3 +34,4 @@ Branch.create(name: 'Florist', branchCategory: cat)
 cat = BranchCategory.create(name: 'Trinken')
 Branch.create(name: 'Cocktailmixer', branchCategory: cat)
 Branch.create(name: 'Barkeeper', branchCategory: cat)
+
