@@ -65,9 +65,18 @@ class BranchesController < ApplicationController
 
   def set_service
     @services = Service.where(branch_id: @branch)
-    if defined? zip = params['filter']['zipcode']
-      unless zip == ''
-        #@services = Service.where(branch_id: @branch).where(address: Address.where(zipcode: zip))
+    if defined? params['filter']['zipcode']
+      unless params['filter']['zipcode'] == ''
+        @zip = params['filter']['zipcode']
+
+
+
+
+        services = @services.where(business_id: Business.where(address_id: Address.where(zipcode: @zip))).all
+        if services.size > 0
+         # @services = services
+
+        end
       end
     end
   end

@@ -3,10 +3,10 @@
 
 <%= form_for( "Branche/#{@branch.name}", method: :get ) do |f| %>
 
-  <input type="text" name="filter[zipcode]" value="<%= if defined? params['filter']['zipcode'] then params['filter']['zipcode'] end %>" />
-  <button type="submit">Filtern</button>
+    <input type="text" name="filter[zipcode]" value="<%= if defined? params['filter']['zipcode'] then params['filter']['zipcode'] end %>" />
+    <button type="submit">Filtern</button>
 
-    <% end %>
+<% end %>
 
 <div>
   <h3 class="title">Branchecategory:</h3>
@@ -18,8 +18,30 @@
   <% if Service.where(branch_id: @branch.id).count == 0 %>
       <span>Keine Anbieter vorhanden</span>
   <% else %>
-      <%= render 'services/index' %>
+
+      <% @services.each do |s| %>
+          <% lat = Address.where(id: Business.where(id: s.business_id).first.address_id).first.lat %>
+          <% lng = Address.where(id: Business.where(id: s.business_id).first.address_id).first.lng %>
+          <% @from = Geokit::LatLng.new(Address.where(zipcode: @zip).first.lat, Address.where(zipcode: @zip).first.lng) %>
+          <%   @to = Geokit::LatLng.new(lat, lng) %>
+          <%  if ( Geokit::LatLng.distance_between_sphere(@from, @to, :kms) <= 10) %>
+                <div style="height:100px;width:100px"><%= s.name %></div>
+          <%  end %>
+      <% end %>
   <% end %>
+
+
+
+
+  <p>
+    <%
+=begin
+                  @from = Geokit::LatLng.new(Address.where(zipcode: 48231).first.lat, Address.where(zipcode: 48231).first.lng)
+                  @to = Geokit::LatLng.new(Address.where(zipcode: 48666).first.lat, Address.where(zipcode: 48666).first.lng)
+                  Geokit::LatLng.distance_between_sphere(@from, @to, :kms)
+=end
+    %>
+  </p>
 </div>
 
 <%= link_to 'Edit', edit_branch_path(@branch) %> |
