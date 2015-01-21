@@ -9,7 +9,7 @@
 BranchCategory.destroy_all
 Branch.destroy_all
 cat = BranchCategory.create(name: 'Musik')
-Branch.create(name: 'DJ', branchCategory: cat)
+branch1 = Branch.create(name: 'DJ', branchCategory: cat)
 Branch.create(name: 'Band', branchCategory: cat)
 Branch.create(name: 'Solist', branchCategory: cat)
 
@@ -35,3 +35,10 @@ cat = BranchCategory.create(name: 'Trinken')
 Branch.create(name: 'Cocktailmixer', branchCategory: cat)
 Branch.create(name: 'Barkeeper', branchCategory: cat)
 
+
+add1 = Address.create(city: 'Warendorf', plz: '48231', lat: '51.9229261', lng: '7.9674978', stateCode: 'NRW', country: 'DE', streetName: 'Gänsestraße', streetNumber: '6')
+add2 = Address.create(city: 'Münster', plz: '48145', lat: '51.96444', lng: '7.6499', stateCode: 'NRW', country: 'DE', streetName: 'Warendorfer', streetNumber: '88')
+bus1 = Business.create(name: 'Simply Impressive', address: add1)
+bus2 = Business.create(name: 'Wittler', address: add2)
+ser = Service.create(name: 'DJ CINO', teaser: 'House/Black/Charts', description: 'DJ CINO, fester Bestandteil des Münsteraner Nachtlebens. Mit seiner feinen Mischung aus Black’n’White & Best-Party-Ever beamt CINO die Party auf ein neuen Level hoch. Schließt euch Ihm an im Heaven Club, Soho, 4400 uvm.', business: bus1, branch: branch1)
+ser = Service.create(name: 'DJ Pascal', teaser: 'Charts', description: 'Bekannt in Münster', business: bus2, branch: branch1)

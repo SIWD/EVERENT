@@ -1,6 +1,7 @@
 class BranchesController < ApplicationController
   before_action :set_branch_by_name, only: [:show, :edit, :update, :destroy]
   before_action :set_service, only: [:show, :edit, :update, :destroy]
+  before_action :set_location, only: [:show]
 
   respond_to :html
 
@@ -65,20 +66,41 @@ class BranchesController < ApplicationController
 
   def set_service
     @services = Service.where(branch_id: @branch)
-    if defined? params['filter']['zipcode']
-      unless params['filter']['zipcode'] == ''
-        @zip = params['filter']['zipcode']
+  end
 
+  def set_location
+    @range = params['range'] || 50
 
+    @loc = params['location']
+    if Location.where(city: @loc).first || Location.where(zipcode: @loc).first
+      geo = Location.where(city: @loc).first || Location.where(zipcode: @loc).first
+      @success = true
+    else
+      geo = Geokit::Geocoders::GoogleGeocoder.geocode(@loc, bias: 'DE')
+      if geo.success
+        @success = true
 
-
-        services = @services.where(business_id: Business.where(address_id: Address.where(zipcode: @zip))).all
-        if services.size > 0
-         # @services = services
-
+        if loc = Location.where(city: geo.city).where(zipcode: nil).first
+        else
+          loc = Location.new
         end
+        loc.country = geo.country_code
+        loc.city = geo.city
+        loc.lat = geo.lat
+        loc.lng = geo.lng
+        loc.stateCode = geo.state_code
+        loc.zipcode = geo.zip
+        loc.save
+      else
+        @success = false
       end
     end
+
+    if @success
+      @from = Geokit::LatLng.new(geo.lat, geo.lng)
+      @city = geo.city
+    end
+
   end
 
   def branch_params
