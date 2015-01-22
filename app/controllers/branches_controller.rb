@@ -1,6 +1,7 @@
 class BranchesController < ApplicationController
   before_action :set_branch_by_name, only: [:show, :edit, :update, :destroy]
   before_action :set_service, only: [:show, :edit, :update, :destroy]
+  before_action :set_location, only: [:show]
 
   respond_to :html
 
@@ -59,15 +60,51 @@ class BranchesController < ApplicationController
     @branch = Branch.where(name: name).first
   end
 
-    def set_branch
-      @branch = Branch.find(params[:id])
-    end
+  def set_branch
+    @branch = Branch.find(params[:id])
+  end
 
   def set_service
     @services = Service.where(branch_id: @branch)
   end
 
-    def branch_params
-      params.require(:branch).permit(:name, :branchCategory_id)
+  def set_location
+    @range = params['range'] || 50
+    @success = false
+    if params['location']
+      @loc = params['location']
+      if Location.where(city: @loc).first || Location.where(zipcode: @loc).first
+        geo = Location.where(city: @loc).first || Location.where(zipcode: @loc).first
+        @success = true
+      else
+        geo = Geokit::Geocoders::GoogleGeocoder.geocode(@loc, bias: 'DE')
+        if geo.success
+          @success = true
+
+          if loc = Location.where(city: geo.city).where(zipcode: nil).first
+          else
+            loc = Location.new
+          end
+          loc.country = geo.country_code
+          loc.city = geo.city
+          loc.lat = geo.lat
+          loc.lng = geo.lng
+          loc.stateCode = geo.state_code
+          loc.zipcode = geo.zip
+          loc.save
+        else
+          @success = false
+        end
+      end
     end
+    if @success
+      @from = Geokit::LatLng.new(geo.lat, geo.lng)
+      @city = geo.city
+    end
+
+  end
+
+  def branch_params
+    params.require(:branch).permit(:name, :branchCategory_id)
+  end
 end

@@ -658,7 +658,7 @@ jQuery(document).ready(function () {
 		
 	//Google map
 	jQuery('#maps').gMap({
-        address: "House: 854, Road: 24, Mirpur DOHS, Dhaka, Bangladesh",
+		address: "House: 854, Road: 24, Mirpur DOHS, Dhaka, Bangladesh",
 		zoom: 16,
 		controls: {
          panControl: true,

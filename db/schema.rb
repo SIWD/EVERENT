@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150116222825) do
+ActiveRecord::Schema.define(version: 20150122132954) do
+
+  create_table "addresses", force: true do |t|
+    t.string   "city"
+    t.string   "zipcode"
+    t.string   "streetName"
+    t.string   "streetNumber"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "lat"
+    t.string   "lng"
+    t.string   "stateCode"
+    t.string   "country"
+  end
 
   create_table "branch_categories", force: true do |t|
     t.string   "name"
@@ -32,28 +45,24 @@ ActiveRecord::Schema.define(version: 20150116222825) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "address_id"
   end
 
-  create_table "foods", force: true do |t|
+  add_index "businesses", ["address_id"], name: "index_businesses_on_address_id"
+
+  create_table "locations", force: true do |t|
+    t.string   "city"
+    t.string   "zipcode"
+    t.string   "lat"
+    t.string   "lng"
+    t.string   "stateCode"
+    t.string   "country"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "music_types", force: true do |t|
+  create_table "neus", force: true do |t|
     t.string   "name"
-    t.string   "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "musician_music_types", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "musicians", force: true do |t|
-    t.boolean  "hasEquipment"
-    t.integer  "musicianType"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -74,31 +83,17 @@ ActiveRecord::Schema.define(version: 20150116222825) do
     t.string   "photo_content_type"
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
+    t.integer  "address_id"
   end
 
+  add_index "profiles", ["address_id"], name: "index_profiles_on_address_id"
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
-
-  create_table "service_categories", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "service_sub_categories", force: true do |t|
-    t.string   "name"
-    t.integer  "serviceCategories_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "service_sub_categories", ["serviceCategories_id"], name: "index_service_sub_categories_on_serviceCategories_id"
 
   create_table "services", force: true do |t|
     t.string   "name"
     t.string   "teaser"
     t.text     "description"
     t.integer  "business_id"
-    t.integer  "serviceSubCategory_id"
     t.integer  "branch_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -106,7 +101,6 @@ ActiveRecord::Schema.define(version: 20150116222825) do
 
   add_index "services", ["branch_id"], name: "index_services_on_branch_id"
   add_index "services", ["business_id"], name: "index_services_on_business_id"
-  add_index "services", ["serviceSubCategory_id"], name: "index_services_on_serviceSubCategory_id"
 
   create_table "user_businesses", force: true do |t|
     t.string   "position"
