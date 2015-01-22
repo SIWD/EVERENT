@@ -1,21 +1,43 @@
 <%= form_for(@business) do |f| %>
-  <% if @business.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@business.errors.count, "error") %> prohibited this business from being saved:</h2>
+    <% if @business.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@business.errors.count, "error") %> prohibited this business from being saved:</h2>
 
-      <ul>
-      <% @business.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+          <ul>
+            <% @business.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :name %><br>
+      <%= f.text_field :name %>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <%= fields_for :address, Address.where(id: @business.address_id).first do |a| %>
+        <div class="field">
+          <%= a.label :city %><br>
+          <%= a.text_field :city %>
+        </div>
+
+        <div class="field">
+          <%= a.label :zipcode %><br>
+          <%= a.text_field :zipcode %>
+        </div>
+
+        <div class="field">
+          <%= a.label :streetName %><br>
+          <%= a.text_field :streetName %>
+        </div>
+
+        <div class="field">
+          <%= a.label :streetNumber %><br>
+          <%= a.text_field :streetNumber %>
+        </div>
+    <% end %>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
 <% end %>

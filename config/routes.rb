@@ -14,14 +14,6 @@ Rails.application.routes.draw do
   get 'Branche/neu', to:'branches#new'
   patch 'Branche/:name',to: 'branches#update'
 
-  resources :music_types
-
-  resources :musician_music_types
-
-  resources :musicians
-
-  resources :foods
-
   resources :profiles
 
   resources :services
