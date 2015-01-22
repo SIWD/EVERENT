@@ -21,7 +21,16 @@ class BusinessesController < ApplicationController
   end
 
   def create
+    address = Address.new(address_params)
+    geo = Geokit::Geocoders::GoogleGeocoder.geocode("#{address.city} #{address.zipcode} #{address.streetName} #{address.streetNumber}")
+    address.country = geo.country_code
+    address.stateCode = geo.state_code
+    address.lat = geo.lat
+    address.lng = geo.lng
+    address.save
+
     @business = Business.new(business_params)
+    @business.address_id = address.id
     @business.save
     @business.user_businesses.create([{ user_id: current_user.id }])
     respond_with(@business)
@@ -44,7 +53,10 @@ class BusinessesController < ApplicationController
       @services = Service.where(business_id: @business.id)
     end
 
-    def business_params
-      params.require(:business).permit(:name)
-    end
+  def business_params
+    params.require(:business).permit(:name)
+  end
+  def address_params
+    params.require(:address).permit(:city, :zipcode, :streetName, :streetNumber)
+  end
 end
