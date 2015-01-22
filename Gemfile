@@ -15,6 +15,10 @@ group :development, :test do
   gem 'capybara'
 end
 
+#Location
+gem 'geokit'
+gem 'geokit-rails'
+gem 'geoip'
 
 gem 'devise'
 gem 'devise-bootstrap-views'

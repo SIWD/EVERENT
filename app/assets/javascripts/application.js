@@ -10,8 +10,8 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-// require jquery
-// require jquery_ujs
+//= require jquery
+//= require jquery_ujs
 // require twitter/bootstrap
 //= require turbolinks
 // require_tree .
@@ -37,5 +37,5 @@
 //= require jflickrfeed.js
 //= require imagesloaded.pkgd.min.js
 //= require waypoints.min.js
-//= require custom.js
+// require custom.js
 //= require jquery.isotope
