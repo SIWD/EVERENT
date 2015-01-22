@@ -54,7 +54,6 @@
 
             <%  if (@success && ( Geokit::LatLng.distance_between_sphere(@from, to, :kms) <= @range.to_i)) || !@success  %>
                 <% i += 1 %>
-                <%= params['location'] %>
                 <% if (i == 1) && @success %>
                     <div class="col-lg-12">
                       <span><%= "Ergebnisse in #{@city} und im Umkreis von #{@range} km:" %></span>

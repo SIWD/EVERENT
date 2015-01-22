@@ -85,6 +85,7 @@ class BranchesController < ApplicationController
           else
             loc = Location.new
           end
+
           loc.country = geo.country_code
           loc.city = geo.city
           loc.lat = geo.lat
@@ -92,8 +93,6 @@ class BranchesController < ApplicationController
           loc.stateCode = geo.state_code
           loc.zipcode = geo.zip
           loc.save
-        else
-          @success = false
         end
       end
     end
