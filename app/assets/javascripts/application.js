@@ -37,5 +37,5 @@
 //= require jflickrfeed.js
 //= require imagesloaded.pkgd.min.js
 //= require waypoints.min.js
-//= require custom.js
+// require custom.js
 //= require jquery.isotope
