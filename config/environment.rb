@@ -21,7 +21,8 @@ Geokit::Geocoders::request_timeout = 3
 # These setting can be nil if not needed, otherwise, a valid URI must be
 # filled in at a minimum.  If the proxy requires authentication, the username
 # and password can be provided as well.
-Geokit::Geocoders::proxy = 'http://localhost:3000'#'https://user:password@host:port'
+# Geokit::Geocoders::proxy = 'http://localhost:3000'#'https://user:password@host:port'
+Geokit::Geocoders::proxy = 'http://everent.herokuapp.com'#'https://user:password@host:port'
 
 # This is your yahoo application key for the Yahoo Geocoder.
 # See http://developer.yahoo.com/faq/index.html#appid
@@ -38,7 +39,10 @@ Geokit::Geocoders::GoogleGeocoder.channel = ''
 
 # You can also use the free API key instead of signed requests
 # See https://developers.google.com/maps/documentation/geocoding/#api_key
-Geokit::Geocoders::GoogleGeocoder.api_key = 'AIzaSyCQ1c0WMThvNla5ZqmX_OsPw1VPDHjK2Jk'
+# everent.herokuapp.com
+Geokit::Geocoders::GoogleGeocoder.api_key = 'AIzaSyAaLBMziQFgJl-t5KJYxURRPgX3M-TNRCM'
+# localhost:3000
+# Geokit::Geocoders::GoogleGeocoder.api_key = 'AIzaSyCQ1c0WMThvNla5ZqmX_OsPw1VPDHjK2Jk'
 
 # You can also set multiple API KEYS for different domains that may be directed to this same application.
 # The domain from which the current user is being directed will automatically be updated for Geokit via

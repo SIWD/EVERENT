@@ -92,8 +92,6 @@ class BranchesController < ApplicationController
           loc.stateCode = geo.state_code
           loc.zipcode = geo.zip
           loc.save
-        else
-          @success = false
         end
       end
     end
