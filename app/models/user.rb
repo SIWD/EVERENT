@@ -7,4 +7,6 @@ class User < ActiveRecord::Base
   has_one :profile
   has_many :user_businesses
   has_many :businesses, through: :user_businesses
+  has_many :event_users
+  has_many :events, through: :event_users
 end

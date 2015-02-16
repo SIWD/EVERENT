@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'address/new'
+
+  resources :events
+
   resources :branches
 
   devise_scope :user do

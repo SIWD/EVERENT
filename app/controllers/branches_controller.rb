@@ -73,8 +73,7 @@ class BranchesController < ApplicationController
     @success = false
     if params['location']
       @loc = params['location']
-      if Location.where(city: @loc).first || Location.where(zipcode: @loc).first
-        geo = Location.where(city: @loc).first || Location.where(zipcode: @loc).first
+      if geo = Location.where(city: @loc).first || Location.where(zipcode: @loc).first
         @success = true
       else
         geo = Geokit::Geocoders::GoogleGeocoder.geocode(@loc, bias: 'DE')

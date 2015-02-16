@@ -1,53 +1,50 @@
-/*Magenta #ec008c */
+/*Magenta #ec008c & #fb61bd */
 
-.btn:focus, .subscribe-btn, .progress .progress-bar, .accordionMod .panel-heading .current, #current:after, .tp-leftarrow.default:hover,.tp-rightarrow.default:hover, .nivo-prevNav:hover, .nivo-nextNav:hover, .contact-box:hover, #options li a.selected, .ch-info .ch-info-back {
+.btn:focus, .subscribe-btn, .progress .progress-bar, .accordionMod .panel-heading .current, #current:after, .tp-leftarrow.default:hover,.tp-rightarrow.default:hover, .nivo-prevNav:hover, .nivo-nextNav:hover, .contact-box:hover, #options li a.selected, .ch-info-front {
     background: #ec008c;
 }
 
+.bg-color {
+    background: #ec008c;
+	color: #fff;
+}
+
+.spinner {
+	border-top-color: #ec008c;
+}
+
+.ch-info-back {
+	background: rgba(236, 0, 140, 0.7) !important;
+}
+
+.tp-leftarrow.default:hover,.tp-rightarrow.default:hover, .nivo-prevNav:hover, .nivo-nextNav:hover {
+	border-color: #ec008c;
+}
 
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus, .pager li > a:hover, .pager li > a:focus, .navbar-toggle i, .cn-wrapper li a, .cn-wrapper:after {
     background-color: #ec008c;
     color: #fff;
 }
 
-.spinner {
-    border-top-color: #ec008c;
-}
-
 .hero {
     border-left-color: #ec008c;
 }
 
-#options li a.selected {
-	border: 1px solid #ec008c;
-}
 
 .ie8 .btn-color, .ie9 .btn-color {
 	background: #ec008c !important;
 }
 
 .ie8 .btn-color:hover, .ie9 .btn-color:hover {
-	background: #fb61bd !important;
+	background: #ec008c !important;
 }
 
 .btn-color:hover, .subscribe-btn:hover {
-	background: -webkit-linear-gradient(#fb61bd,#ec008c);
-	background: -moz-linear-gradient(#fb61bd,#ec008c);
-	background: -o-linear-gradient(#fb61bd,#ec008c);
-	background: -ms-linear-gradient(#fb61bd,#ec008c);
-	background: linear-gradient(#fb61bd,#ec008c);
+	background: #fb61bd;
 }
 
 .btn-color, .subscribe-btn {
-	background: -webkit-linear-gradient(#ec008c,#fb61bd);
-	background: -moz-linear-gradient(#ec008c,#fb61bd);
-	background: -o-linear-gradient(#ec008c,#fb61bd);
-	background: -ms-linear-gradient(#ec008c,#fb61bd);
-	background: linear-gradient(#ec008c,#fb61bd);
-	border: 1px solid #a05280;
-
-	-webkit-box-shadow: inset 0 1px 1px 0 #e4a6cb, 0 2px 0 -1px rgba(0,0,0,0.2);
-	box-shadow: inset 0 1px 1px 0 #e4a6cb, 0 2px 0 -1px rgba(0,0,0,0.2);
+	background: #ec008c;
 	cursor: pointer;
 }
 
@@ -64,13 +61,6 @@ ul.why li:before {
     border-top: 3px solid #ec008c !important;
 }
 
-#horizontal-tabs ul.tabs li.current {
-    border-top: 2px solid #ec008c;
-}
-
-#vertical-tabs ul.tabs li.current {
-    border-left: 2px solid #ec008c;
-}
 
 
 .author-content, div.content-box.big, #cn-tabs .service, .comment-des, .contact-box {

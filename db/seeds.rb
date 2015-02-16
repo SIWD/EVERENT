@@ -42,3 +42,18 @@ bus1 = Business.create(name: 'Simply Impressive', address_id: add1.id)
 bus2 = Business.create(name: 'Wittler', address_id: add2.id)
 ser = Service.create(name: 'DJ CINO', teaser: 'House/Black/Charts', description: 'DJ CINO, fester Bestandteil des Münsteraner Nachtlebens. Mit seiner feinen Mischung aus Black’n’White & Best-Party-Ever beamt CINO die Party auf ein neuen Level hoch. Schließt euch Ihm an im Heaven Club, Soho, 4400 uvm.', business: bus1, branch: branch1)
 ser = Service.create(name: 'DJ Pascal', teaser: 'Charts', description: 'Bekannt in Münster', business: bus2, branch: branch1)
+
+WhoHasAccessToEvent.destroy_all
+WhoHasAccessToEvent.create(who: 'Jeder', icon: 'privacy/many_member.png')
+WhoHasAccessToEvent.create(who: 'Jeder mit Passwort', icon: 'privacy/many_member_lock.png')
+WhoHasAccessToEvent.create(who: 'Nur Gastgeber', icon: 'privacy/one_member.png')
+
+EventUserStatus.destroy_all
+EventUserStatus.create(status: 'owner')
+EventUserStatus.create(status: 'moderator')
+EventUserStatus.create(status: 'guest')
+
+EventUserJoin.destroy_all
+EventUserJoin.create(status: 'join')
+EventUserJoin.create(status: 'maybe')
+EventUserJoin.create(status: 'reject')

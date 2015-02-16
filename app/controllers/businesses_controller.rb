@@ -39,6 +39,15 @@ class BusinessesController < ApplicationController
 
   def update
     @business.update(business_params)
+    address = Address.find(@business.address_id)
+    address.update(address_params)
+    geo = Geokit::Geocoders::GoogleGeocoder.geocode("#{address.city} #{address.zipcode} #{address.streetName} #{address.streetNumber}")
+    address.country = geo.country_code
+    address.stateCode = geo.state_code
+    address.lat = geo.lat
+    address.lng = geo.lng
+    address.save
+
     respond_with(@business)
   end
 
@@ -51,12 +60,13 @@ class BusinessesController < ApplicationController
     def set_business
       @business = Business.find(params[:id])
       @services = Service.where(business_id: @business.id)
+      @address  = Address.where(id: @business.address_id).first
     end
 
-  def business_params
-    params.require(:business).permit(:name)
-  end
-  def address_params
-    params.require(:address).permit(:city, :zipcode, :streetName, :streetNumber)
-  end
+    def business_params
+      params.require(:business).permit(:name)
+    end
+    def address_params
+      params.require(:address).permit(:city, :zipcode, :streetName, :streetNumber)
+    end
 end

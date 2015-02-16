@@ -16,7 +16,7 @@
       <%= f.text_field :name %>
     </div>
 
-    <%= fields_for :address, Address.where(id: @business.address_id).first do |a| %>
+    <%= fields_for :address, @address do |a| %>
         <div class="field">
           <%= a.label :city %><br>
           <%= a.text_field :city %>

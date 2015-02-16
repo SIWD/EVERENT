@@ -1,3 +1,4 @@
+<% content_for :title, @business.name %>
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -6,24 +7,24 @@
 </p>
 <p>
   <strong>Stadt:</strong>
-  <%= Address.where(id: @business.address_id).first.city %>
+  <%= @address.city %>
 </p>
 <p>
   <strong>PLZ:</strong>
-  <%= Address.where(id: @business.address_id).first.zipcode %>
+  <%= @address.zipcode %>
 </p>
 <p>
   <strong>Starße & Nr.:</strong>
-  <%= Address.where(id: @business.address_id).first.streetName %>
-  <%= Address.where(id: @business.address_id).first.streetNumber %>
+  <%= @address.streetName %>
+  <%= @address.streetNumber %>
 </p>
 <p>
   <strong>Dienstleistungen:</strong>
 </p>
-<div class="row">
-  <% if Service.where(business_id: @business.id).count > 0 %>
+<div>
+  <% if @services.count > 0 %>
       <% servicessting = "" %>
-      <% Service.where(business_id: @business.id).each do |s| %>
+      <% @services.each do |s| %>
           <% servicessting << "\n - " + s.name %>
       <% end %>
       <%= render 'services/index' %>

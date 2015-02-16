@@ -21,8 +21,7 @@ Geokit::Geocoders::request_timeout = 3
 # These setting can be nil if not needed, otherwise, a valid URI must be
 # filled in at a minimum.  If the proxy requires authentication, the username
 # and password can be provided as well.
-# Geokit::Geocoders::proxy = 'http://localhost:3000'#'https://user:password@host:port'
-Geokit::Geocoders::proxy = 'http://everent.herokuapp.com'#'https://user:password@host:port'
+Geokit::Geocoders::proxy = ''#'https://user:password@host:port'
 
 # This is your yahoo application key for the Yahoo Geocoder.
 # See http://developer.yahoo.com/faq/index.html#appid
@@ -39,16 +38,15 @@ Geokit::Geocoders::GoogleGeocoder.channel = ''
 
 # You can also use the free API key instead of signed requests
 # See https://developers.google.com/maps/documentation/geocoding/#api_key
-# everent.herokuapp.com
-Geokit::Geocoders::GoogleGeocoder.api_key = 'AIzaSyAaLBMziQFgJl-t5KJYxURRPgX3M-TNRCM'
-# localhost:3000
-# Geokit::Geocoders::GoogleGeocoder.api_key = 'AIzaSyCQ1c0WMThvNla5ZqmX_OsPw1VPDHjK2Jk'
+Geokit::Geocoders::GoogleGeocoder.api_key = 'AIzaSyDn_R1p249pElMsIM-WLIN25mji90NMOpY'
 
 # You can also set multiple API KEYS for different domains that may be directed to this same application.
 # The domain from which the current user is being directed will automatically be updated for Geokit via
 # the GeocoderControl class, which gets it's begin filter mixed into the ActionController.
 # You define these keys with a Hash as follows:
-#Geokit::Geocoders::google = { 'rubyonrails.org' => 'RUBY_ON_RAILS_API_KEY', 'ruby-docs.org' => 'RUBY_DOCS_API_KEY' }
+#Geokit::Geocoders::google = { 'localhost:3000' => 'AIzaSyDn_R1p249pElMsIM-WLIN25mji90NMOpY'
+                              #, 'ruby-docs.org' => 'RUBY_DOCS_API_KEY'
+ #                           }
 
 # This is your username and password for geocoder.us.
 # To use the free service, the value can be set to nil or false.  For
@@ -92,7 +90,7 @@ Geokit::Geocoders::GeonamesGeocoder.premium = false
 # Be aware that there are Terms of Use restrictions on how you can use the
 # various geocoders.  Make sure you read up on relevant Terms of Use for each
 # geocoder you are going to use.
-Geokit::Geocoders::provider_order = [:google,:us]
+Geokit::Geocoders::provider_order = [:google]
 
 # The IP provider order. Valid symbols are :ip,:geo_plugin.
 # As before, make sure you read up on relevant Terms of Use for each.

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150122132954) do
+ActiveRecord::Schema.define(version: 20150217131421) do
 
   create_table "addresses", force: true do |t|
     t.string   "city"
@@ -20,8 +20,8 @@ ActiveRecord::Schema.define(version: 20150122132954) do
     t.string   "streetNumber"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "lat"
-    t.string   "lng"
+    t.float    "lat"
+    t.float    "lng"
     t.string   "stateCode"
     t.string   "country"
   end
@@ -50,19 +50,104 @@ ActiveRecord::Schema.define(version: 20150122132954) do
 
   add_index "businesses", ["address_id"], name: "index_businesses_on_address_id"
 
-  create_table "locations", force: true do |t|
-    t.string   "city"
-    t.string   "zipcode"
-    t.string   "lat"
-    t.string   "lng"
-    t.string   "stateCode"
-    t.string   "country"
+  create_table "event_businesses", force: true do |t|
+    t.integer  "event_id"
+    t.integer  "user_id"
+    t.integer  "event_user_status_id"
+    t.integer  "event_user_join_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "neus", force: true do |t|
+  add_index "event_businesses", ["event_id"], name: "index_event_businesses_on_event_id"
+  add_index "event_businesses", ["event_user_join_id"], name: "index_event_businesses_on_event_user_join_id"
+  add_index "event_businesses", ["event_user_status_id"], name: "index_event_businesses_on_event_user_status_id"
+  add_index "event_businesses", ["user_id"], name: "index_event_businesses_on_user_id"
+
+  create_table "event_images", force: true do |t|
+    t.string   "album"
+    t.integer  "event_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+  end
+
+  add_index "event_images", ["event_id"], name: "index_event_images_on_event_id"
+
+  create_table "event_locations", force: true do |t|
     t.string   "name"
+    t.integer  "address_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_locations", ["address_id"], name: "index_event_locations_on_address_id"
+
+  create_table "event_services", force: true do |t|
+    t.integer  "event_id"
+    t.integer  "user_id"
+    t.integer  "event_user_status_id"
+    t.integer  "event_user_join_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_services", ["event_id"], name: "index_event_services_on_event_id"
+  add_index "event_services", ["event_user_join_id"], name: "index_event_services_on_event_user_join_id"
+  add_index "event_services", ["event_user_status_id"], name: "index_event_services_on_event_user_status_id"
+  add_index "event_services", ["user_id"], name: "index_event_services_on_user_id"
+
+  create_table "event_user_joins", force: true do |t|
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "event_user_statuses", force: true do |t|
+    t.string   "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "event_users", force: true do |t|
+    t.integer  "event_id"
+    t.integer  "user_id"
+    t.integer  "event_user_status_id"
+    t.integer  "event_user_join_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_users", ["event_id"], name: "index_event_users_on_event_id"
+  add_index "event_users", ["event_user_join_id"], name: "index_event_users_on_event_user_join_id"
+  add_index "event_users", ["event_user_status_id"], name: "index_event_users_on_event_user_status_id"
+  add_index "event_users", ["user_id"], name: "index_event_users_on_user_id"
+
+  create_table "events", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.date     "date"
+    t.time     "time"
+    t.integer  "event_location_id"
+    t.integer  "who_has_access_id"
+    t.string   "password"
+  end
+
+  add_index "events", ["event_location_id"], name: "index_events_on_event_location_id"
+  add_index "events", ["who_has_access_id"], name: "index_events_on_who_has_access_id"
+
+  create_table "locations", force: true do |t|
+    t.string   "city"
+    t.string   "zipcode"
+    t.float    "lat"
+    t.float    "lng"
+    t.string   "stateCode"
+    t.string   "country"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -132,6 +217,13 @@ ActiveRecord::Schema.define(version: 20150122132954) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
   create_table "welcomes", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "who_has_access_to_events", force: true do |t|
+    t.string   "who"
+    t.string   "icon"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
