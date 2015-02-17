@@ -1,6 +1,10 @@
 <% content_for :title, "Branche: #{@branch.name}" %>
 
 
+<%= @loc %>
+<% if @success %>
+     true
+   <% end %>
 <p id="notice"><%= notice %></p>
 <div class="accordionMod panel-group well">
   <div class="accordion-item " style="height: 0px; margin: 0px; padding: 0px">
@@ -105,5 +109,4 @@
   <% end %>
 
 </div>
-
 <%= link_to 'Zurück zu "Alle Branchen"', branches_path %>
