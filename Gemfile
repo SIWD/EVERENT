@@ -23,6 +23,8 @@ gem 'geoip'
 gem 'devise'
 gem 'devise-bootstrap-views'
 
+gem 'cancancan', '~> 1.10'
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', group: :development
 

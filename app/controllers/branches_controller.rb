@@ -1,4 +1,5 @@
 class BranchesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_branch_by_name, only: [:show, :edit, :update, :destroy]
   before_action :set_service, only: [:show, :edit, :update, :destroy]
   before_action :set_location, only: [:show]
