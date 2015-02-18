@@ -172,6 +172,7 @@ GEM
     ref (1.0.5)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
+    rolify (4.0.0)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
@@ -261,6 +262,7 @@ DEPENDENCIES
   rails (= 4.1.6)
   rails-i18n
   rails_12factor
+  rolify
   rspec-rails
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)

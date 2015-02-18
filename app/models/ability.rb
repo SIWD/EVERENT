@@ -5,7 +5,13 @@ class Ability
 
       if user.present?
         #Registered user
-        can :manage, :all
+        can :read, :all
+
+        if user.has_role? :admin
+          #admin
+          can :manage, :all
+        end
+
       end
 
       if (not user.present?)
