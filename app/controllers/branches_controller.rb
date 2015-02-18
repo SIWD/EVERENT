@@ -26,7 +26,10 @@ class BranchesController < ApplicationController
   def create
     @branch = Branch.new(branch_params)
     @branch.save
-    respond_with(@branch)
+    #respond_with(@branch)
+    respond_to do |format|
+      format.html { redirect_to action: "index", notice: 'Branche erfolgreich erstellt.'}
+    end
   end
 
   def update
