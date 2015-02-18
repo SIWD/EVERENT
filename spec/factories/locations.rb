@@ -1,11 +1,8 @@
 FactoryGirl.define do
   factory :location do
-    city "MyString"
-zipcode "MyString"
-lat "MyString"
-lng "MyString"
-stateCode "MyString"
-country "MyString"
+    address "MyString"
+latitude 1.5
+longitude 1.5
   end
 
 end

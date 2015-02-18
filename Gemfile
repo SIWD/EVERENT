@@ -16,9 +16,7 @@ group :development, :test do
 end
 
 #Location
-gem 'geokit'
-gem 'geokit-rails'
-gem 'geoip'
+gem 'geocoder'
 
 gem 'devise'
 gem 'devise-bootstrap-views'
