@@ -32,4 +32,6 @@
   </div>
 </div>
 
+<% if can? :update, @branch %>
 <%= link_to 'New Branch', new_branch_path %>
+<% end %>
