@@ -11,10 +11,15 @@
     </div>
   <% end %>
 
+<%= fields_for :user, User.where(id:@user_business.user_id).first do |u| %>
+
   <div class="field">
-    <%= f.label 'Mitarbeiter' %><b>&nbsp;(E-Mail)</b><br />
-    <%= f.text_field :user %>
+    <%= u.label :email, 'Mitarbeiter' %><b>&nbsp;(E-Mail)</b><br />
+    <%= u.text_field :email %>
   </div>
+
+<% end %>
+
   <br />
   <div class="field">
     <%= f.label :position %><br>

@@ -24,7 +24,10 @@ class UserBusinessesController < ApplicationController
 
   def create
     @user_business = UserBusiness.new(user_business_params)
-    @user_business.user = User.find_by_email(params[:user_business][:user])
+    #@user_business.user_id = User.find_by_email(user_params).id
+    if(User.where(user_params).first)
+      @user_business.user_id = User.where(user_params).first.id
+    end
 
     @user_business.save
     redirect_to(business_path(@user_business.business))
@@ -53,6 +56,10 @@ class UserBusinessesController < ApplicationController
 
     def user_business_params
       params.require(:user_business).permit(:position, :business_id)
+    end
+
+    def user_params
+      params.require(:user).permit(:email)
     end
 
     def set_business
