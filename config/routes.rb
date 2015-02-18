@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :user_businesses
+
   resources :branches
 
   devise_scope :user do

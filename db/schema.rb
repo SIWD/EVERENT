@@ -11,6 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 20150218164721) do
 
   create_table "addresses", force: true do |t|
@@ -108,9 +109,9 @@ ActiveRecord::Schema.define(version: 20150218164721) do
   add_index "services", ["business_id"], name: "index_services_on_business_id"
 
   create_table "user_businesses", force: true do |t|
-    t.string   "position"
-    t.integer  "user_id"
+    t.integer  "position"
     t.integer  "business_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

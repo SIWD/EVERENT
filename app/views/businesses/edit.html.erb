@@ -1,6 +1,7 @@
+<% content_for :title, @business.name + ' bearbeiten' %>
+
 <h1>Editing business</h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @business %> |
-<%= link_to 'Back', businesses_path %>
+<%= link_to 'Zurück', @business %>

@@ -2,6 +2,7 @@ class BusinessesController < ApplicationController
   before_action :set_business, only: [:show, :edit, :update, :destroy]
   before_action :set_user_businesses, only: [:index, :show, :edit, :update, :destroy]
   before_action :check_access_right, only: [:edit, :update, :destroy]
+  before_action :set_business_users, only: [:show]
 
   respond_to :html
 
@@ -37,7 +38,7 @@ class BusinessesController < ApplicationController
       respond_with(@business)
 
     else
-      @business.user_businesses.create([{ user_id: current_user.id }])
+      @business.user_businesses.create([{ user_id: current_user.id, position: :Administrator}])
       respond_with(@business)
     end
 
@@ -78,4 +79,9 @@ class BusinessesController < ApplicationController
       redirect_to businesses_path
     end
   end
+
+  def set_business_users
+    @businessUsers = @business.user_businesses.all
+  end
+
 end
