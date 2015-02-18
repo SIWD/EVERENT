@@ -72,16 +72,14 @@ class BranchesController < ApplicationController
   def set_location
     @range = params['range'] || 50
     @success = false
-    if params['location']
+    if (params['location'] && !(params['location'] == ('')))
       @loc = params['location']
-      @results = Geocoder.search(@loc, :region => 'DE')
 
-      request.remote_ip
-      remote_ip = request.env["HTTP_X_FORWARDED_FOR"]
-      @ip = Geocoder.search(remote_ip)
       if @loc_from = Location.where(address: @loc).first
       else
-        @loc_from = Location.create(address: @loc)
+        results = Geocoder.search(@loc, :region => 'DE')
+        result = results.first
+        @loc_from = Location.create(address: result.address)
       end
     end
   end
