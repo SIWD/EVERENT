@@ -1,0 +1,28 @@
+<%= form_for(@user_business) do |f| %>
+  <% if @user_business.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user_business.errors.count, "error") %> prohibited this user_business from being saved:</h2>
+
+      <ul>
+      <% @user_business.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label 'Mitarbeiter' %><b>&nbsp;(E-Mail)</b><br />
+    <%= f.text_field :user %>
+  </div>
+  <br />
+  <div class="field">
+    <%= f.label :position %><br>
+    <%= f.select :position, UserBusiness.positions.keys.to_a %>
+  </div>
+    <%= f.hidden_field :business_id, value: @business.id %>
+  <br />
+  <div class="actions">
+    <%= f.submit 'Speichern' %>
+  </div>
+<% end %>
