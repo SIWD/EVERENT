@@ -68,39 +68,24 @@ class BranchesController < ApplicationController
     @services = Service.where(branch_id: @branch)
   end
 
+
   def set_location
     @range = params['range'] || 50
     @success = false
     if params['location']
       @loc = params['location']
-      if Location.where(city: @loc).first || Location.where(zipcode: @loc).first
-        geo = Location.where(city: @loc).first || Location.where(zipcode: @loc).first
-        @success = true
-      else
-        geo = Geokit::Geocoders::GoogleGeocoder.geocode(@loc, bias: 'DE')
-        if geo.success
-          @success = true
+      @results = Geocoder.search(@loc, :region => 'DE')
 
-          if loc = Location.where(city: geo.city).where(zipcode: nil).first
-          else
-            loc = Location.new
-          end
-          loc.country = geo.country_code
-          loc.city = geo.city
-          loc.lat = geo.lat
-          loc.lng = geo.lng
-          loc.stateCode = geo.state_code
-          loc.zipcode = geo.zip
-          loc.save
-        end
+      request.remote_ip
+      remote_ip = request.env["HTTP_X_FORWARDED_FOR"]
+      @ip = Geocoder.search(remote_ip)
+      if @loc_from = Location.where(address: @loc).first
+      else
+        @loc_from = Location.create(address: @loc)
       end
     end
-    if @success
-      @from = Geokit::LatLng.new(geo.lat, geo.lng)
-      @city = geo.city
-    end
-
   end
+
 
   def branch_params
     params.require(:branch).permit(:name, :branchCategory_id)

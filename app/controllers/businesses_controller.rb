@@ -24,11 +24,6 @@ class BusinessesController < ApplicationController
 
   def create
     address = Address.new(address_params)
-    geo = Geokit::Geocoders::GoogleGeocoder.geocode("#{address.city} #{address.zipcode} #{address.streetName} #{address.streetNumber}")
-    address.country = geo.country_code
-    address.stateCode = geo.state_code
-    address.lat = geo.lat
-    address.lng = geo.lng
     address.save
 
     @business = Business.new(business_params)
@@ -45,6 +40,8 @@ class BusinessesController < ApplicationController
 
   def update
     @business.update(business_params)
+    address = Address.find(@business.address_id)
+    address.update(address_params)
     respond_with(@business)
   end
 
