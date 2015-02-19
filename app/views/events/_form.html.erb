@@ -1,0 +1,162 @@
+<div class="row">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <%= form_for @event do |f| %>
+        <% if @event.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+
+              <ul>
+                <% @event.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <%= f.label :name, "Name des Events" %><br>
+            <%= f.text_field :name, class: "form-control"  %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <%= fields_for :host do |h| %>
+                <%= h.label :name, "Gastgeber" %><br>
+                <table>
+                  <%= h.collection_check_boxes :user_ids, Profile.where(user_id: current_user.id).all, :id, :name_with_initial, { selected: @event.event_users.map(&:id), include_hidden: false},  multiple: true do |b| %>
+                      <tr>
+                        <td><%= b.check_box + " " + b.label %></td>
+                        <td><%= link_to 'Profil', profile_path(b.object.id) %></td>
+                      </tr>
+                  <%end%>
+
+                  <% if(UserBusiness.where(user_id: current_user.id).count > 0) %>
+                      <% UserBusiness.where(user_id: current_user.id).each do |ub| %>
+                          <%= h.collection_check_boxes :business_ids, Business.where(id: ub.business_id).all, :id, :name, { selected: @event.event_businesses.map(&:id), include_hidden: false},  multiple: true do |b| %>
+                              <tr>
+                                <td><%= b.check_box + " " + b.label %></td>
+                                <td><%= link_to 'Unternehmen', profile_path(b.object.id) %></td>
+                              </tr>
+                          <% end %>
+                      <% end %>
+                  <% end %>
+
+                  <% if(UserBusiness.where(user_id: current_user.id).count > 0) %>
+                      <% UserBusiness.where(user_id: current_user.id).each do |ub| %>
+                          <% Business.where(id: ub.business_id).each do |b| %>
+                              <% if (Service.where(business_id: b.id).count > 0 ) %>
+
+                                  <%= h.collection_check_boxes :service_ids, Service.where(business_id: b.id).all, :id, :name, { selected: @event.event_businesses.map(&:id), include_hidden: false},  multiple: true do |s| %>
+                                      <tr>
+                                        <td><%= s.check_box + " " + s.label %></td>
+                                        <td><%= link_to 'Dienstleistung', profile_path(s.object.id) %></td>
+                                      </tr>
+                                  <% end %>
+                              <% end %>
+                          <% end %>
+                      <% end %>
+                  <% end %>
+                </table>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <%= f.label :date, "Termin" %><br>
+            <%= f.date_select :date, class: "form-control"  %>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <%= f.label :time, "Zeit" %><br>
+            <%= f.time_select :time, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <%= fields_for :eventLocation, @eventLocation do |el| %>
+                <%= el.label :name, "Name der Location" %><br>
+                <%= el.text_field :name, class: "form-control" %>
+            <% end %>
+          </div>
+        </div>
+
+
+        <%= fields_for :address, @address do |a| %>
+            <div class="row">
+              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                <%= a.label :streetName,"Straße" %><br>
+                <%= a.text_field :streetName, class: "form-control" %>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <%= a.label :streetNumber, "Nr." %><br>
+                <%= a.text_field :streetNumber, class: "form-control" %>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <%= a.label :zipcode, "PLZ" %><br>
+                <%= a.text_field :zipcode, class: "form-control" %>
+              </div>
+              <div class="col-lg-9 col-md-6 col-sm-6 col-xs-12">
+                <%= a.label :city, "Stadt" %><br>
+                <%= a.text_field :city, class: "form-control" %>
+              </div>
+            </div>
+        <% end %>
+
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <%= f.label :description %><br>
+            <%= f.text_area :description, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <%= f.label :who_has_access_id, "Wer darf das Event sehen?" %><br>
+            <div class="row">
+              <%= f.collection_radio_buttons :who_has_access_id, WhoHasAccessToEvent.all, :id, :who do |radio| %>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <%= radio.label(class: "form-icon #{radio.object.who}"){radio.radio_button + image_tag(radio.object.icon) } %>
+                    <%= radio.label{radio.label} %>
+                  </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row optional-password">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <%= f.label :password %><br>
+            <%= f.text_field :password, class: "form-control" %>
+          </div>
+        </div>
+
+        <script>
+            $(document).ready(function (){
+                $(document).on('click', 'form', function(){
+                    if ($('#event_who_has_access_id_2').is(':checked')){
+                        $('.optional-password').slideDown();
+                    }
+                    else {
+                        $('.optional-password').slideUp();
+                    }
+                });
+            });
+        </script>
+
+
+
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <%= f.submit "Event erstellen", class: "btn btn-normal btn-color submit" %>
+          </div>
+        </div>
+    <% end %>
+  </div>
+</div>

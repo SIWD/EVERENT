@@ -35,9 +35,11 @@ cat = BranchCategory.create(name: 'Trinken')
 Branch.create(name: 'Cocktailmixer', branchCategory: cat)
 Branch.create(name: 'Barkeeper', branchCategory: cat)
 
-
-add1 = Address.create(city: 'Warendorf', zipcode: '48231', lat: '51.9229261', lng: '7.9674978', stateCode: 'NRW', country: 'DE', streetName: 'Gänsestraße', streetNumber: '6')
-add2 = Address.create(city: 'Münster', zipcode: '48145', lat: '51.96444', lng: '7.6499', stateCode: 'NRW', country: 'DE', streetName: 'Warendorfer', streetNumber: '88')
+Address.destroy_all
+Business.destroy_all
+Service.destroy_all
+add1 = Address.create(city: 'Warendorf', zipcode: '48231', latitude: '51.9229261', longitude: '7.9674978', stateCode: 'NRW', country: 'DE', streetName: 'Gänsestraße', streetNumber: '6')
+add2 = Address.create(city: 'Münster', zipcode: '48145', latitude: '51.96444', longitude: '7.6499', stateCode: 'NRW', country: 'DE', streetName: 'Warendorfer', streetNumber: '88')
 bus1 = Business.create(name: 'Simply Impressive', address_id: add1.id)
 bus2 = Business.create(name: 'Wittler', address_id: add2.id)
 ser = Service.create(name: 'DJ CINO', teaser: 'House/Black/Charts', description: 'DJ CINO, fester Bestandteil des Münsteraner Nachtlebens. Mit seiner feinen Mischung aus Black’n’White & Best-Party-Ever beamt CINO die Party auf ein neuen Level hoch. Schließt euch Ihm an im Heaven Club, Soho, 4400 uvm.', business: bus1, branch: branch1)
@@ -50,5 +52,17 @@ user.password_confirmation = '123456789'
 user.save!
 user.add_role "global_admin"
 
+WhoHasAccessToEvent.destroy_all
+WhoHasAccessToEvent.create(id: 1, who: 'Jeder', icon: 'privacy/many_member.png')
+WhoHasAccessToEvent.create(id: 2, who: 'Jeder mit Passwort', icon: 'privacy/many_member_lock.png')
+WhoHasAccessToEvent.create(id: 3, who: 'Nur Gastgeber', icon: 'privacy/one_member.png')
 
+EventUserStatus.destroy_all
+EventUserStatus.create(status: 'owner')
+EventUserStatus.create(status: 'moderator')
+EventUserStatus.create(status: 'guest')
 
+EventUserJoin.destroy_all
+EventUserJoin.create(status: 'join')
+EventUserJoin.create(status: 'maybe')
+EventUserJoin.create(status: 'reject')

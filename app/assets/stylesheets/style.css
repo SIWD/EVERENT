@@ -54,7 +54,7 @@ h3.title {
 }
 
 h3.title:after {
-    background: url(bg_off.png) repeat;
+    background: url(../img/bg_off.png) repeat;
     content: "";
     height: 5px;
     margin-left: 10px;
@@ -77,14 +77,14 @@ h3.title:after {
 }
 
 .our-clients, .service-reasons {
-    background: url(img-blur-client.jpg) 50% 0 no-repeat fixed;
+    background: url(../img/img-blur-client.jpg) 50% 0 no-repeat fixed;
     margin: 0 auto;
 	background-position: center center;
     background-size: cover;
 }
 
 .product-lead {
-    background: url(img-blur-lead.jpg) 50% 0 no-repeat fixed;
+    background: url(../img/img-blur-lead.jpg) 50% 0 no-repeat fixed;
     margin: 0 auto;
 	background-position: center center;
     background-size: cover;
@@ -209,7 +209,7 @@ header .social i,footer .social i {
 #search-form input.search-text-box {
     background-color: transparent;
 	border: 2px solid #FAFAFA;
-    background-image: url(search-icon.png);
+    background-image: url(../img/search-icon.png);
     background-position: 8px 56%;
     background-repeat: no-repeat;
     color: #fafafa;
@@ -325,7 +325,7 @@ h2.title {
     position: relative;
     max-height: 470px !important;
     overflow: hidden;
-    background-image: url(loader.gif);
+    background-image: url(../img/loader.gif);
     background-repeat: no-repeat;
     background-position: 50%;
     padding: 0;
@@ -994,7 +994,7 @@ ol.commentlist li:first-child {
 
 /* Main Content Boxes */
 .main-content,.content {
-    padding: 50px 0 0;
+    padding: 60px 0 0;
 }
 
 .home-3 .main-content, .home-4 .main-content {
@@ -1193,7 +1193,7 @@ ul#filters {
 }
 
 .recentworks {
-	background: url(img-bg-blur.jpg) 50% 0 no-repeat fixed;
+	background: url(../img/img-bg-blur.jpg) 50% 0 no-repeat fixed;
     margin: 0 auto;
 	background-position: center center;
     background-size: cover;
@@ -1558,7 +1558,7 @@ a.scrollup:hover i,a.scrollup:focus i {
 
 .contact-us {
     margin: 15px 0 0;
-    background: url("contact-map.png") no-repeat center bottom;
+    background: url("../img/contact-map.png") no-repeat center bottom;
 }
 
 .business-hour i {
@@ -1744,7 +1744,7 @@ ul.why li:before {
 
 .blog-divider {
 	margin:35px 0;
-	background: url(bg_off.png) repeat;
+	background: url(../img/bg_off.png) repeat;
     content: "";
     height: 5px;
 }
