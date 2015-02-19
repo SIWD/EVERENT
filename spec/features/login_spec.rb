@@ -9,7 +9,7 @@ describe 'Sign in' do
       click_link 'Login'
       fill_in 'user_email', with: user.email
       fill_in 'user_password', with: 'Helge123'
-      click_button 'Sign in'
+      click_button 'Anmelden'
 
       expect(page).to have_content "#{user.email}"
     end

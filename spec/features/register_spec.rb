@@ -11,7 +11,7 @@ describe 'Sign up' do
     fill_in 'user_password', with: 'Spacken123'
     fill_in 'user_password_confirmation', with: 'Spacken123'
 
-    expect { click_button 'Sign up' }.to change { User.count }.by(1)
+    expect { click_button 'Registrieren' }.to change { User.count }.by(1)
 
     expect(page).to have_content 'mjohann@rails-experts.com'
     expect(page).to have_content 'Profil'
