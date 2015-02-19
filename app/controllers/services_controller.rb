@@ -1,6 +1,6 @@
 class ServicesController < ApplicationController
   before_action :set_service, only: [:show, :edit, :update, :destroy]
-  before_action :set_businesses, only: [:new, :edit]
+  before_action :set_businesses, only: [:new, :edit, :create]
   before_action :set_user_services, only: [:index, :show, :edit, :update, :destroy]
   before_action :check_access_right, only: [:edit, :update, :destroy]
 

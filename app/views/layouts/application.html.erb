@@ -118,7 +118,7 @@
                   </a>
                   <ul>
                     <% if Profile.find_by_user_id(current_user) %>
-                        <li><%= link_to "Profil zeigen", profile_path(Profile.find_by_user_id(current_user)), class: 'sf-with-ul' %></li>
+                        <li><%= link_to "Mein Profil", profile_path(Profile.find_by_user_id(current_user)), class: 'sf-with-ul' %></li>
                     <% else %>
                         <li><%= link_to "Profil anlegen", new_profile_path, class: 'sf-with-ul' %></li>
                     <% end %>
