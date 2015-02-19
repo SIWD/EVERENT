@@ -28,4 +28,6 @@
 
 <br>
 
+<% if can? :create, :business %>
 <%= link_to 'Neues Unternehmen anlegen', new_business_path %>
+<% end %>
