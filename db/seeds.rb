@@ -42,3 +42,11 @@ bus1 = Business.create(name: 'Simply Impressive', address_id: add1.id)
 bus2 = Business.create(name: 'Wittler', address_id: add2.id)
 ser = Service.create(name: 'DJ CINO', teaser: 'House/Black/Charts', description: 'DJ CINO, fester Bestandteil des Münsteraner Nachtlebens. Mit seiner feinen Mischung aus Black’n’White & Best-Party-Ever beamt CINO die Party auf ein neuen Level hoch. Schließt euch Ihm an im Heaven Club, Soho, 4400 uvm.', business: bus1, branch: branch1)
 ser = Service.create(name: 'DJ Pascal', teaser: 'Charts', description: 'Bekannt in Münster', business: bus2, branch: branch1)
+
+user = User.new
+user.id = 1
+user.email = 'admin@admin.com'
+user.password = '123456789'
+user.password_confirmation = '123456789'
+user.save!
+user.add_role "admin"

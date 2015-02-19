@@ -1,7 +1,7 @@
 <%= form_for(@profile) do |f| %>
     <% if @profile.errors.any? %>
         <div id="error_explanation">
-          <h2><%= pluralize(@profile.errors.count, "error") %> prohibited this profil from being saved:</h2>
+          <h2>Folgende(r) Fehler muss/müssen erst behoben werden:</h2>
 
           <ul>
             <% @profile.errors.full_messages.each do |message| %>
@@ -12,42 +12,43 @@
     <% end %>
 
     <div class="field">
-      <%= f.label :gender %><br>
+      <%= f.label :gender, 'Geschlecht' %><br>
       <%= f.text_field :gender %>
     </div>
     <div class="field">
-      <%= f.label :firstname %><br>
+      <%= f.label :firstname, 'Vorname' %><br>
       <%= f.text_field :firstname %>
     </div>
     <div class="field">
-      <%= f.label :lastname %><br>
+      <%= f.label :lastname, 'Nachname' %><br>
       <%= f.text_field :lastname %>
     </div>
     <div class="field">
-      <%= f.label :phone %><br>
+      <%= f.label :phone, 'Telefonnummer' %><br>
       <%= f.text_field :phone %>
     </div>
     <div class="field">
-      <%= f.label :city %><br>
+      <%= f.label :city, 'Stadt' %><br>
       <%= f.text_field :city %>
     </div>
     <div class="field">
-      <%= f.label :postcode %><br>
+      <%= f.label :postcode, 'Postleitzahl' %><br>
       <%= f.text_field :postcode %>
     </div>
     <div class="field">
-      <%= f.label :streetname %><br>
+      <%= f.label :streetname, 'Straße' %><br>
       <%= f.text_field :streetname %>
     </div>
     <div class="field">
-      <%= f.label :housenumber %><br>
+      <%= f.label :housenumber, 'Hausnummer' %><br>
       <%= f.text_field :housenumber %>
     </div>
     <div class="field">
-      <%= f.label :photo %><br>
+      <%= f.label :photo, 'Profilbild (auslassen, wenn keine Änderung gewünscht ist)' %><br>
       <%= f.file_field :photo %>
     </div>
+    <br />
     <div class="actions">
-      <%= f.submit %>
+      <%= f.submit 'Speichern' %>
     </div>
 <% end %>

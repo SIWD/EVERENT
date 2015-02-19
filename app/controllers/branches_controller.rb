@@ -1,4 +1,5 @@
 class BranchesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_branch_by_name, only: [:show, :edit, :update, :destroy]
   before_action :set_service, only: [:show, :edit, :update, :destroy]
   before_action :set_location, only: [:show]
@@ -25,7 +26,10 @@ class BranchesController < ApplicationController
   def create
     @branch = Branch.new(branch_params)
     @branch.save
-    respond_with(@branch)
+    #respond_with(@branch)
+    respond_to do |format|
+      format.html { redirect_to action: "index", notice: 'Branche erfolgreich erstellt.'}
+    end
   end
 
   def update

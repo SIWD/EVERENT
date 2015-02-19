@@ -1,8 +1,6 @@
 FactoryGirl.define do
   factory :user_business do
-    position "MyString"
-references ""
-references ""
+    position 1
   end
 
 end

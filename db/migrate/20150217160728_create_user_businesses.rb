@@ -1,11 +1,10 @@
 class CreateUserBusinesses < ActiveRecord::Migration
   def change
     create_table :user_businesses do |t|
-      t.string :position
+      t.integer :position
 
-      t.references :user, index: true
       t.references :business, index: true
-
+      t.references :user, index: true
       t.timestamps
     end
   end

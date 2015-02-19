@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150122132954) do
+ActiveRecord::Schema.define(version: 20150218164721) do
 
   create_table "addresses", force: true do |t|
     t.string   "city"
@@ -20,8 +20,8 @@ ActiveRecord::Schema.define(version: 20150122132954) do
     t.string   "streetNumber"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "lat"
-    t.string   "lng"
+    t.float    "lat"
+    t.float    "lng"
     t.string   "stateCode"
     t.string   "country"
   end
@@ -53,16 +53,10 @@ ActiveRecord::Schema.define(version: 20150122132954) do
   create_table "locations", force: true do |t|
     t.string   "city"
     t.string   "zipcode"
-    t.string   "lat"
-    t.string   "lng"
+    t.float    "lat"
+    t.float    "lng"
     t.string   "stateCode"
     t.string   "country"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "neus", force: true do |t|
-    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -89,6 +83,17 @@ ActiveRecord::Schema.define(version: 20150122132954) do
   add_index "profiles", ["address_id"], name: "index_profiles_on_address_id"
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
 
+  create_table "roles", force: true do |t|
+    t.string   "name"
+    t.integer  "resource_id"
+    t.string   "resource_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "roles", ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
+  add_index "roles", ["name"], name: "index_roles_on_name"
+
   create_table "services", force: true do |t|
     t.string   "name"
     t.string   "teaser"
@@ -103,9 +108,9 @@ ActiveRecord::Schema.define(version: 20150122132954) do
   add_index "services", ["business_id"], name: "index_services_on_business_id"
 
   create_table "user_businesses", force: true do |t|
-    t.string   "position"
-    t.integer  "user_id"
+    t.integer  "position"
     t.integer  "business_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -130,6 +135,13 @@ ActiveRecord::Schema.define(version: 20150122132954) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+
+  create_table "users_roles", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "role_id"
+  end
+
+  add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
 
   create_table "welcomes", force: true do |t|
     t.datetime "created_at"
