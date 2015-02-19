@@ -1,0 +1,40 @@
+<% content_for :title, @event.name %>
+<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-lg-9">
+    <div class="banner">
+          <%= image_tag "events/default/banner.png" %>
+    </div>
+
+
+    <p>
+      <strong>Name:</strong>
+      <%= @event.name %>
+    </p>
+
+    <p>
+      <strong>Stadt:</strong>
+      <%= @address.city %>
+    </p>
+    <p>
+      <strong>PLZ:</strong>
+      <%= @address.zipcode %>
+    </p>
+    <p>
+      <strong>Starße & Nr.:</strong>
+      <%= @address.streetName %>
+      <%= @address.streetNumber %>
+    </p>
+
+    <p>
+      <strong>Description:</strong>
+      <%= @event.description %>
+    </p>
+  </div>
+  <div class="col-lg-3">
+    Ander Veranstaltungen
+  </div>
+</div>
+
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>
