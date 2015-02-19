@@ -25,6 +25,6 @@ describe 'you cannot register two accounts with one e-mail address' do
   it 'should not delete one profile' do
     open("http://localhost:3000/profiles")
     click_link 'Delete'
-    expect(page).to have_content("Suchen, Finden, Feiern")
+    page.should have_content("Suchen, Finden, Feiern")
     end
   end
