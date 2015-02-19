@@ -1,16 +1,22 @@
 class Address < ActiveRecord::Base
-  has_many :profile
-  has_many :business
   has_many :event_locations
+  has_one :profile
+  has_one :business
+
+  geocoded_by :address
+  after_validation :geocode, if: ->(obj){ obj.address.present? and obj.address_changed? }
+
+  def address
+    [city, zipcode, streetName, streetNumber].compact.join(', ')
+  end
 
 
 
-=begin
+  def address_changed?
+    attrs = %w(city zipcode streetName streetNumber)
+    attrs.any?{|a| send "#{a}_changed?"}
+  end
 
-  acts_as_mappable :auto_geocode=> {
-                       :field => :zipcode,
-                       :error_message => 'Adresse konnte nicht in Koordinaten aufgelöst werden'
-                   }
-=end
+
 end
 

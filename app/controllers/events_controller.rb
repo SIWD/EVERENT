@@ -23,13 +23,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    address = Address.new(address_params)
-    geo = Geokit::Geocoders::GoogleGeocoder.geocode("#{address.city} #{address.zipcode} #{address.streetName} #{address.streetNumber}")
-    address.country = geo.country_code
-    address.stateCode = geo.state_code
-    address.lat = geo.lat
-    address.lng = geo.lng
-    address.save
+    address = Address.create(address_params)
 
     el = EventLocation.new(eventlocation_params)
     el.address_id = address.id
@@ -37,38 +31,48 @@ class EventsController < ApplicationController
 
     @event = Event.new(event_params)
     @event.event_location = el
+    @event.update(host_user_params)
+    @event.update(host_business_params)
+    @event.update(host_service_params)
     @event.save
 
-=begin
-    eventuser = EventUser.new(host_user_params)
-    eventuser.event = @event.id
-    eventuser.event_user_status_id = EventUserStatus.where(status: 'owner').first.id
-    eventuser.event_user_join_id = EventUserJoin.where(status: 'join').first.id
-    eventuser.save
-
-    eventbusiness = EventBusiness.new(host_business_params)
-    eventbusiness.event_id = @event.id
-    eventbusiness.event_user_status_id = EventUserStatus.where(status: 'owner').first.id
-    eventbusiness.event_user_join_id = EventUserJoin.where(status: 'join').first.id
-    eventbusiness.save
-
-    eventservice = EventService.new(host_service_params)
-    eventservice.event_id = @event.id
-    eventservice.event_user_status_id = EventUserStatus.where(status: 'owner').first.id
-    eventservice.event_user_join_id = EventUserJoin.where(status: 'join').first.id
-    eventservice.save
-=end
+    update_event_status
 
     respond_with(@event)
   end
 
   def update
     @event.update(event_params)
+    @event.update(host_user_params)
+    @event.update(host_business_params)
+    @event.update(host_service_params)
+
+    update_event_status
+    
+    el = EventLocation.find(@event.event_location_id)
+    el.update(eventlocation_params)
+
+    address = Address.find(el.address_id)
+    address.update(address_params)
+
     respond_with(@event)
   end
 
   def destroy
+    EventUser.where(event_id: @event.id).each do |eu|
+      eu.destroy
+    end
+
+    EventBusiness.where(event_id: @event.id).each do |eb|
+      eb.destroy
+    end
+
+    EventService.where(event_id: @event.id).each do |es|
+      es.destroy
+    end
+
     @event.destroy
+
     respond_with(@event)
   end
 
@@ -103,7 +107,7 @@ class EventsController < ApplicationController
     params.require(:eventLocation).permit(:name)
   end
   def host_user_params
-    params.require(:host).permit(:user_id)
+    params.require(:host).permit(user_ids: [])
   end
   def host_business_params
     params.require(:host).permit(business_ids: [])
@@ -112,5 +116,33 @@ class EventsController < ApplicationController
     params.require(:host).permit(service_ids: [])
   end
 
+  def update_event_status
+    host_user_params.each { |host_user_param|
+      EventUser.where(user_id: host_user_param).each { |eu|
+
+        eu.event_user_status_id = EventUserStatus.where(status: 'owner').first.id
+        eu.event_user_join_id = EventUserJoin.where(status: 'join').first.id
+        eu.save
+      }
+    }
+
+    host_business_params.each { |host_business_param|
+      EventBusiness.where(business_id: host_business_param).each { |eb|
+
+        eb.event_user_status_id = EventUserStatus.where(status: 'owner').first.id
+        eb.event_user_join_id = EventUserJoin.where(status: 'join').first.id
+        eb.save
+      }
+    }
+
+    host_service_params.each { |host_service_param|
+      EventService.where(service_id: host_service_param).each { |es|
+
+        es.event_user_status_id = EventUserStatus.where(status: 'owner').first.id
+        es.event_user_join_id = EventUserJoin.where(status: 'join').first.id
+        es.save
+      }
+    }
+  end
 
 end

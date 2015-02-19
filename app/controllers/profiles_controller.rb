@@ -1,5 +1,7 @@
 class ProfilesController < ApplicationController
   before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :set_user_profile, only: [:show, :edit, :update, :destroy]
+  before_action :check_access_right, only: [:edit, :update, :destroy]
 
   respond_to :html
 
@@ -48,11 +50,29 @@ class ProfilesController < ApplicationController
 
 
   private
-    def set_profile
-      @profile = Profile.find(params[:id])
-    end
 
-    def profile_params
-      params.require(:profile).permit(:gender, :firstname, :lastname, :phone, :city, :postcode, :streetname, :housenumber, :user_id, :photo)
+  def set_profile
+    @profile = Profile.find(params[:id])
+  end
+
+  def profile_params
+    params.require(:profile).permit(:gender, :firstname, :lastname, :phone, :city, :postcode, :streetname, :housenumber, :user_id, :photo)
+  end
+
+  def set_user_profile
+    if current_user
+      @userProfile = User.find(current_user).profile
     end
+  end
+
+  def check_access_right
+    if @userProfile && @profile
+      if @userProfile.id.equal?(@profile.id) == false
+        redirect_to root_path
+      end
+    else
+      redirect_to root_path
+    end
+  end
+
 end

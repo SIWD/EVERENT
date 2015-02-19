@@ -2,63 +2,50 @@
 
 
 <p id="notice"><%= notice %></p>
-<div class="accordionMod panel-group well">
-  <div class="accordion-item " style="height: 0px; margin: 0px; padding: 0px">
-  </div>
-  <div class="accordion-item " style="margin-bottom: 0px;">
-    <h4 class="title  accordion-toggle">Filter:</h4>
-    <section class="accordion-inner panel-body">
-      <%= form_for( "Branche/#{@branch.name}", method: :get ) do |f| %>
+<div class="well">
+  <h4 class="title">Filter:</h4>
+  <%= form_for( "Branche/#{@branch.name}", method: :get, :html => {:class => 'reply'} ) do |f| %>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+          <label for="location">Standort</label><br>
+          <input type="text" class="form-control" placeholder="Berlin" name="location" value="<%= if defined? params['location'] then params['location'] end %>" />
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
           <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-              <label for="location">Ort / PLZ</label><br>
-              <input type="text" class="form-control" placeholder="Berlin" name="location" value="<%= if defined? params['location'] then params['location'] end %>" />
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-              <div class="row">
-                <label class="col-lg-6" for="range">Umkreis:</label>
-                <div class="col-lg-6 text-right" >
-                  <output name="amount" style="display: inline" for="range"><%= @range || 50 %></output>
-                  <span> km</span>
-                </div>
-              </div>
-              <input type="range" class="form-control"  name="range" step="10" min="0" max="200" value="<%= @range || 50 %>"  oninput="amount.value=range.value">
+            <label class="col-lg-6" for="range">Umkreis:</label>
+            <div class="col-lg-6 text-right" >
+              <output name="amount" style="display: inline" for="range"><%= @range || 50 %></output>
+              <span> km</span>
             </div>
           </div>
-          <br>
-          <div class="form-field">
+          <input type="range" class="form-control"  name="range" step="10" min="0" max="200" value="<%= @range || 50 %>"  oninput="amount.value=range.value">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <button class="btn-color btn-normal col-lg-3 col-md-4 col-sm-6 col-xs-12" style="border:none;" type="submit">Filtern</button>
-          </div>
-      <% end %>
-    </section>
-  </div>
+        </div>
+      </div>
+  <% end %>
 </div>
-
 
 <div class="well">
   <h3 class="title">Anbieter:</h3>
+
   <% if Service.where(branch_id: @branch.id).count == 0 %>
       <span>Keine Ergebnisse vorhanden für: "<%= @branch.name %>"</span>
   <% else %>
+      <% success = false %>
       <div class="row">
-        <% i = 0 %>
+        <% unless (@loc.nil?) %>
+        <div class="col-lg-12">
+          <span>Ergebnisse beim Standort <i><%= "#{@loc_from.address}"%></i> im Umkreis von <i><%= "#{@range}" %></i> km:</span>
+        </div>
+        <% end %>
         <% @services.each do |s| %>
-            <% lat = Address.where(id: Business.where(id: s.business_id).first.address_id).first.lat %>
-            <% lng = Address.where(id: Business.where(id: s.business_id).first.address_id).first.lng %>
-            <% to  = Geokit::LatLng.new(lat, lng) %>
-
-            <%
-               # @success
-               # is true when "filter" get a result
-            %>
-
-            <%  if (@success && ( Geokit::LatLng.distance_between_sphere(@from, to, :kms) <= @range.to_i)) || !@success  %>
-                <% i += 1 %>
-                <% if (i == 1) && @success %>
-                    <div class="col-lg-12">
-                      <span><%= "Ergebnisse in #{@city} und im Umkreis von #{@range} km:" %></span>
-                    </div>
-                <% end %>
+            <% loc_to = Address.where(id: Business.where(id: s.business_id).first.address_id).first %>
+            <% if (@loc.nil? || ((!(@loc_from.nil?) && !(loc_to.nil?)) && @loc_from.distance_to(loc_to).round(2).to_i <= @range.to_i)) %>
+                <% success = true %>
                 <div class="col-lg-12" style="margin:5px">
                   <div class="portfolio-item">
                     <div class="portfolio-item-title col-lg-12">
@@ -67,6 +54,12 @@
                       </h4>
                       <div class="col-lg-6 col-sm-12">
                         <table class="text-left">
+                          <% unless (@loc.nil?) %>
+                          <tr>
+                            <td>Entfernung:</td>
+                            <td><%= @loc_from.distance_to(loc_to).round(2) %> km</td>
+                          </tr>
+                          <% end %>
                           <tr>
                             <td>Kurzbeschreibung:</td>
                             <td><%= s.teaser %></td>
@@ -91,19 +84,15 @@
                 </div>
             <% end %>
         <% end %>
-        <% if i == 0 %>
-            <div class="col-lg-12">
-              <% if @success %>
-                  <span><b><%= "Keine Ergebnisse in #{@city} und im Umkreis von #{@range} km gefunden!" %></b></span><br>
-                  <span><i>Tipp: Vergrößern Sie den Suchradius.</i></span>
-              <% else %>
-                  <span><b>Ungültige Eingabe:</b> Filter > Ort/PLZ: <%= @loc %></span>
-              <% end %>
+        <% unless success %>
+            <div class="col-lg-12"><br>
+              <span><i class="fa fa-frown-o fa-2x"></i>  Leider keine Ergebnisse gefunden.</span>
+              <br><br>
+              <span>Tipp: <strong>Suchumkreis vergrößern</strong></span>
             </div>
         <% end %>
       </div>
   <% end %>
 
 </div>
-
 <%= link_to 'Zurück zu "Alle Branchen"', branches_path %>

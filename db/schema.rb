@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217131421) do
+ActiveRecord::Schema.define(version: 20150218131311) do
 
   create_table "addresses", force: true do |t|
     t.string   "city"
@@ -20,8 +20,8 @@ ActiveRecord::Schema.define(version: 20150217131421) do
     t.string   "streetNumber"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "lat"
-    t.float    "lng"
+    t.float    "latitude"
+    t.float    "longitude"
     t.string   "stateCode"
     t.string   "country"
   end
@@ -52,17 +52,17 @@ ActiveRecord::Schema.define(version: 20150217131421) do
 
   create_table "event_businesses", force: true do |t|
     t.integer  "event_id"
-    t.integer  "user_id"
+    t.integer  "business_id"
     t.integer  "event_user_status_id"
     t.integer  "event_user_join_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "event_businesses", ["business_id"], name: "index_event_businesses_on_business_id"
   add_index "event_businesses", ["event_id"], name: "index_event_businesses_on_event_id"
   add_index "event_businesses", ["event_user_join_id"], name: "index_event_businesses_on_event_user_join_id"
   add_index "event_businesses", ["event_user_status_id"], name: "index_event_businesses_on_event_user_status_id"
-  add_index "event_businesses", ["user_id"], name: "index_event_businesses_on_user_id"
 
   create_table "event_images", force: true do |t|
     t.string   "album"
@@ -88,7 +88,7 @@ ActiveRecord::Schema.define(version: 20150217131421) do
 
   create_table "event_services", force: true do |t|
     t.integer  "event_id"
-    t.integer  "user_id"
+    t.integer  "service_id"
     t.integer  "event_user_status_id"
     t.integer  "event_user_join_id"
     t.datetime "created_at"
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 20150217131421) do
   add_index "event_services", ["event_id"], name: "index_event_services_on_event_id"
   add_index "event_services", ["event_user_join_id"], name: "index_event_services_on_event_user_join_id"
   add_index "event_services", ["event_user_status_id"], name: "index_event_services_on_event_user_status_id"
-  add_index "event_services", ["user_id"], name: "index_event_services_on_user_id"
+  add_index "event_services", ["service_id"], name: "index_event_services_on_service_id"
 
   create_table "event_user_joins", force: true do |t|
     t.string   "status"
@@ -142,12 +142,9 @@ ActiveRecord::Schema.define(version: 20150217131421) do
   add_index "events", ["who_has_access_id"], name: "index_events_on_who_has_access_id"
 
   create_table "locations", force: true do |t|
-    t.string   "city"
-    t.string   "zipcode"
-    t.float    "lat"
-    t.float    "lng"
-    t.string   "stateCode"
-    t.string   "country"
+    t.string   "address"
+    t.float    "latitude"
+    t.float    "longitude"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

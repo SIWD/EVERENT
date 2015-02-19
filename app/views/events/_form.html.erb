@@ -34,10 +34,10 @@
 
                   <% if(UserBusiness.where(user_id: current_user.id).count > 0) %>
                       <% UserBusiness.where(user_id: current_user.id).each do |ub| %>
-                          <%= h.collection_check_boxes :user_ids, Business.where(id: ub.business_id).all, :id, :name, { selected: @event.event_businesses.map(&:id), include_hidden: false},  multiple: true do |b| %>
+                          <%= h.collection_check_boxes :business_ids, Business.where(id: ub.business_id).all, :id, :name, { selected: @event.event_businesses.map(&:id), include_hidden: false},  multiple: true do |b| %>
                               <tr>
                                 <td><%= b.check_box + " " + b.label %></td>
-                                <td><%= link_to 'Profil', profile_path(b.object.id) %></td>
+                                <td><%= link_to 'Unternehmen', profile_path(b.object.id) %></td>
                               </tr>
                           <% end %>
                       <% end %>
@@ -47,11 +47,11 @@
                       <% UserBusiness.where(user_id: current_user.id).each do |ub| %>
                           <% Business.where(id: ub.business_id).each do |b| %>
                               <% if (Service.where(business_id: b.id).count > 0 ) %>
-                                  <% Service.where(business_id: b.id).each do |s| %>
+
+                                  <%= h.collection_check_boxes :service_ids, Service.where(business_id: b.id).all, :id, :name, { selected: @event.event_businesses.map(&:id), include_hidden: false},  multiple: true do |s| %>
                                       <tr>
-                                        <td><%= check_box_tag :service_id, value= s.id %>
-                                          <%= s.name %></td>
-                                        <td><%= link_to 'Service', service_path(s) %></td>
+                                        <td><%= s.check_box + " " + s.label %></td>
+                                        <td><%= link_to 'Dienstleistung', profile_path(s.object.id) %></td>
                                       </tr>
                                   <% end %>
                               <% end %>
@@ -62,7 +62,7 @@
             <% end %>
           </div>
         </div>
-<!--
+
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <%= f.label :date, "Termin" %><br>
@@ -72,7 +72,7 @@
             <%= f.label :time, "Zeit" %><br>
             <%= f.time_select :time, class: "form-control" %>
           </div>
-        </div>-->
+        </div>
 
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -122,7 +122,7 @@
             <div class="row">
               <%= f.collection_radio_buttons :who_has_access_id, WhoHasAccessToEvent.all, :id, :who do |radio| %>
                   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <%= radio.label(class: "form-icon"){radio.radio_button + image_tag(radio.object.icon) } %>
+                    <%= radio.label(class: "form-icon #{radio.object.who}"){radio.radio_button + image_tag(radio.object.icon) } %>
                     <%= radio.label{radio.label} %>
                   </div>
               <% end %>

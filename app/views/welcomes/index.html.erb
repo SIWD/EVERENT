@@ -31,23 +31,3 @@
     <div class="col-lg-4 col-md-5 col-sm-3 col-xs-12 item"></div>
   </div>
 </div>
-<%
-
-   stadt = 'freckenhorst'
-   straße = 'Gänsestraße'
-   nr = 6
-
-   geo1=Geokit::Geocoders::GoogleGeocoder.geocode("#{stadt} #{straße} #{nr}")  %>
-<p><%= geo1.district %></p>
-<p><%= geo1.neighborhood %></p>
-<p><%= geo1.street_name %></p>
-<p><%= geo1.accuracy %></p>
-<p><%= geo1.city %></p>
-<p><%= geo1.country %></p>
-<p><%= geo1.district_fips %></p>
-<p><%= geo1.full_address %></p>
-<p><%= geo1.provider %></p>
-<p><%= geo1.street_number %></p>
-<p><%= geo1.zip %></p>
-<p><%= geo1.street_address %></p>
-<p><%= geo1.state_code %></p

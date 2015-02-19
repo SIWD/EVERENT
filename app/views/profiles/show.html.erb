@@ -2,47 +2,47 @@
 <div class="row">
   <div class="col-md-6">
     <p>
-      <strong>Gender:</strong>
+      <strong>Geschlecht:</strong>
       <%= @profile.gender %>
     </p>
 
     <p>
-      <strong>Firstname:</strong>
+      <strong>Vorname:</strong>
       <%= @profile.firstname %>
     </p>
 
     <p>
-      <strong>Lastname:</strong>
+      <strong>Nachname:</strong>
       <%= @profile.lastname %>
     </p>
 
     <p>
-      <strong>Email:</strong>
+      <strong>E-Mail:</strong>
       <%= @profile.user.email %>
     </p>
 
     <p>
-      <strong>Phone:</strong>
+      <strong>Telefonnummer:</strong>
       <%= @profile.phone %>
     </p>
 
     <p>
-      <strong>City:</strong>
+      <strong>Ort:</strong>
       <%= @profile.city %>
     </p>
 
     <p>
-      <strong>Postcode:</strong>
+      <strong>PLZ:</strong>
       <%= @profile.postcode %>
     </p>
 
     <p>
-      <strong>Streetname:</strong>
+      <strong>Straßenname:</strong>
       <%= @profile.streetname %>
     </p>
 
     <p>
-      <strong>Housenumber:</strong>
+      <strong>Hausnummer:</strong>
       <%= @profile.housenumber %>
     </p>
   </div>
@@ -51,7 +51,7 @@
   </div>
 </div>
 <p>
-  <strong>Geschäfte:</strong>
+  <strong>Unternehmen:</strong>
 </p>
 <div class="row">
   <% @profile.user.businesses.each do |business| %>
@@ -59,7 +59,13 @@
           <%= business.name %>
       <% end %>
   <% end %>
-  <%= link_to 'Geschäft anlegen', new_business_path, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' %>
+
+  <% if @userProfile %>
+      <% if @userProfile == @profile %>
+        <%= link_to 'Geschäft anlegen', new_business_path, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' %>
+      <% end %>
+  <% end %>
+
 </div>
 <% if @profile.user.businesses.count >= 1 %>
     <p>
@@ -71,8 +77,19 @@
               <%= service.name %>
           <% end %>
       <% end %>
-      <%= link_to "Neue Dienstleistung anlegen", new_service_path, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' %>
+
+      <% if @userProfile %>
+          <% if @userProfile == @profile %>
+            <%= link_to "Neue Dienstleistung anlegen", new_service_path, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' %>
+          <% end %>
+      <% end %>
+
     </div>
 <% end %>
 <br>
-<%= link_to 'Edit', edit_profile_path(@profile) %>
+
+<% if @userProfile %>
+    <% if @userProfile == @profile %>
+        <%= link_to 'Profil bearbeiten', edit_profile_path(@profile) %>
+    <% end %>
+<% end %>

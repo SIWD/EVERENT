@@ -12,9 +12,14 @@
 </p>
 
 <p>
-  <strong>Description:</strong>
+  <strong>Beschreibung:</strong>
   <%= @service.description %>
 </p>
 
-<%= link_to 'Edit', edit_service_path(@service) %> |
-<%= link_to 'Business', business_path(@service.business) %>
+<% if @userServices %>
+    <% #if ( @userServices.include?(@service) ) %>
+        <%= link_to 'Dienstleistung bearbeiten', edit_service_path(@service) %> <br />
+    <% #end %>
+<% end %>
+
+<%= link_to 'Zum Unternehmen: ' + @service.business.name, business_path(@service.business) %>

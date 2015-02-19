@@ -1,6 +1,8 @@
 class ServicesController < ApplicationController
   before_action :set_service, only: [:show, :edit, :update, :destroy]
-  before_action :set_businesses, only: [:new]
+  before_action :set_businesses, only: [:new, :edit]
+  before_action :set_user_services, only: [:index, :show, :edit, :update, :destroy]
+  before_action :check_access_right, only: [:edit, :update, :destroy]
 
   respond_to :html
 
@@ -47,10 +49,34 @@ class ServicesController < ApplicationController
 
   def set_businesses
     @businesses = User.find(current_user).businesses.all
+  end
+
+  def set_user_services
+
+    if current_user
+      @userBusinesses = User.find(current_user).businesses.all
+      @userServices = Array.new
+
+      @userBusinesses.each do |business|
+        tmpServices = business.services.all
+
+        tmpServices.each do |tmpService|
+          @userServices.push(tmpService)
+        end
+
+      end
+
+    end
 
   end
 
-    def service_params
-      params.require(:service).permit(:description, :name, :teaser, :business_id, :branch_id)
+  def check_access_right
+    if not @userServices.include?(@service)
+      redirect_to root_path
     end
+  end
+
+  def service_params
+    params.require(:service).permit(:description, :name, :teaser, :business_id, :branch_id)
+  end
 end

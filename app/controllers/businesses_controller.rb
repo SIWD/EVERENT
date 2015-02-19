@@ -1,5 +1,7 @@
 class BusinessesController < ApplicationController
   before_action :set_business, only: [:show, :edit, :update, :destroy]
+  before_action :set_user_businesses, only: [:index, :show, :edit, :update, :destroy]
+  before_action :check_access_right, only: [:edit, :update, :destroy]
 
   respond_to :html
 
@@ -21,19 +23,17 @@ class BusinessesController < ApplicationController
   end
 
   def create
-    address = Address.new(address_params)
-    geo = Geokit::Geocoders::GoogleGeocoder.geocode("#{address.city} #{address.zipcode} #{address.streetName} #{address.streetNumber}")
-    address.country = geo.country_code
-    address.stateCode = geo.state_code
-    address.lat = geo.lat
-    address.lng = geo.lng
-    address.save
+    address = Address.create(address_params)
 
     @business = Business.new(business_params)
     @business.address_id = address.id
-    @business.save
-    @business.user_businesses.create([{ user_id: current_user.id }])
-    respond_with(@business)
+    if(@business.save == false)
+      respond_with(@business)
+
+    else
+      @business.user_businesses.create([{ user_id: current_user.id }])
+      respond_with(@business)
+    end
 
   end
 
@@ -41,13 +41,6 @@ class BusinessesController < ApplicationController
     @business.update(business_params)
     address = Address.find(@business.address_id)
     address.update(address_params)
-    geo = Geokit::Geocoders::GoogleGeocoder.geocode("#{address.city} #{address.zipcode} #{address.streetName} #{address.streetNumber}")
-    address.country = geo.country_code
-    address.stateCode = geo.state_code
-    address.lat = geo.lat
-    address.lng = geo.lng
-    address.save
-
     respond_with(@business)
   end
 
@@ -63,10 +56,23 @@ class BusinessesController < ApplicationController
       @address  = Address.where(id: @business.address_id).first
     end
 
-    def business_params
-      params.require(:business).permit(:name)
+  def business_params
+    params.require(:business).permit(:name)
+  end
+
+  def address_params
+    params.require(:address).permit(:city, :zipcode, :streetName, :streetNumber)
+  end
+
+  def set_user_businesses
+    if current_user
+      @userBusinesses = User.find(current_user).businesses.all
     end
-    def address_params
-      params.require(:address).permit(:city, :zipcode, :streetName, :streetNumber)
+  end
+
+  def check_access_right
+    if not @userBusinesses.include?(@business)
+      redirect_to businesses_path
     end
+  end
 end

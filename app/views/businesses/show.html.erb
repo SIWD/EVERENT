@@ -29,14 +29,21 @@
       <% end %>
       <%= render 'services/index' %>
   <% end %>
-  <%= link_to 'New Service', new_service_path %>
+  <%= link_to 'Neuen Service anlegen', new_service_path %>
 </div>
 
 
-<%= link_to 'Edit', edit_business_path(@business) %> |
-<%= link_to 'Back', businesses_path %> |
-<% if Service.where(business_id: @business.id).count > 0 %>
-    <%= link_to 'Destroy', @business, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Firma '#{@business.name}' löschen?\nDamit löscht du auch folgende Dienstleistungen:\n#{servicessting}" } %>
-<% else %>
-    <%= link_to 'Destroy', @business, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Firma '#{@business.name}' löschen?" } %>
+<%= link_to 'Zurück', businesses_path %>
+
+<% if @userBusinesses %>
+    <% if @userBusinesses.include?(@business) %>
+        | <%= link_to 'Unternehmen Bearbeiten', edit_business_path(@business) %> |
+
+
+        <% if Service.where(business_id: @business.id).count > 0 %>
+            <%= link_to 'Unternehmen löschen', @business, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Unternehmen '#{@business.name}' löschen?\nDamit löschen Sie auch folgende Dienstleistungen:\n#{servicessting}" } %>
+        <% else %>
+            <%= link_to 'Unternehmen löschen', @business, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Unternehmen '#{@business.name}' löschen?" } %>
+        <% end %>
+    <% end %>
 <% end %>
