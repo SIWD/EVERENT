@@ -29,14 +29,16 @@
       <% @services.each do |s| %>
           <% servicessting << "\n - " + s.name %>
       <% end %>
-
-
-
-    </div>
+      <%= render 'services/index' %>
+  <% end %>
+</div>
 </p>
-
-<p>
+<% if @admin %>
+    <%= link_to 'Neuen Service anlegen', new_service_path %>
+<% end %>
+<p><p>
   <strong>Mitarbeiter:</strong>
+
   <br />
   <% if @businessUsers %>
     <% @businessUsers.each do |user_business| %>
@@ -60,8 +62,8 @@
   <% else %>
     <p>Keine Mitarbeiter</p>
   <% end %>
-  &nbsp;&nbsp;
 
+  <p>
   <% if @admin %>
       <%= link_to 'Mitarbeiter hinzufügen', new_user_business_path(business: @business) %>
   <% end %>
