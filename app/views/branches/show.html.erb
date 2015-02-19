@@ -63,7 +63,7 @@
                   <div class="portfolio-item">
                     <div class="portfolio-item-title col-lg-12">
                       <h4 class="text-left">
-                        <%= s.name %>
+                        <%= link_to s.name, service_path(s) %> vom Unternehmen: <%= link_to s.business.name, business_path(s.business) %>
                       </h4>
                       <div class="col-lg-6 col-sm-12">
                         <table class="text-left">
