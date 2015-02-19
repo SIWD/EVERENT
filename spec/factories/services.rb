@@ -1,11 +1,8 @@
 FactoryGirl.define do
   factory :service do
-    description "MyText"
-maxCapacity ""
-name "MyString"
-premiumServiceEnd "2014-12-27"
-teaser "MyString"
-Business nil
+    name { FactoyGirl.Name.name }
+    teaser { FactoryGirl.Name.teaser }
+    description { FactoryGirl.Name.description }
   end
 
 end

@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :business do
-    name "MyString"
-    city "MyString"
-    zipcode "MyString"
-    streetname "MyString"
-    streetnumber "MyString"
+    name        { Faker::Name.name }
+    city        { Faker:Name.city }
+    zipcode     { Faker::Name.zipcode }
+    streetname  { Faker::Name.streetname }
+    streetnumber{ Faker::Name.streetnumber }
   end
 
 end
