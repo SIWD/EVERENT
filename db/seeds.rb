@@ -44,9 +44,11 @@ ser = Service.create(name: 'DJ CINO', teaser: 'House/Black/Charts', description:
 ser = Service.create(name: 'DJ Pascal', teaser: 'Charts', description: 'Bekannt in Münster', business: bus2, branch: branch1)
 
 user = User.new
-user.id = 1
 user.email = 'admin@admin.com'
 user.password = '123456789'
 user.password_confirmation = '123456789'
 user.save!
-user.add_role "admin"
+user.add_role "global_admin"
+
+
+

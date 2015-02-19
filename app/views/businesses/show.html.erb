@@ -45,13 +45,14 @@
             &nbsp;&nbsp;<b>Name:</b> <%= user_business.user.email %>  <b>Rang:</b> <%= user_business.position %>
 
 
-                <% if can? :update, UserBusiness %>
+                <% if @admin %>
                      &nbsp;|&nbsp;
                      <%= link_to 'Bearbeiten', edit_user_business_path(id: user_business.id, business: @business) %>
                 <% end %>
 
 
-                <% if can? :delete, UserBusiness %>
+
+              <% if @admin %>
                     &nbsp;|&nbsp;
                   <%= link_to 'Aus Unternehmen entfernen', user_business, method: :delete, data: { confirm: "Möchten Sie wirklich den Mitarbeiter '#{user_business.user.email}' entfernen?" } %>
               <% end %>
@@ -63,7 +64,7 @@
   <% end %>
   &nbsp;&nbsp;
 
-  <% if can? :create, UserBusiness %>
+  <% if @admin %>
       <%= link_to 'Mitarbeiter hinzufügen', new_user_business_path(business: @business) %>
   <% end %>
 </p>
@@ -74,15 +75,13 @@
   <%= link_to 'Zurück', businesses_path %>
 <% end %>
 
-<% if @userBusinesses %>
-    <% if @userBusinesses.include?(@business) %>
-        | <%= link_to 'Unternehmen Bearbeiten', edit_business_path(@business) %> |
+<% if @admin %>
+    | <%= link_to 'Unternehmen Bearbeiten', edit_business_path(@business) %> |
 
 
-        <% if Service.where(business_id: @business.id).count > 0 %>
-            <%= link_to 'Unternehmen löschen', @business, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Unternehmen '#{@business.name}' löschen?\nDamit löschen Sie auch folgende Dienstleistungen:\n#{servicessting}" } %>
-        <% else %>
-            <%= link_to 'Unternehmen löschen', @business, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Unternehmen '#{@business.name}' löschen?" } %>
-        <% end %>
+    <% if Service.where(business_id: @business.id).count > 0 %>
+        <%= link_to 'Unternehmen löschen', @business, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Unternehmen '#{@business.name}' löschen?\nDamit löschen Sie auch folgende Dienstleistungen:\n#{servicessting}" } %>
+    <% else %>
+        <%= link_to 'Unternehmen löschen', @business, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Unternehmen '#{@business.name}' löschen?" } %>
     <% end %>
 <% end %>

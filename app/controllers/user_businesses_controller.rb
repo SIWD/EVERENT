@@ -29,17 +29,28 @@ class UserBusinessesController < ApplicationController
       @user_business.user_id = User.where(user_params).first.id
     end
 
+    set_role()
+
     @user_business.save
     redirect_to(business_path(@user_business.business))
   end
 
   def update
     @user_business.update(user_business_params)
+
+    set_role()
+    if @user_business.Mitarbeiter?
+      @user_business.user.remove_role(:business_admin, @user_business.business)
+    end
+
     redirect_to(business_path(@user_business.business))
     #respond_with(@user_business)
   end
 
   def destroy
+    if @user_business.Administrator?
+      @user_business.user.remove_role(:business_admin, @user_business.business)
+    end
     @user_business.destroy
     #respond_with(@user_business)
     redirect_to(business_path(@user_business.business))
@@ -67,6 +78,12 @@ class UserBusinessesController < ApplicationController
         @business = Business.find(params[:business])
       else
         redirect_to(root_path)
+      end
+    end
+
+    def set_role
+      if @user_business.Administrator?
+        @user_business.user.add_role(:business_admin, @user_business.business)
       end
     end
 end
