@@ -1,3 +1,5 @@
+<% content_for :title, @business.name %>
+
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -20,19 +22,42 @@
 <p>
   <strong>Dienstleistungen:</strong>
 </p>
-<div class="row">
-  <% if Service.where(business_id: @business.id).count > 0 %>
-      <% servicessting = "" %>
-      <% Service.where(business_id: @business.id).each do |s| %>
-          <% servicessting << "\n - " + s.name %>
+<p>
+    <div class="row">
+      <% if Service.where(business_id: @business.id).count > 0 %>
+          <% servicessting = "" %>
+          <% Service.where(business_id: @business.id).each do |s| %>
+              <% servicessting << "\n - " + s.name %>
+          <% end %>
+          <%= render 'services/index' %>
       <% end %>
-      <%= render 'services/index' %>
+      <%= link_to 'Neue Dienstleistung anlegen', new_service_path %>
+    </div>
+</p>
+
+<p>
+  <strong>Mitarbeiter:</strong>
+  <br />
+  <% if @businessUsers %>
+    <% @businessUsers.each do |user_business| %>
+            &nbsp;&nbsp;<b>Name:</b> <%= user_business.user.email %>  <b>Rang:</b> <%= user_business.position %>
+            &nbsp;|&nbsp; <%= link_to 'Bearbeiten', edit_user_business_path(id: user_business.id, business: @business) %>
+            &nbsp;|&nbsp;
+            <%= link_to 'Aus Unternehmen entfernen', user_business, method: :delete, data: { confirm: "Möchten Sie wirklich den Mitarbeiter '#{user_business.user.email}' entfernen?" } %>
+          <br />
+    <% end %>
+  <% else %>
+    <p>Keine Mitarbeiter</p>
   <% end %>
-  <%= link_to 'Neuen Service anlegen', new_service_path %>
-</div>
+  &nbsp;&nbsp;<%= link_to 'Mitarbeiter hinzufügen', new_user_business_path(business: @business) %>
 
+</p>
 
-<%= link_to 'Zurück', businesses_path %>
+<% if current_user %>
+    <%= link_to 'Zurück zum Profil', profile_path(User.find(current_user).profile) %>
+<% else %>
+  <%= link_to 'Zurück', businesses_path %>
+<% end %>
 
 <% if @userBusinesses %>
     <% if @userBusinesses.include?(@business) %>
