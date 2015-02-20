@@ -86,10 +86,11 @@ class BusinessesController < ApplicationController
       else
         @admin = false
       end
-    else
-      @admin = false
+      if current_user.has_role? :global_admin
+        @admin = true
+      end
     end
-  end
+ end
 
   def check_access_right
     if current_user
