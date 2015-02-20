@@ -1,7 +1,7 @@
 <%= form_for(@business) do |f| %>
     <% if @business.errors.any? %>
         <div id="error_explanation">
-          <h2><%= pluralize(@business.errors.count, "error") %> prohibited this business from being saved:</h2>
+          <h2>Es kann nicht gespeichert werden, weil:</h2>
 
           <ul>
             <% @business.errors.full_messages.each do |message| %>
@@ -18,26 +18,27 @@
 
     <%= fields_for :address, @address do |a| %>
         <div class="field">
-          <%= a.label :city %><br>
+          <%= a.label :city, 'Stadt' %><br>
           <%= a.text_field :city %>
         </div>
 
         <div class="field">
-          <%= a.label :zipcode %><br>
+          <%= a.label :zipcode, 'PLZ' %><br>
           <%= a.text_field :zipcode %>
         </div>
 
         <div class="field">
-          <%= a.label :streetName %><br>
+          <%= a.label :streetName, 'Straße' %><br>
           <%= a.text_field :streetName %>
         </div>
 
         <div class="field">
-          <%= a.label :streetNumber %><br>
+          <%= a.label :streetNumber, 'Hausnummer' %><br>
           <%= a.text_field :streetNumber %>
         </div>
     <% end %>
+    <br />
     <div class="actions">
-      <%= f.submit %>
+      <%= f.submit 'Speichern'%>
     </div>
 <% end %>

@@ -44,8 +44,16 @@ class ProfilesController < ApplicationController
   end
 
   def destroy
-    @profile.destroy
-    respond_with(@profile)
+    if @profile.user.user_businesses.Administrator.all.count > 0
+      flash[:error] = "Bitte verlassen Sie erst alle Unternehmen, in denen Sie ein Administrator sind"
+      respond_with(@profile)
+    else
+      @profile.destroy
+      @profile.user.destroy
+      @profile.user.user_businesses.destroy
+      flash[:notice] = "Ihr Account wurde erfolgreich gelöscht"
+      redirect_to root_path
+    end
   end
 
 

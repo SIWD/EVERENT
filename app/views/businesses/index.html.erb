@@ -13,7 +13,7 @@
     <% @businesses.each do |business| %>
       <tr>
         <td><%= business.name %>&nbsp;</td>
-        <td><%= link_to 'Anzeigen', business %></td>
+        <td>&nbsp;|&nbsp;<%= link_to 'Anzeigen', business %></td>
       </tr>
     <% end %>
   </tbody>

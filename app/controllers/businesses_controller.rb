@@ -35,25 +35,52 @@ class BusinessesController < ApplicationController
     else
       current_user.add_role(:business_admin, @business)
       @business.user_businesses.create([{ user_id: current_user.id, position: :Administrator}])
+      set_notice("erstellt")
       respond_with(@business)
     end
 
   end
 
   def update
-    @business.update(business_params)
+    if @business.update(business_params)
+      set_notice("bearbeitet")
+    end
     address = Address.find(@business.address_id)
     address.update(address_params)
     respond_with(@business)
   end
 
   def destroy
+    #First delete all services
+    @services = @business.services.all
+    if @services
+      @services.each do |service|
+        service.destroy
+      end
+    end
+
+    #Then delete all user_businesses
+    @user_businesses = @business.user_businesses.all
+    if @user_businesses
+      @user_businesses.each do |user_business|
+        user_business.destroy
+      end
+    end
+
     @business.destroy
+    set_notice("entfernt")
     respond_with(@business)
   end
 
   private
     def set_business
+      #Check if business exists:
+      if Business.where(id: params[:id]).count <= 0
+        flash[:alert] = "Unternehmen wurde nicht gefunden"
+        redirect_to businesses_path
+        return
+      end
+
       @business = Business.find(params[:id])
       @services = Service.where(business_id: @business.id)
       @address  = Address.where(id: @business.address_id).first
@@ -73,12 +100,6 @@ class BusinessesController < ApplicationController
     end
   end
 
-  def check_access_right_0
-    if not @userBusinesses.include?(@business)
-      redirect_to businesses_path
-    end
-  end
-
   def set_access_right
     if current_user
       if current_user.has_role? :business_admin, @business
@@ -94,9 +115,11 @@ class BusinessesController < ApplicationController
   def check_access_right
     if current_user
       if not current_user.has_role? :business_admin, @business
+        set_notice_no_access
         redirect_to businesses_path
       end
     else
+      set_notice_no_access
       redirect_to businesses_path
     end
   end
@@ -104,6 +127,14 @@ class BusinessesController < ApplicationController
 
   def set_business_users
     @businessUsers = @business.user_businesses.all
+  end
+
+  def set_notice(action)
+    flash[:notice] = @business.name + " wurde " + action
+  end
+
+  def set_notice_no_access
+    flash[:alert] = "Sie haben keine Berechtigung hierfür"
   end
 
 end
