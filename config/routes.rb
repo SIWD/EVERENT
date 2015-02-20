@@ -2,6 +2,10 @@ Rails.application.routes.draw do
 
   resources :user_businesses
 
+  get 'address/new'
+
+  resources :events
+
   resources :branches
 
   devise_scope :user do

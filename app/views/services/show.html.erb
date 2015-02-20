@@ -17,9 +17,9 @@
 </p>
 
 <% if @userServices %>
-    <% #if ( @userServices.include?(@service) ) %>
+    <% if ( @userServices.include?(@service) ) %>
         <%= link_to 'Dienstleistung bearbeiten', edit_service_path(@service) %> <br />
-    <% #end %>
+    <% end %>
 <% end %>
 
 <%= link_to 'Zum Unternehmen: ' + @service.business.name, business_path(@service.business) %>

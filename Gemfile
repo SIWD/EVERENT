@@ -3,7 +3,7 @@ ruby '2.1.2'
 
 
 group :production do
-  gem 'pg' #Postgresql in Gemfile einfügen, weil heroku darauf basiert
+  #gem 'pg' #Postgresql in Gemfile einfügen, weil heroku darauf basiert
   gem 'rails_12factor'
 end
 
@@ -16,9 +16,7 @@ group :development, :test do
 end
 
 #Location
-gem 'geokit'
-gem 'geokit-rails'
-gem 'geoip'
+gem 'geocoder'
 
 gem 'devise'
 gem 'devise-bootstrap-views'

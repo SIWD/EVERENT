@@ -1,6 +1,7 @@
 class BusinessesController < ApplicationController
   before_action :set_business, only: [:show, :edit, :update, :destroy]
   before_action :set_user_businesses, only: [:index, :show, :edit, :update, :destroy]
+  before_action :set_access_right, only: [:show]
   before_action :check_access_right, only: [:edit, :update, :destroy]
   before_action :set_business_users, only: [:show]
 
@@ -24,13 +25,7 @@ class BusinessesController < ApplicationController
   end
 
   def create
-    address = Address.new(address_params)
-    geo = Geokit::Geocoders::GoogleGeocoder.geocode("#{address.city} #{address.zipcode} #{address.streetName} #{address.streetNumber}")
-    address.country = geo.country_code
-    address.stateCode = geo.state_code
-    address.lat = geo.lat
-    address.lng = geo.lng
-    address.save
+    address = Address.create(address_params)
 
     @business = Business.new(business_params)
     @business.address_id = address.id
@@ -38,6 +33,7 @@ class BusinessesController < ApplicationController
       respond_with(@business)
 
     else
+      current_user.add_role(:business_admin, @business)
       @business.user_businesses.create([{ user_id: current_user.id, position: :Administrator}])
       respond_with(@business)
     end
@@ -46,6 +42,8 @@ class BusinessesController < ApplicationController
 
   def update
     @business.update(business_params)
+    address = Address.find(@business.address_id)
+    address.update(address_params)
     respond_with(@business)
   end
 
@@ -58,6 +56,7 @@ class BusinessesController < ApplicationController
     def set_business
       @business = Business.find(params[:id])
       @services = Service.where(business_id: @business.id)
+      @address  = Address.where(id: @business.address_id).first
     end
 
   def business_params
@@ -74,11 +73,34 @@ class BusinessesController < ApplicationController
     end
   end
 
-  def check_access_right
+  def check_access_right_0
     if not @userBusinesses.include?(@business)
       redirect_to businesses_path
     end
   end
+
+  def set_access_right
+    if current_user
+      if current_user.has_role? :business_admin, @business
+        @admin = true
+      else
+        @admin = false
+      end
+    else
+      @admin = false
+    end
+  end
+
+  def check_access_right
+    if current_user
+      if not current_user.has_role? :business_admin, @business
+        redirect_to businesses_path
+      end
+    else
+      redirect_to businesses_path
+    end
+  end
+
 
   def set_business_users
     @businessUsers = @business.user_businesses.all

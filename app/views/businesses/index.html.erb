@@ -14,13 +14,6 @@
       <tr>
         <td><%= business.name %>&nbsp;</td>
         <td><%= link_to 'Anzeigen', business %></td>
-
-        <% if( @userBusinesses ) %>
-            <% if( @userBusinesses.include?(business) ) %>
-                <td>&nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_business_path(business) %></td>
-            <% end %>
-        <% end %>
-
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +21,6 @@
 
 <br>
 
+<% if can? :create, :business %>
 <%= link_to 'Neues Unternehmen anlegen', new_business_path %>
+<% end %>

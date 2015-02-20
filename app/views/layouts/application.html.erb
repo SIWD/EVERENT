@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= content_for?(:title) ? "#{yield(:title)} | EVERENT" : "EVERENT" %></title>
+  <title><%= content_for?(:title) ? "#{yield(:title)} | Partychamp" : "Partychamp" %></title>
   <%= csrf_meta_tags %>
 
   <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -59,7 +59,7 @@
         <div class="container">
           <div class="phone-email pull-left">
             <a><i class="fa fa-phone"></i> Call Us : +49 176 237 210 37</a>
-            <a href="info@everent.de"><i class="fa fa-envelope"></i> Email : info@everent.de</a>
+            <a href="mailto:info@partychamp.de"><i class="fa fa-envelope"></i> Email : info@partychamp.de</a>
           </div>
           <div class="follow-us pull-right">
             <ul class="social pull-left">
@@ -90,7 +90,7 @@
         <div class="logo pull-left">
           <h1>
             <%= link_to (welcomes_path) do %>
-                <%= image_tag ('everent_logo.png'), alt: "EVERENT", width:"125"%>
+                <%= image_tag ('partychamp.svg'), alt: "Partychamp", class: "logo" %>
             <% end %>
           </h1>
         </div>
@@ -152,10 +152,10 @@
             <div class="breadcrumbs pull-right">
               <ul>
                 <li>Sie Sind hier:</li>
-                <li><%= link_to 'EVERENT', root_path %></li>
+                <li><%= link_to 'Partychamp', root_path %></li>
                 <% unless params[:action] == 'index' %>
                     <li><%= link_to params[:controller].titleize, "/#{params[:controller]}" %></li>
-                    <% end %>
+                <% end %>
 
                 <li><%= yield(:title) %></li>
               </ul>
@@ -168,12 +168,10 @@
     <!-- Main Content start-->
     <div class="content">
       <div class="container">
-        <div class="row">
-          <% bootstrap_flash %>
+        <% bootstrap_flash %>
 
-          <script src="/assets/custom.js?body=1"></script>
-          <%= yield %>
-        </div>
+        <script src="/assets/custom.js?body=1"></script>
+        <%= yield %>
       </div> <!-- /container -->
     </div>
   </div>
@@ -184,8 +182,8 @@
           <section class="col-lg-6 col-md-6 col-xs-12 col-sm-6 footer-one">
             <h3>About</h3>
             <p>
-              Everent - Suchen Finden Feiern <br>
-              Hier finden Sie alles für Ihr Event!
+              Partychamp - Suchen Finden Feiern <br>
+              Alles für Ihr Event!
             </p>
           </section>
           <section class="col-lg-6 col-md-6 col-xs-12 col-sm-6 footer-two">
@@ -195,18 +193,20 @@
                 <i class="fa fa-map-marker"></i>
                 <p>
                   <strong class="contact-pad">Address:</strong>
-                  Everent UG Haftungsbeschränkt<br>
-                  Straßennamen 43<br>
-                  56669 Steinhagen
+                  Partychamp<br>
+                  Körnerstraße 5<br>
+                  33803 Steinhagen
                 </p>
               </li>
+              <!--
               <li>
                 <i class="fa fa-phone"></i>
-                <p><strong>Phone:</strong> +49 17623721037</p>
+                <p><strong>Phone:</strong></p>
               </li>
+              -->
               <li>
                 <i class="fa fa-envelope"></i>
-                <p><strong>Email:</strong><a href="mailto:info@everent.de">info@everent.de</a></p>
+                <p><strong>Email:</strong><a href="mailto:info@partychamp.de">info@partychamp.de</a></p>
               </li>
             </ul>
           </section>
@@ -217,7 +217,7 @@
     <div class="footer-bottom">
       <div class="container">
         <div class="row">
-          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 ">&copy; EVERENT 2014. All Rights Reserved.</div>
+          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 ">&copy; Partychamp 2015. All Rights Reserved.</div>
           <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 ">
             <ul class="social social-icons-footer-bottom">
               <li class="facebook"><a href="#" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>

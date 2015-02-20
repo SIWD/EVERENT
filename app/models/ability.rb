@@ -6,8 +6,14 @@ class Ability
       if user.present?
         #Registered user
         can :read, :all
+        #can :manage, UserBusiness
 
-        if user.has_role? :admin
+        if user.has_role? :business_admin
+          #admin
+          can :manage, [:business, :user_businesses]
+        end
+
+        if user.has_role? :global_admin
           #admin
           can :manage, :all
         end

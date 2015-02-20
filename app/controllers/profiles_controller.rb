@@ -48,6 +48,7 @@ class ProfilesController < ApplicationController
     respond_with(@profile)
   end
 
+
   private
 
   def set_profile
