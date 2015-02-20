@@ -21,11 +21,21 @@
         <td><%= service.description %></td>
         <td><%= service.business.name %></td>
         <td>&nbsp;&nbsp;<%= link_to ' Anzeigen ', service %></td>
+
+
         <% if @userServices %>
-            <% if ( @userServices.include?(service) ) %>
+            <% if ( @userServices.include?(service) )  %>
                 <td>&nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_service_path(service) %></td>
             <% end %>
         <% end %>
+
+
+        <% if @userServices %>
+            <% if ( @userServices.include?(service) ) %>
+                <td>&nbsp;|&nbsp;<%= link_to 'Löschen', service, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
+        <% end %>
+
       </tr>
   <% end %>
   </tbody>

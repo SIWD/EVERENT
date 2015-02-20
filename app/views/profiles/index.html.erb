@@ -1,5 +1,4 @@
-<% content_for :title, "Profile" %>
-<h1>Listing profiles</h1>
+<% content_for :title, "Profil-Liste" %>
 
 <table>
   <thead>
@@ -31,15 +30,7 @@
         <td><%= profile.user %></td>
 
         <% if can? :update, :profile %>
-            <td><%= link_to 'Show', profile %></td>
-        <% end %>
-
-        <% if can? :update, :profile %>
-            <td><%= link_to 'Edit', edit_profile_path(profile) %></td>
-        <% end %>
-
-        <% if can? :delete, :profile %>
-            <td><%= link_to 'Destroy', profile, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to 'Anzeigen', profile %></td>
         <% end %>
 
       </tr>
@@ -48,7 +39,3 @@
 </table>
 
 <br>
-
-<% if can? :crate, :profile %>
-    <%= link_to 'New Profile', new_profile_path %>
-<% end %>

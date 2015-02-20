@@ -16,7 +16,7 @@
 </p>
 
 <% if @userServices %>
-    <% if ( @userServices.include?(@service) ) %>
+    <% if ( @userServices.include?(@service) ) or current_user.has_role? :global_admin %>
         <%= link_to 'Dienstleistung bearbeiten', edit_service_path(@service) %> <br />
     <% end %>
 <% end %>
