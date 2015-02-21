@@ -19,7 +19,7 @@ class Ability
 
       end
 
-      if (not current_user.present?)
+      if (not user.present?)
         #Guest User
         can :read, :all
       end
