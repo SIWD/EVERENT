@@ -1,4 +1,4 @@
-<% content_for :title, @event.name %>
+<% content_for :title, Event %>
 <p id="notice"><%= notice %></p>
 <div class="row">
   <div class="col-lg-9">
@@ -36,5 +36,5 @@
   </div>
 </div>
 
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %>
+<%= link_to 'Bearbeiten', edit_event_path(@event) %> |
+<%= link_to 'Zurück', :back %>

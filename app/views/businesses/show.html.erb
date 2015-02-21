@@ -67,11 +67,9 @@
   <% end %>
 </p>
 
-<% if current_user %>
-    <%= link_to 'Zurück zum Profil', profile_path(User.find(current_user).profile) %>
-<% else %>
-  <%= link_to 'Zurück', businesses_path %>
-<% end %>
+
+  <%= link_to 'Zurück', :back %>
+
 
 <% if @admin %>
     | <%= link_to 'Unternehmen Bearbeiten', edit_business_path(@business) %> |

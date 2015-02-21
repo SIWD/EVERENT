@@ -1,9 +1,12 @@
 <% content_for :title, 'Neue Dienstleistung' %>
 
 <%= render 'form' %>
-
+<br />
 <% if current_user %>
     <% if User.find(current_user).profile %>
         <%= link_to 'Zurück zum Profil', profile_path(User.find(current_user).profile) %>
     <% end %>
 <% end %>
+
+<br />
+<%= link_to 'Zurück', :back %>
