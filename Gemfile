@@ -9,10 +9,15 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'factory_girl_rails', :require => false
+  gem 'factory_girl_rails'#, :require => false
   gem 'guard-rspec'
   gem 'faker'
   gem 'capybara'
+end
+
+gem 'rspec-rails', :group => [:test, :development]
+group :test do
+  gem 'database_cleaner'
 end
 
 #Location
