@@ -1,20 +1,17 @@
 <% content_for :title, "Profil-Liste" %>
 
-<table>
+<table class="listingTable">
   <thead>
     <tr>
-      <!--<th>Gender</th>
-      <th>Firstname</th>
-      <th>Lastname</th>-->
-
-      <th>Profil</th>
-
-     <!-- <th>Phone</th>
-      <th>City</th>
-      <th>Postcode</th>
-      <th>Streetname</th>
-      <th>Housenumber</th>
-      <th>User</th>-->
+      <th>Geschlecht</th>
+      <th>Vorname</th>
+      <th>Nachname</th>
+      <th>Telefonnummer</th>
+      <th>Stadt</th>
+      <th>PLZ</th>
+      <th>Straße</th>
+      <th>Hausnummer</th>
+      <!--<th>User</th>-->
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -22,21 +19,17 @@
   <tbody>
     <% @profiles.each do |profile| %>
       <tr>
-        <!--<td>< profile.gender ></td>
-        <td>< profile.firstname ></td>-->
+        <td><%= profile.gender %></td>
+        <td><%= profile.firstname %></td>
+        <td><%= profile.lastname %></td>
+        <td><%= profile.phone %></td>
+        <td><%= profile.city %></td>
+        <td><%= profile.postcode %></td>
+        <td><%= profile.streetname %></td>
+        <td><%= profile.housenumber %></td>
+        <!--<<td>< profile.user ></td>-->
 
-        <td><%= profile.id %> - <%= profile.lastname %></td>
-
-        <!--<td>< profile.phone ></td>
-        <td>< profile.city ></td>
-        <td>< profile.postcode ></td>
-        <td>< profile.streetname ></td>
-        <td>< profile.housenumber ></td>
-        <td>< profile.user ></td>-->
-
-        <% if can? :update, :profile %>
-            <td>&nbsp;&nbsp;<%= link_to 'Anzeigen', profile %></td>
-        <% end %>
+        <td>&nbsp;&nbsp;<%= link_to 'Anzeigen', profile %></td>
 
       </tr>
     <% end %>
