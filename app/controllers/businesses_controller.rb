@@ -107,9 +107,6 @@ class BusinessesController < ApplicationController
       else
         @admin = false
       end
-      if current_user.has_role? :global_admin
-        @admin = true
-      end
     end
  end
 

@@ -16,9 +16,11 @@
 </p>
 
 <% if @userServices %>
-    <% if ( @userServices.include?(@service) ) or current_user.has_role? :global_admin %>
+    <% if ( @userServices.include?(@service) ) %>
         <%= link_to 'Dienstleistung bearbeiten', edit_service_path(@service) %> <br />
     <% end %>
 <% end %>
 
 <%= link_to 'Zum Unternehmen: ' + @service.business.name, business_path(@service.business) %>
+<br />
+<%= link_to 'Zurück', :back %>

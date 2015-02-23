@@ -1,68 +1,157 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+User.create!([
+                 {email: "admin@admin.com", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 2, current_sign_in_at: "2015-02-22 17:28:13", last_sign_in_at: "2015-02-22 16:43:47", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
+                 {email: "michael@tork.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 3, current_sign_in_at: "2015-02-22 17:00:50", last_sign_in_at: "2015-02-22 16:59:25", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
+                 {email: "florian@wörtler.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 16:48:59", last_sign_in_at: "2015-02-22 16:48:59", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
+                 {email: "nico@büscher.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 16:51:18", last_sign_in_at: "2015-02-22 16:51:18", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
+                 {email: "nils@schlauss.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 16:53:48", last_sign_in_at: "2015-02-22 16:53:48", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
+                 {email: "helge@schneider.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 3, current_sign_in_at: "2015-02-22 17:27:45", last_sign_in_at: "2015-02-22 17:01:48", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
+                 {email: "frank@white.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 3, current_sign_in_at: "2015-02-22 17:28:40", last_sign_in_at: "2015-02-22 17:01:22", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
+                 {email: "dj@pascal.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 17:30:38", last_sign_in_at: "2015-02-22 17:30:38", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
+                 {email: "johnny@coffee.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 17:34:53", last_sign_in_at: "2015-02-22 17:34:53", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"}
+             ])
 
-BranchCategory.destroy_all
-Branch.destroy_all
-cat = BranchCategory.create(name: 'Musik')
-branch1 = Branch.create(name: 'DJ', branchCategory: cat)
-Branch.create(name: 'Band', branchCategory: cat)
-Branch.create(name: 'Solist', branchCategory: cat)
+BranchCategory.create!([
+                           {name: "Musik"},
+                           {name: "Essen"},
+                           {name: "Transport"},
+                           {name: "Dekorateur"},
+                           {name: "Trinken"}
+                       ])
 
+Branch.create!([
+                   {name: "DJ", branchCategory_id: 1},
+                   {name: "Band", branchCategory_id: 1},
+                   {name: "Solist", branchCategory_id: 1},
+                   {name: "Koch", branchCategory_id: 2},
+                   {name: "Buffet-Caterer", branchCategory_id: 2},
+                   {name: "Lieferservice", branchCategory_id: 2},
+                   {name: "Kutsche", branchCategory_id: 3},
+                   {name: "Taxi", branchCategory_id: 3},
+                   {name: "Limousinen Service", branchCategory_id: 3},
+                   {name: "Bus", branchCategory_id: 3},
+                   {name: "Florist", branchCategory_id: 4},
+                   {name: "Cocktailmixer", branchCategory_id: 5},
+                   {name: "Barkeeper", branchCategory_id: 5}
+               ])
 
-cat = BranchCategory.create(name: 'Essen')
-Branch.create(name: 'Koch', branchCategory: cat)
-Branch.create(name: 'Buffet-Caterer', branchCategory: cat)
-Branch.create(name: 'Lieferservice', branchCategory: cat)
+Address.create!([
+                    {city: "Ascheberg", zipcode: "59387", streetName: "Sandstraße", streetNumber: "12", latitude: 51.7915084, longitude: 7.6180707, stateCode: nil, country: nil},
+                    {city: "Münster", zipcode: "48149", streetName: "Corrensstraße", streetNumber: "25", latitude: 51.96850000000001, longitude: 7.59537, stateCode: nil, country: nil},
+                    {city: "Warendorf", zipcode: "48231", streetName: "Gänsestraße", streetNumber: "6", latitude: 51.9229261, longitude: 7.9674978, stateCode: nil, country: nil},
+                    {city: "München", zipcode: "80331", streetName: "Marienplatz", streetNumber: "8", latitude: 48.137327, longitude: 11.576052, stateCode: nil, country: nil},
+                    {city: "Münster", zipcode: "48145", streetName: "Warendorferstraße", streetNumber: "88", latitude: 51.96444, longitude: 7.649900000000001, stateCode: nil, country: nil},
+                    {city: "Ascheberg", zipcode: "59387", streetName: "Mühlenlamp", streetNumber: "2", latitude: 51.7856499, longitude: 7.61848, stateCode: nil, country: nil},
+                    {city: "Münster", zipcode: "48155", streetName: "Albersloher Weg", streetNumber: "14", latitude: 51.94991, longitude: 7.636969999999999, stateCode: nil, country: nil}
+                ])
 
+Business.create!([
+                     {name: "Firma Tork", address_id: 1},
+                     {name: "Firma Wörtler", address_id: 2},
+                     {name: "Simply Impressive", address_id: 3},
+                     {name: "Schlauss & Co", address_id: 4},
+                     {name: "Pascalo", address_id: 5}
+                 ])
 
-cat = BranchCategory.create(name: 'Transport')
-Branch.create(name: 'Kutsche', branchCategory: cat)
-Branch.create(name: 'Taxi', branchCategory: cat)
-Branch.create(name: 'Limousinen Service', branchCategory: cat)
-Branch.create(name: 'Bus', branchCategory: cat)
+Role.create!([
+                 {name: "global_admin", resource_id: nil, resource_type: nil},
+                 {name: "business_admin", resource_id: 1, resource_type: "Business"},
+                 {name: "business_admin", resource_id: 2, resource_type: "Business"},
+                 {name: "business_admin", resource_id: 3, resource_type: "Business"},
+                 {name: "business_admin", resource_id: 4, resource_type: "Business"},
+                 {name: "business_admin", resource_id: 5, resource_type: "Business"}
+             ])
 
+Role::HABTM_Users.create!([
+                              {user_id: 1, role_id: 1},
+                              {user_id: 2, role_id: 2},
+                              {user_id: 3, role_id: 3},
+                              {user_id: 4, role_id: 4},
+                              {user_id: 5, role_id: 5},
+                              {user_id: 7, role_id: 2},
+                              {user_id: 1, role_id: 1},
+                              {user_id: 2, role_id: 2},
+                              {user_id: 3, role_id: 3},
+                              {user_id: 4, role_id: 4},
+                              {user_id: 5, role_id: 5},
+                              {user_id: 7, role_id: 2},
+                              {user_id: 8, role_id: 6}
+                          ])
 
-cat = BranchCategory.create(name: 'Dekorateur')
-Branch.create(name: 'Florist', branchCategory: cat)
+User::HABTM_Roles.create!([
+                              {user_id: 1, role_id: 1},
+                              {user_id: 2, role_id: 2},
+                              {user_id: 3, role_id: 3},
+                              {user_id: 4, role_id: 4},
+                              {user_id: 5, role_id: 5},
+                              {user_id: 7, role_id: 2},
+                              {user_id: 1, role_id: 1},
+                              {user_id: 2, role_id: 2},
+                              {user_id: 3, role_id: 3},
+                              {user_id: 4, role_id: 4},
+                              {user_id: 5, role_id: 5},
+                              {user_id: 7, role_id: 2},
+                              {user_id: 8, role_id: 6}
+                          ])
 
+Event.create!([
+                  {name: "Geburtstag", description: "Bringt gute Stimmung mit :)", date: "2015-05-09", time: "2000-01-01 22:35:00", event_location_id: 1, who_has_access_id: 1, password: ""},
+                  {name: "Hochzeit", description: "Gefangen in der Ehe :)", date: "2015-08-22", time: "2000-01-01 13:00:00", event_location_id: 2, who_has_access_id: 2, password: "123456789"}
+              ])
 
-cat = BranchCategory.create(name: 'Trinken')
-Branch.create(name: 'Cocktailmixer', branchCategory: cat)
-Branch.create(name: 'Barkeeper', branchCategory: cat)
+EventLocation.create!([
+                          {name: "Bei mir Zuhasuse!", address_id: 6},
+                          {name: "Club Veron", address_id: 7}
+                      ])
 
-Address.destroy_all
-Business.destroy_all
-Service.destroy_all
-add1 = Address.create(city: 'Warendorf', zipcode: '48231', latitude: '51.9229261', longitude: '7.9674978', stateCode: 'NRW', country: 'DE', streetName: 'Gänsestraße', streetNumber: '6')
-add2 = Address.create(city: 'Münster', zipcode: '48145', latitude: '51.96444', longitude: '7.6499', stateCode: 'NRW', country: 'DE', streetName: 'Warendorfer', streetNumber: '88')
-bus1 = Business.create(name: 'Simply Impressive', address_id: add1.id)
-bus2 = Business.create(name: 'Wittler', address_id: add2.id)
-ser = Service.create(name: 'DJ CINO', teaser: 'House/Black/Charts', description: 'DJ CINO, fester Bestandteil des Münsteraner Nachtlebens. Mit seiner feinen Mischung aus Black’n’White & Best-Party-Ever beamt CINO die Party auf ein neuen Level hoch. Schließt euch Ihm an im Heaven Club, Soho, 4400 uvm.', business: bus1, branch: branch1)
-ser = Service.create(name: 'DJ Pascal', teaser: 'Charts', description: 'Bekannt in Münster', business: bus2, branch: branch1)
+EventUser.create!([
+                      {event_id: 1, user_id: 9, event_user_status_id: 1, event_user_join_id: 1},
+                      {event_id: 2, user_id: 9, event_user_status_id: 1, event_user_join_id: 1}
+                  ])
 
-user = User.new
-user.email = 'admin@admin.com'
-user.password = '123456789'
-user.password_confirmation = '123456789'
-user.save!
-user.add_role "global_admin"
+EventUserJoin.create!([
+                          {status: "join"},
+                          {status: "maybe"},
+                          {status: "reject"}
+                      ])
 
-WhoHasAccessToEvent.destroy_all
-WhoHasAccessToEvent.create(id: 1, who: 'Jeder', icon: 'privacy/many_member.png')
-WhoHasAccessToEvent.create(id: 2, who: 'Jeder mit Passwort', icon: 'privacy/many_member_lock.png')
-WhoHasAccessToEvent.create(id: 3, who: 'Nur Gastgeber', icon: 'privacy/one_member.png')
+EventUserStatus.create!([
+                            {status: "owner"},
+                            {status: "moderator"},
+                            {status: "guest"}
+])
 
-EventUserStatus.destroy_all
-EventUserStatus.create(status: 'owner')
-EventUserStatus.create(status: 'moderator')
-EventUserStatus.create(status: 'guest')
+Profile.create!([
+                    {gender: "", firstname: "/", lastname: "Administrator", phone: "/", city: "/", postcode: "/", streetname: "/", housenumber: "/", user_id: 1, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
+                    {gender: "", firstname: "Michael", lastname: "Tork", phone: "01234567", city: "Ascheberg", postcode: "59387", streetname: "Sandstraße", housenumber: "12", user_id: 2, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
+                    {gender: "", firstname: "Florian", lastname: "Wörtler", phone: "01234566", city: "Münster", postcode: "48149", streetname: "Corrensstraße", housenumber: "25", user_id: 3, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
+                    {gender: "", firstname: "Nico", lastname: "Büscher", phone: "01234565", city: "Warendorf", postcode: "48231", streetname: "Gänsestraße", housenumber: "6", user_id: 4, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
+                    {gender: "", firstname: "Nils", lastname: "Schlauss", phone: "01231234", city: "München", postcode: "80331", streetname: "Marienplatz", housenumber: "8", user_id: 5, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
+                    {gender: "", firstname: "Helge", lastname: "Schneider", phone: "07654321", city: "Berlin", postcode: "11011", streetname: "Platz der Republik", housenumber: "1", user_id: 6, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
+                    {gender: "", firstname: "Frank", lastname: "White", phone: "07452136", city: "Ascheberg", postcode: "59387", streetname: "Dorfheide", housenumber: "41", user_id: 7, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
+                    {gender: "", firstname: "Pascal", lastname: "Möller", phone: "01222222", city: "Münster", postcode: "48145", streetname: "Warendorferstraße", housenumber: "88", user_id: 8, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
+                    {gender: "", firstname: "Johannes", lastname: "Kraut", phone: "012333345", city: "Ascheberg", postcode: "59387", streetname: "Mühlenkamp", housenumber: "2", user_id: 9, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil}
+                ])
 
-EventUserJoin.destroy_all
-EventUserJoin.create(status: 'join')
-EventUserJoin.create(status: 'maybe')
-EventUserJoin.create(status: 'reject')
+Service.create!([
+                    {name: "Buffet-Tork", teaser: "Lecker Buffet-Caterer", description: "Super Lecker Buffet-Caterer", business_id: 1, branch_id: 5},
+                    {name: "Taxi-Wörtler", teaser: "Taxi-Dienst ", description: "Taxi-Dienst Wörtler", business_id: 2, branch_id: 8},
+                    {name: "DJ CINO", teaser: "House/Black/Charts", description: "DJ CINO, fester Bestandteil des Münsteraner Nachtlebens. Mit seiner feinen Mischung aus Black’n’White & Best-Party-Ever beamt CINO die Party auf ein neuen Level hoch. Schließt euch Ihm an im Heaven Club, Soho, 4400 uvm.", business_id: 3, branch_id: 1},
+                    {name: "Taxi-Schlauss", teaser: "Speed Taxi", description: "Super Taxi-Dienst von Schlauss", business_id: 4, branch_id: 8},
+                    {name: "DJ Pascal", teaser: "Charts", description: "DJ Pascal - Bekannt in Münster und Umgebung.", business_id: 5, branch_id: 1}
+                ])
+
+UserBusiness.create!([
+                         {position: 1, business_id: 1, user_id: 2},
+                         {position: 1, business_id: 2, user_id: 3},
+                         {position: 1, business_id: 3, user_id: 4},
+                         {position: 1, business_id: 4, user_id: 5},
+                         {position: 0, business_id: 1, user_id: 6},
+                         {position: 1, business_id: 1, user_id: 7},
+                         {position: 1, business_id: 5, user_id: 8}
+                     ])
+
+WhoHasAccessToEvent.create!([
+                                {who: "Jeder", icon: "privacy/many_member.png"},
+                                {who: "Jeder mit Passwort", icon: "privacy/many_member_lock.png"},
+                                {who: "Nur Gastgeber", icon: "privacy/one_member.png"}
+                            ])
