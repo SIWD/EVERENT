@@ -1,5 +1,5 @@
 
-<table>
+<table class="listingTable">
   <colgroup>
     <col width="130">
     <col width="190">
@@ -10,14 +10,15 @@
   <tr>
     <th>Name</th>
     <th>Teaser</th>
-    <th>Description</th>
-    <th>Business</th>
+    <th>Beschreibung</th>
+    <% if ! @isInBusiness %>
+        <th>Unternehmen</th>
+    <% end %>
     <!--<th colspan="3"></th>-->
   </tr>
   </thead>
 
   <tbody>
-  <tr><td>&nbsp;</td></tr>
 
 
   <% @services.each do |service| %>
@@ -25,26 +26,27 @@
         <td><%= service.name %></td>
         <td><%= service.teaser %></td>
         <td><%= service.description %></td>
-        <td><%= service.business.name %></td>
-        <td><%= link_to ' Anzeigen ', service %></td>
+        <% if ! @isInBusiness %>
+            <td><%= link_to service.business.name, business_path(service.business) %></td>
+        <% end %>
+        <td><%= link_to ' Anzeigen ', service %>
 
 
         <% if @userServices %>
             <% if ( @userServices.include?(service) )  %>
-                <td>&nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_service_path(service) %></td>
+                &nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_service_path(service) %>
             <% end %>
         <% end %>
 
 
         <% if @userServices %>
             <% if ( @userServices.include?(service) ) %>
-                <td>&nbsp;|&nbsp;<%= link_to 'Löschen', service, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                &nbsp;|&nbsp;<%= link_to 'Löschen', service, method: :delete, data: { confirm: 'Are you sure?' } %>
             <% end %>
         <% end %>
-
+        </td>
       </tr>
 
-  <tr><td>&nbsp;</td></tr>
   <% end %>
   </tbody>
 </table>

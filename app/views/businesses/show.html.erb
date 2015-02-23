@@ -24,6 +24,7 @@
 <div>
   <% if @services.count > 0 %>
       <% servicessting = "" %>
+      <% @isInBusiness = true %>
       <% @services.each do |s| %>
           <% servicessting << "\n - " + s.name %>
       <% end %>

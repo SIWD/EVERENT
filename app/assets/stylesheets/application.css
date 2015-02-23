@@ -35,10 +35,10 @@
 
 .listingTable td {
     border: 1px solid black;
-    padding: 3px;
+    padding: 5px;
 }
 
 .listingTable th {
     border: 1px solid black;
-    padding: 2px;
+    padding: 3px;
 }
