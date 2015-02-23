@@ -88,10 +88,14 @@
 
     </div>
 <% end %>
-<br>
+</br>
+</br>
+<%= link_to 'Zurück', :back %>
 
 <% if @userProfile %>
     <% if @userProfile == @profile %>
-        <%= link_to 'Profil bearbeiten', edit_profile_path(@profile) %>
+        &nbsp;|&nbsp;
+        <%= link_to 'Profil bearbeiten', edit_profile_path(@profile) %>&nbsp;|&nbsp;
+        <%= link_to 'Profil und Account löschen', @profile, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Profil und Ihren Account löschen?" } %>
     <% end %>
 <% end %>

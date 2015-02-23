@@ -1,5 +1,4 @@
 <% content_for :title, "#{@service.name}" %>
-<p id="notice"><%= notice %></p>
 
 <p>
   <strong>Name:</strong>
@@ -23,3 +22,5 @@
 <% end %>
 
 <%= link_to 'Zum Unternehmen: ' + @service.business.name, business_path(@service.business) %>
+<br />
+<%= link_to 'Zurück', :back %>

@@ -23,35 +23,74 @@ class UserBusinessesController < ApplicationController
   end
 
   def create
+    error = false
     @user_business = UserBusiness.new(user_business_params)
     #@user_business.user_id = User.find_by_email(user_params).id
     if(User.where(user_params).first)
       @user_business.user_id = User.where(user_params).first.id
     end
 
-    set_role()
+    business_users = @user_business.business.users.all
+    business_users.each do |user|
+      if user == @user_business.user
+        flash[:alert] = "Den Benutzer gibt es bereits im Unternehmen"
+        error = true
+      end
+    end
 
-    @user_business.save
-    redirect_to(business_path(@user_business.business))
+    if ! error
+      set_role()
+
+      if @user_business.save
+        set_notice("hinzugefügt")
+        redirect_to(business_path(@user_business.business))
+      else
+        @business = @user_business.business
+        respond_with(@user_business)
+      end
+
+    else
+      redirect_to(business_path(@user_business.business))
+    end
   end
 
   def update
     @user_business.update(user_business_params)
-
-    set_role()
-    if @user_business.Mitarbeiter?
-      @user_business.user.remove_role(:business_admin, @user_business.business)
+    if business_admin_number < 1
+      @user_business.position = :Administrator
+      @user_business.save
+      set_admin_alert
+    else
+      set_role()
+      if @user_business.Mitarbeiter?
+        @user_business.user.remove_role(:business_admin, @user_business.business)
+      end
+      set_notice("aktualisiert")
     end
 
     redirect_to(business_path(@user_business.business))
-    #respond_with(@user_business)
   end
 
   def destroy
     if @user_business.Administrator?
-      @user_business.user.remove_role(:business_admin, @user_business.business)
+      error = false
+
+      #Check if one admin is left:
+      user_businesses_number =
+      if business_admin_number <= 1
+        set_admin_alert
+        error = true
+      else
+        #Remove role:
+        @user_business.user.remove_role(:business_admin, @user_business.business)
+      end
     end
-    @user_business.destroy
+
+    #Destroy:
+    if ! error
+      @user_business.destroy
+      set_notice("entfernt")
+    end
     #respond_with(@user_business)
     redirect_to(business_path(@user_business.business))
   end
@@ -85,5 +124,17 @@ class UserBusinessesController < ApplicationController
       if @user_business.Administrator?
         @user_business.user.add_role(:business_admin, @user_business.business)
       end
+    end
+
+    def set_notice(action)
+      flash[:notice] = @user_business.user.email + " wurde " + action
+    end
+
+    def business_admin_number
+      @user_business.business.user_businesses.Administrator.all.count
+    end
+
+    def set_admin_alert
+      flash[:alert] = "Es muss mindestens einen Administrator geben"
     end
 end

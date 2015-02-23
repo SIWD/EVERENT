@@ -13,7 +13,7 @@
 
     <div class="field">
       <%= f.label :gender, 'Geschlecht' %><br>
-      <%= f.text_field :gender %>
+      <%= f.select :gender, Profile.genders.keys.to_a %>
     </div>
     <div class="field">
       <%= f.label :firstname, 'Vorname' %><br>

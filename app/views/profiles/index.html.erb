@@ -1,18 +1,20 @@
-<% content_for :title, "Profile" %>
-<h1>Listing profiles</h1>
+<% content_for :title, "Profil-Liste" %>
 
 <table>
   <thead>
     <tr>
-      <th>Gender</th>
+      <!--<th>Gender</th>
       <th>Firstname</th>
-      <th>Lastname</th>
-      <th>Phone</th>
+      <th>Lastname</th>-->
+
+      <th>Profil</th>
+
+     <!-- <th>Phone</th>
       <th>City</th>
       <th>Postcode</th>
       <th>Streetname</th>
       <th>Housenumber</th>
-      <th>User</th>
+      <th>User</th>-->
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -20,26 +22,20 @@
   <tbody>
     <% @profiles.each do |profile| %>
       <tr>
-        <td><%= profile.gender %></td>
-        <td><%= profile.firstname %></td>
-        <td><%= profile.lastname %></td>
-        <td><%= profile.phone %></td>
-        <td><%= profile.city %></td>
-        <td><%= profile.postcode %></td>
-        <td><%= profile.streetname %></td>
-        <td><%= profile.housenumber %></td>
-        <td><%= profile.user %></td>
+        <!--<td>< profile.gender ></td>
+        <td>< profile.firstname ></td>-->
+
+        <td><%= profile.id %> - <%= profile.lastname %></td>
+
+        <!--<td>< profile.phone ></td>
+        <td>< profile.city ></td>
+        <td>< profile.postcode ></td>
+        <td>< profile.streetname ></td>
+        <td>< profile.housenumber ></td>
+        <td>< profile.user ></td>-->
 
         <% if can? :update, :profile %>
-            <td><%= link_to 'Show', profile %></td>
-        <% end %>
-
-        <% if can? :update, :profile %>
-            <td><%= link_to 'Edit', edit_profile_path(profile) %></td>
-        <% end %>
-
-        <% if can? :delete, :profile %>
-            <td><%= link_to 'Destroy', profile, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td>&nbsp;&nbsp;<%= link_to 'Anzeigen', profile %></td>
         <% end %>
 
       </tr>
@@ -48,7 +44,3 @@
 </table>
 
 <br>
-
-<% if can? :crate, :profile %>
-    <%= link_to 'New Profile', new_profile_path %>
-<% end %>

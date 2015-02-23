@@ -13,7 +13,19 @@
     <% @businesses.each do |business| %>
       <tr>
         <td><%= business.name %>&nbsp;</td>
-        <td><%= link_to 'Anzeigen', business %></td>
+        <td>&nbsp;|&nbsp;<%= link_to 'Übersicht', business %></td>
+
+        <% if( @userBusinesses ) %>
+            <% if( @userBusinesses.include?(business) ) and current_user.has_role? :business_admin, business %>
+                <td>&nbsp;|&nbsp;<%= link_to 'Business-Informationen bearbeiten', edit_business_path(business) %></td>
+            <% end %>
+        <% end %>
+
+        <% if( @userBusinesses ) %>
+            <% if( @userBusinesses.include?(business) ) and current_user.has_role? :business_admin, business %>
+        <td>&nbsp;|&nbsp;<%= link_to 'Löschen', business, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -21,6 +33,3 @@
 
 <br>
 
-<% if can? :create, :business %>
-<%= link_to 'Neues Unternehmen anlegen', new_business_path %>
-<% end %>

@@ -1,6 +1,8 @@
 class Profile < ActiveRecord::Base
-
   belongs_to :user
+
+  enum gender: [:männlich, :weiblich]
+
   validates :user_id, :firstname, :lastname, presence: true
 
   has_attached_file :photo, styles: { medium: "300x300>" },

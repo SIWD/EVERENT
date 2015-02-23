@@ -1,7 +1,5 @@
 <% content_for :title, @business.name %>
 
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Name:</strong>
   <%= @business.name %>
@@ -41,24 +39,24 @@
 
   <br />
   <% if @businessUsers %>
+      <table class="listingTable"> <tr><th>Name</th><th>Rang</th><th></th></tr>
     <% @businessUsers.each do |user_business| %>
-            &nbsp;&nbsp;<b>Name:</b> <%= user_business.user.email %>  <b>Rang:</b> <%= user_business.position %>
-
-
+            <tr><td><%= user_business.user.email %></td><td><%= user_business.position %></td>
+              <td>
+                <%= link_to 'Profil zeigen', profile_path(user_business.user.profile) %>
                 <% if @admin %>
-                     &nbsp;|&nbsp;
+                    &nbsp;|&nbsp;
                      <%= link_to 'Bearbeiten', edit_user_business_path(id: user_business.id, business: @business) %>
                 <% end %>
 
-
-
-              <% if @admin %>
+                <% if @admin %>
                     &nbsp;|&nbsp;
                   <%= link_to 'Aus Unternehmen entfernen', user_business, method: :delete, data: { confirm: "Möchten Sie wirklich den Mitarbeiter '#{user_business.user.email}' entfernen?" } %>
-              <% end %>
-
-           <br />
+                <% end %>
+              </td>
+            </tr>
     <% end %>
+      </table>
   <% else %>
     <p>Keine Mitarbeiter</p>
   <% end %>
@@ -69,11 +67,9 @@
   <% end %>
 </p>
 
-<% if current_user %>
-    <%= link_to 'Zurück zum Profil', profile_path(User.find(current_user).profile) %>
-<% else %>
-  <%= link_to 'Zurück', businesses_path %>
-<% end %>
+
+  <%= link_to 'Zurück', :back %>
+
 
 <% if @admin %>
     | <%= link_to 'Unternehmen Bearbeiten', edit_business_path(@business) %> |
