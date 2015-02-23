@@ -17,7 +17,9 @@
 
 <% if @userServices %>
     <% if ( @userServices.include?(@service) ) %>
-        <%= link_to 'Dienstleistung bearbeiten', edit_service_path(@service) %> <br />
+        <%= link_to 'Dienstleistung bearbeiten', edit_service_path(@service) %>&nbsp;|&nbsp;
+        <%= link_to 'Dienstleistung löschen', @service, method: :delete, data: { confirm: "Möchten Sie diese Dienstleistung wirklich entfernen?" } %>
+        <br />
     <% end %>
 <% end %>
 
