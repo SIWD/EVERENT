@@ -23,18 +23,35 @@ class UserBusinessesController < ApplicationController
   end
 
   def create
+    error = false
     @user_business = UserBusiness.new(user_business_params)
     #@user_business.user_id = User.find_by_email(user_params).id
     if(User.where(user_params).first)
       @user_business.user_id = User.where(user_params).first.id
     end
 
-    set_role()
+    business_users = @user_business.business.users.all
+    business_users.each do |user|
+      if user == @user_business.user
+        flash[:alert] = "Den Benutzer gibt es bereits im Unternehmen"
+        error = true
+      end
+    end
 
-    @user_business.save
+    if ! error
+      set_role()
 
-    set_notice("hinzugefügt")
-    redirect_to(business_path(@user_business.business))
+      if @user_business.save
+        set_notice("hinzugefügt")
+        redirect_to(business_path(@user_business.business))
+      else
+        @business = @user_business.business
+        respond_with(@user_business)
+      end
+
+    else
+      redirect_to(business_path(@user_business.business))
+    end
   end
 
   def update

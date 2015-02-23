@@ -27,3 +27,18 @@
  *= require theme-responsive
  *= require customize
  */
+
+
+.listingTable {
+    border: 1px solid black;
+}
+
+.listingTable td {
+    border: 1px solid black;
+    padding: 3px;
+}
+
+.listingTable th {
+    border: 1px solid black;
+    padding: 2px;
+}
