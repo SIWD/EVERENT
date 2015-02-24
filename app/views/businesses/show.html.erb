@@ -24,6 +24,7 @@
 <div>
   <% if @services.count > 0 %>
       <% servicessting = "" %>
+      <% @isInBusiness = true %>
       <% @services.each do |s| %>
           <% servicessting << "\n - " + s.name %>
       <% end %>
@@ -32,7 +33,7 @@
 </div>
 </p>
 <% if @admin %>
-    <%= link_to 'Neuen Service anlegen', new_service_path %>
+    <%= link_to 'Neue Dienstleistung anlegen', new_service_path %>
 <% end %>
 <p><p>
   <strong>Mitarbeiter:</strong>

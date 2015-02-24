@@ -24,11 +24,12 @@ class BranchesController < ApplicationController
   end
 
   def create
+    flash[:notice] = "Branche erfolgreich erstellt."
     @branch = Branch.new(branch_params)
     @branch.save
     #respond_with(@branch)
     respond_to do |format|
-      format.html { redirect_to action: "index", notice: 'Branche erfolgreich erstellt.'}
+      format.html { redirect_to action: "index"}
     end
   end
 

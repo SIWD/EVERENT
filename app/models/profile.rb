@@ -6,7 +6,10 @@ class Profile < ActiveRecord::Base
   validates :user_id, :firstname, :lastname, presence: true
 
   has_attached_file :photo, styles: { medium: "300x300>" },
-                    :url => ":rails_root/public/assets/:class/:id/:style.:extension"
+
+                    :default_url => ':style/ProfilBild.jpg'
+
+                    #:url => ":rails_root/public/assets/:class/:id/:style.:extension"
 
   validates_attachment_size :photo, :less_than => 5.megabytes
   validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
