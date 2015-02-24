@@ -42,52 +42,55 @@
         <% end %>
         <% @services.each do |s| %>
             <% loc_to = Address.where(id: Business.where(id: s.business_id).first.address_id).first %>
-            <% if (@loc.nil? || ((!(@loc_from.nil?) && !(loc_to.nil?)) && @loc_from.distance_to(loc_to).round(2).to_i <= @range.to_i)) %>
-                <% success = true %>
-                <div class="col-lg-12" style="margin:5px">
-                  <div class="portfolio-item">
-                    <div class="portfolio-item-title col-lg-12">
-                      <h4 class="text-left">
-                        <%= link_to s.name, service_path(s) %> vom Unternehmen: <%= link_to s.business.name, business_path(s.business) %>
-                      </h4>
-                      <div class="col-lg-6 col-sm-12">
-                        <table class="text-left">
-                          <% unless (@loc.nil?) %>
-                          <tr>
-                            <td>Entfernung:</td>
-                            <td><%= @loc_from.distance_to(loc_to).round(2) %> km</td>
-                          </tr>
-                          <% end %>
-                          <tr>
-                            <td>Kurzbeschreibung:</td>
-                            <td><%= s.teaser %></td>
-                          </tr>
-                          <tr>
-                            <td>Kommt aus:</td>
-                            <td><%= Address.where(id: Business.where(id: s.business_id).first.address_id).first.city %></td>
-                          </tr>
-                          <tr>
-                            <td>eMail:</td>
-                            <td><%= s.email %></td>
-                          </tr>
-                          <tr>
-                            <td>Telefon:</td>
-                            <td><%= s.phone %></td>
-                          </tr>
-                        </table>
-                      </div>
-                      <div class="col-lg-6 col-sm-12">
-                        <table class="text-left">
-                          <tr>
-                            <td>Beschreibung:</td>
-                            <td><%= s.description %></td>
-                          </tr>
-                        </table>
+
+            <% if (@loc.nil? || ((!(@loc_from.nil?) && !(loc_to.nil?)) && (/^[\d]+(\.[\d]+){0,1}$/ === @loc_from.distance_to(loc_to).round(2).to_s) && (/^[\d]+(\.[\d]+){0,1}$/ === @range) )) %>
+                <% if @loc.nil? || (@loc_from.distance_to(loc_to).round(2).to_i <= @range.to_i) %>
+                    <% success = true %>
+                    <div class="col-lg-12" style="margin:5px">
+                      <div class="portfolio-item">
+                        <div class="portfolio-item-title col-lg-12">
+                          <h4 class="text-left">
+                            <%= link_to s.name, service_path(s) %> vom Unternehmen: <%= link_to s.business.name, business_path(s.business) %>
+                          </h4>
+                          <div class="col-lg-6 col-sm-12">
+                            <table class="text-left">
+                              <% unless (@loc.nil?) %>
+                              <tr>
+                                <td>Entfernung:</td>
+                                <td><%= @loc_from.distance_to(loc_to).round(2) %> km</td>
+                              </tr>
+                              <% end %>
+                              <tr>
+                                <td>Kurzbeschreibung:</td>
+                                <td><%= s.teaser %></td>
+                              </tr>
+                              <tr>
+                                <td>Kommt aus:</td>
+                                <td><%= Address.where(id: Business.where(id: s.business_id).first.address_id).first.city %></td>
+                              </tr>
+                              <tr>
+                                <td>eMail:</td>
+                                <td><%= s.email %></td>
+                              </tr>
+                              <tr>
+                                <td>Telefon:</td>
+                                <td><%= s.phone %></td>
+                              </tr>
+                            </table>
+                          </div>
+                          <div class="col-lg-6 col-sm-12">
+                            <table class="text-left">
+                              <tr>
+                                <td>Beschreibung:</td>
+                                <td><%= s.description %></td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
                       </div>
                     </div>
-                    <div class="clearfix"></div>
-                  </div>
-                </div>
+                <% end %>
             <% end %>
         <% end %>
         <% unless success %>

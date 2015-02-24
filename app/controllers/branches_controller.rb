@@ -90,7 +90,12 @@ class BranchesController < ApplicationController
       else
         results = Geocoder.search(@loc, :region => 'DE')
         result = results.first
-        @loc_from = Location.create(address: result.address)
+        if result
+          @loc_from = Location.create(address: result.address)
+        else
+          flash[:alert] = "Der Ort aus Ihrer Suche wurde nicht gefunden"
+          redirect_to '/Branche/' + @branch.name
+        end
       end
     end
   end
