@@ -6,5 +6,5 @@ class Business < ActiveRecord::Base
   has_many :event_businesses
   belongs_to :address
 
-  validates :name, uniqueness: true
+  validates :name, uniqueness: true, presence: true
 end
