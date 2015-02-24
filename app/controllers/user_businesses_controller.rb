@@ -100,6 +100,13 @@ class UserBusinessesController < ApplicationController
   private
     def set_user_business
       if(params[:id])
+        #Check if Service exists:
+        if UserBusiness.where(id: params[:id]).count <= 0
+          set_error
+          redirect_to(root_path)
+          return
+        end
+
         @user_business = UserBusiness.find(params[:id])
       else
         set_error
