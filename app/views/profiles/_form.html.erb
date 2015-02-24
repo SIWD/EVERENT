@@ -17,11 +17,11 @@
     </div>
     <div class="field">
       <%= f.label :firstname, 'Vorname' %><br>
-      <%= f.text_field :firstname %>
+      <%= f.text_field :firstname, :required => true %>
     </div>
     <div class="field">
       <%= f.label :lastname, 'Nachname' %><br>
-      <%= f.text_field :lastname %>
+      <%= f.text_field :lastname, :required => true %>
     </div>
     <div class="field">
       <%= f.label :phone, 'Telefonnummer' %><br>
