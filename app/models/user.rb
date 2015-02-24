@@ -14,4 +14,6 @@ class User < ActiveRecord::Base
 
 
   #has_and_belongs_to_many :roles, :join_table => :users_roles
+
+  validates_format_of :email, :with => /@/
 end
