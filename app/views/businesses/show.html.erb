@@ -44,13 +44,15 @@
     <% @businessUsers.each do |user_business| %>
             <tr><td><%= user_business.user.email %></td><td><%= user_business.position %></td>
               <td>
-                <%= link_to 'Profil zeigen', profile_path(user_business.user.profile) %>
+                <% usrProfile = user_business.user.profile %>
+                <% if usrProfile %>
+                    <%= link_to 'Profil zeigen', profile_path(user_business.user.profile) %>
+                <% else %>
+                    (kein Profil)
+                <% end %>
                 <% if @admin %>
                     &nbsp;|&nbsp;
-                     <%= link_to 'Bearbeiten', edit_user_business_path(id: user_business.id, business: @business) %>
-                <% end %>
-
-                <% if @admin %>
+                    <%= link_to 'Bearbeiten', edit_user_business_path(id: user_business.id, business: @business) %>
                     &nbsp;|&nbsp;
                   <%= link_to 'Aus Unternehmen entfernen', user_business, method: :delete, data: { confirm: "Möchten Sie wirklich den Mitarbeiter '#{user_business.user.email}' entfernen?" } %>
                 <% end %>
