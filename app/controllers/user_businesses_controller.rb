@@ -1,6 +1,6 @@
 class UserBusinessesController < ApplicationController
   before_action :set_user_business, only: [:show, :edit, :update, :destroy]
-  before_action :set_business, only: [:new, :edit, :destroy]
+  before_action :set_business, only: [:new, :edit]
   before_action :check_access_right, only: [:new, :edit, :destroy]
 
   respond_to :html
@@ -101,6 +101,7 @@ class UserBusinessesController < ApplicationController
       if(params[:id])
         @user_business = UserBusiness.find(params[:id])
       else
+        set_error
         redirect_to(root_path)
       end
     end
@@ -117,6 +118,7 @@ class UserBusinessesController < ApplicationController
       if(params[:business])
         @business = Business.find(params[:business])
       else
+        set_error
         redirect_to(root_path)
       end
     end
@@ -127,36 +129,55 @@ class UserBusinessesController < ApplicationController
       end
     end
 
-    def set_notice(action)
-      flash[:notice] = @user_business.user.email + " wurde " + action
-    end
-
     def business_admin_number
       @user_business.business.user_businesses.Administrator.all.count
     end
 
-    def set_admin_alert
-      flash[:alert] = "Es muss mindestens einen Administrator geben"
-    end
-
     def check_access_right
       if current_user
-        @admin_users = @business.user_businesses.Administrator.all
-        found = false
-        @admin_users.each do |admin_user|
-          if admin_user.user == current_user
-            found = true
+        business = false
+        if @business
+          business = @business
+        else
+          if @user_business
+            business = @user_business.business
+          else
+            business = false
           end
         end
 
-        if ! found
-          flash[:alert] = "Sie haben leider keine Administrator-Berechtigungen für dieses Unternehmen"
-          redirect_to business_path(@business)
-        end
+        if business
+          admin_users = business.user_businesses.Administrator.all
+          found = false
+          admin_users.each do |admin_user|
+            if admin_user.user == current_user
+              found = true
+            end
+          end
 
+          if ! found
+            flash[:alert] = "Sie haben leider keine Administrator-Berechtigungen für dieses Unternehmen"
+            redirect_to business_path(@business)
+          end
+        else
+          set_error
+          redirect_to root_path
+        end
       else
         flash[:notice] = "Bitte loggen Sie sich ein"
         redirect_to business_path(@business)
       end
+    end
+
+    def set_error
+      flash[:alert] = "Sorry, es gab einen technischen Fehler."
+    end
+
+    def set_notice(action)
+      flash[:notice] = @user_business.user.email + " wurde " + action
+    end
+
+    def set_admin_alert
+      flash[:alert] = "Es muss mindestens einen Administrator geben"
     end
 end
