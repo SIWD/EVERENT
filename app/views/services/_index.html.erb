@@ -5,12 +5,16 @@
     <col width="190">
     <col width="420">
     <col width="150">
+    <col width="120">
+    <col width="150">
   </colgroup>
   <thead>
   <tr>
     <th>Name</th>
     <th>Teaser</th>
     <th>Beschreibung</th>
+    <th>eMail</th>
+    <th>Telefon</th>
     <% if ! @isInBusiness %>
         <th>Unternehmen</th>
     <% end %>
@@ -26,6 +30,8 @@
         <td><%= service.name %></td>
         <td><%= service.teaser %></td>
         <td><%= service.description %></td>
+        <td><%= service.email %></td>
+        <td><%= service.phone %></td>
         <% if ! @isInBusiness %>
             <td><%= link_to service.business.name, business_path(service.business) %></td>
         <% end %>

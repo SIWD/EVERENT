@@ -1,8 +1,8 @@
 User.create!([
                  {email: "admin@admin.com", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 2, current_sign_in_at: "2015-02-22 17:28:13", last_sign_in_at: "2015-02-22 16:43:47", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
                  {email: "michael@tork.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 3, current_sign_in_at: "2015-02-22 17:00:50", last_sign_in_at: "2015-02-22 16:59:25", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
-                 {email: "florian@wörtler.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 16:48:59", last_sign_in_at: "2015-02-22 16:48:59", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
-                 {email: "nico@büscher.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 16:51:18", last_sign_in_at: "2015-02-22 16:51:18", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
+                 {email: "florian@woertler.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 16:48:59", last_sign_in_at: "2015-02-22 16:48:59", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
+                 {email: "nico@buescher.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 16:51:18", last_sign_in_at: "2015-02-22 16:51:18", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
                  {email: "nils@schlauss.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 16:53:48", last_sign_in_at: "2015-02-22 16:53:48", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
                  {email: "helge@schneider.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 3, current_sign_in_at: "2015-02-22 17:27:45", last_sign_in_at: "2015-02-22 17:01:48", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
                  {email: "frank@white.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 3, current_sign_in_at: "2015-02-22 17:28:40", last_sign_in_at: "2015-02-22 17:01:22", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
@@ -133,11 +133,11 @@ Profile.create!([
                 ])
 
 Service.create!([
-                    {name: "Buffet-Tork", teaser: "Lecker Buffet-Caterer", description: "Super Lecker Buffet-Caterer", business_id: 1, branch_id: 5},
-                    {name: "Taxi-Wörtler", teaser: "Taxi-Dienst ", description: "Taxi-Dienst Wörtler", business_id: 2, branch_id: 8},
-                    {name: "DJ CINO", teaser: "House/Black/Charts", description: "DJ CINO, fester Bestandteil des Münsteraner Nachtlebens. Mit seiner feinen Mischung aus Black’n’White & Best-Party-Ever beamt CINO die Party auf ein neuen Level hoch. Schließt euch Ihm an im Heaven Club, Soho, 4400 uvm.", business_id: 3, branch_id: 1},
-                    {name: "Taxi-Schlauss", teaser: "Speed Taxi", description: "Super Taxi-Dienst von Schlauss", business_id: 4, branch_id: 8},
-                    {name: "DJ Pascal", teaser: "Charts", description: "DJ Pascal - Bekannt in Münster und Umgebung.", business_id: 5, branch_id: 1}
+                    {name: "Buffet-Tork", teaser: "Lecker Buffet-Caterer", description: "Super Lecker Buffet-Caterer",email: "info@tork.de", phone: "01111111", business_id: 1, branch_id: 5},
+                    {name: "Taxi-Wörtler", teaser: "Taxi-Dienst ", description: "Taxi-Dienst Wörtler", email: "info@woertler.de", phone: "01111112", business_id: 2, branch_id: 8},
+                    {name: "DJ CINO", teaser: "House/Black/Charts", description: "DJ CINO, fester Bestandteil des Münsteraner Nachtlebens. Mit seiner feinen Mischung aus Black’n’White & Best-Party-Ever beamt CINO die Party auf ein neuen Level hoch. Schließt euch Ihm an im Heaven Club, Soho, 4400 uvm.", email: "info@cino.de", phone: "01111113", business_id: 3, branch_id: 1},
+                    {name: "Taxi-Schlauss", teaser: "Speed Taxi", description: "Super Taxi-Dienst von Schlauss", email: "info@schlauss.de", phone: "01111114", business_id: 4, branch_id: 8},
+                    {name: "DJ Pascal", teaser: "Charts", description: "DJ Pascal - Bekannt in Münster und Umgebung.", email: "info@pascal.de", phone: "01111115", business_id: 5, branch_id: 1}
                 ])
 
 UserBusiness.create!([

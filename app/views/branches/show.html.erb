@@ -68,6 +68,14 @@
                             <td>Kommt aus:</td>
                             <td><%= Address.where(id: Business.where(id: s.business_id).first.address_id).first.city %></td>
                           </tr>
+                          <tr>
+                            <td>eMail:</td>
+                            <td><%= s.email %></td>
+                          </tr>
+                          <tr>
+                            <td>Telefon:</td>
+                            <td><%= s.phone %></td>
+                          </tr>
                         </table>
                       </div>
                       <div class="col-lg-6 col-sm-12">
