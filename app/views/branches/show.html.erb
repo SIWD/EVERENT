@@ -1,7 +1,5 @@
 <% content_for :title, "Branche: #{@branch.name}" %>
 
-
-<p id="notice"><%= notice %></p>
 <div class="well">
   <h4 class="title">Filter:</h4>
   <%= form_for( "Branche/#{@branch.name}", method: :get, :html => {:class => 'reply'} ) do |f| %>

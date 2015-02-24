@@ -13,11 +13,11 @@
 
   <div class="field">
     <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, :required => true %>
   </div>
     <div class="field">
       <% BranchCategory.all.each do |bc| %>
-          <%= f.radio_button :branchCategory_id, bc.id %>
+          <%= f.radio_button :branchCategory_id, bc.id, :required => true %>
           <%= f.label "branchCategory_id_#{bc.id}", bc.name %><br>
       <% end %>
     </div>
