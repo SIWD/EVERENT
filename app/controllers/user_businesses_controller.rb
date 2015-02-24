@@ -21,6 +21,7 @@ class UserBusinessesController < ApplicationController
   end
 
   def edit
+    @edit = true
   end
 
   def create
