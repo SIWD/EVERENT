@@ -1,183 +1,99 @@
 require 'rails_helper'
 require 'open-uri'
 
-=begin
-describe 'it tests the business function' do
-  it 'allows to sign up' do
-    visit root_path
-    click_link 'Registrieren'
-    fill_in 'user_email', with: 'user@test.de'
-    fill_in 'user_password', with: '12345678'
-    fill_in 'user_password_confirmation', with: '12345678'
-    click_link 'Registrieren'
-  end
-=end
-
 describe 'Business' do
+
   context 'CRUD Business' do
 
-    let!(:login_user1) { FactoryGirl.create(:user) }
-=begin
-let!(:login_user2) { FactoryGirl.create(:user) }
-let!(:login_user3) { FactoryGirl.create(:user) }
-let!(:login_user4) { FactoryGirl.create(:user) }
-let!(:login_user5) { FactoryGirl.create(:user) }
-=end
+    let!(:user1) { FactoryGirl.create(:user) }
+    let!(:profile1) { FactoryGirl.create(:profile, user: user1) }
+    let!(:branch_category1) { FactoryGirl.create(:branch_category) }
+    let!(:branch1) { FactoryGirl.create(:branch, branchCategory: branch_category1) }
+      it 'creates a business and service' do
+        sign_in user1
+        visit profile_path(profile1)
+        page.should have_content 'Geschäft anlegen'
 
+        click_link_or_button 'Geschäft anlegen'
+        fill_in 'business_name', with: 'TestAG'
+        fill_in 'address_city', with: 'Meine Stadt 1'
+        fill_in 'address_streetName', with: 'Meine Straße'
+        fill_in 'address_streetNumber', with: '1'
+        click_link_or_button 'Speichern'
+        page.should have_content 'TestAG'
 
-
-=begin
-  it 'allows to create profile' do
-    fill_in 'profile_gender', with: 'male'
-    fill_in 'firstname', with: 'nils'
-    fill_in 'lastname', with: 'test'
-    fill_in 'phone', with: '1234'
-    fill_in 'city', with: 'Stadt'
-    fill_in 'postcode', with: '12345'
-    fill_in 'streetname', with: 'Straße'
-    fill_in 'housenumber', with: '2'
-    fill_in 'user_password', with: '12345678'
-    click_button 'Profil erstellen'
-    expect(page).to have_content 'Geschäft anlegen'
-  end
-=end
-
-      it 'creates a business' do
-
-        sign_in(login_user1)
-        create_profile(login_user1)
-
-        click_link 'Geschäft anlegen'
-        fill_in 'name', with: "My GmbH"
-        fill_in 'city', with: "Hamburg"
-        fill_in 'zipcode', with: "12345"
-        fill_in 'streetname', with: "Hauptstr"
-        fill_in 'streetnumber', with: "1"
-        expect(page).to have_content 'Neue Dienstleistung anlegen'
-      end
-
-      it 'creates second profile' do
-        open("http://localhost:3000/users/sign_out")
-        click_link 'Registrieren'
-        fill_in 'user_email', with: 'testmail@test.de'
-        fill_in 'user_password', with: '12341234'
-        fill_in 'user_password_confirmation', with: '12341234'
-        click_link 'Registrieren'
-      end
-
-      it 'fills out second profile' do
-        fill_in 'profile_gender', with: 'male'
-        fill_in 'firstname', with: 'nils'
-        fill_in 'lastname', with: 'test'
-        fill_in 'phone', with: '1234'
-        fill_in 'city', with: 'Stadt'
-        fill_in 'postcode', with: '12345'
-        fill_in 'streetname', with: 'Straße'
-        fill_in 'housenumber', with: '2'
-        fill_in 'user_password', with: '12345678'
-        click_button 'Profil erstellen'
-        expect(page).to have_content 'Geschäft anlegen'
-        open("http://localhost:3000/users/sign_out")
-      end
-
-      it 'adds employee' do
-        click_link 'Login'
-        fill_in 'user_email', with: 'test@test.de'
-        fill_in 'user_password', with: '12341234'
-        click_button 'Anmelden'
-        open('http://localhost:3000/businesses/3')
-        click_link 'Mitarbeiter hinzufügen'
-        fill_in 'user_mail', with: 'test@test.de'
-        expect(page).to have_content 'Zurück'
-        click_button 'Speichern'
-        page.should have_content 'test@test.de'
-      end
-
-      it 'edits employee' do
-        click_link 'Bearbeiten'
-        fill_in 'user_email', with: 'other@test.de'
-        click_button 'Speichern'
-        page.should have_content 'other@test.de'
-      end
-
-      it 'delete employee' do
-        click_link 'Aus Unternehmen entfernen'
-        click_link_or_button 'OK'
-        page.should have_no_content  'other@test.de'
-      end
-
-      it 'creates a new service' do
-        click_link 'Neue Dienstleistung anlegen'
-          expect(page).to have_content 'Service erstellen'
-          expect(page).to have_content 'Back'
-
-          choose('My GmbH')
-        fill_in 'name', with: 'Meine Dienstleistung'
-        fill_in 'teaser', with: 'Kurzbeschreibung der Dienstleistung'
-        fill_in 'description', with: 'Längere Beschreibung der Dienstleistung'
-          choose('Band')
+        click_link_or_button 'Neuen Service anlegen'
+        choose('TestAG')
+        fill_in 'service_name', with: 'Dienstleistung_XY'
+        fill_in 'service_teaser', with: 'Kurzbeschreibung der Dienstleistung'
+        fill_in 'service_description', with: 'Längere Beschreibung der Dienstleistung'
+        page.choose('Taxi')
         click_link_or_button 'Service erstellen'
-
-        expect(page).to have_content 'Dienstleistung bearbeiten'
-        expect(page).to have_content 'Zum Unternehmen: My GmbH'
+        page.should have_content 'Dienstleistung bearbeiten'
       end
+
+    #-----------------------------------------------------------------------------
+
+    let!(:business1) { FactoryGirl.create(:business) }
+    let!(:user_business1) { FactoryGirl.create(:user_business, business: business1, user: user1) }
+    let!(:service1) { FactoryGirl.create(:service, business: business1, branch: branch1) }
 
       it 'updates the service' do
-        click_link 'Dienstleistung bearbeiten '
-          expect(page).to have_content 'Show'
-          expect(page).to have_content 'Back'
-        fill_in 'teaser', with: 'Geänderte Kurzbeschreibung'
+        visit root_path
+        sign_in user1
+        visit profile_path(profile1)
+        click_link_or_button 'Testservice'
+        click_link_or_button 'Dienstleistung bearbeiten'
+
+        fill_in 'service_teaser', with: 'Geänderte Kurzbeschreibung'
         click_link_or_button 'Service aktualisieren'
-        expect(page).to have_content 'Teaser: Geänderte Kurzbeschreibung'
+        page.should have_content 'Teaser: Geänderte Kurzbeschreibung'
       end
 
-      it 'visits the business page' do
-        click_link 'Zum Unternehmen: My GmbH'
-        expect(page).to have_content 'Anzeigen'
-        expect(page).to have_content 'Neuen Service anlegen'
-        click_link 'Neuen Service anlegen'
-      end
+    #-----------------------------------------------------------------------------
+    let!(:user2) { FactoryGirl.create(:user) }
+    let!(:profile2) { FactoryGirl.create(:profile, user: user2) }
 
-      it 'creates a second service' do
-        choose('My GmbH')
-        fill_in 'name', with: 'Meine zweite Dienstleistung'
-        fill_in 'teaser', with: 'Kurzbeschreibung der Dienstleistung 2'
-        fill_in 'description', with: 'Längere Beschreibung der Dienstleistung 2'
-        choose('Koch')
-        click_link_or_button 'Service erstellen'
+    it 'updates the business' do
 
-        expect(page).to have_content 'Dienstleistung bearbeiten'
-        expect(page).to have_content 'Zum Unternehmen: My GmbH'
-      end
+      sign_in user2
+      visit profile_path(profile2)
+      click_link_or_button 'Geschäft anlegen'
+      fill_in 'business_name', with: '-TestAG-'
+      click_link_or_button 'Speichern'
 
-      it 'updates the business' do
-        expect(page).to have_content 'Unternehmen Bearbeiten'
-        expect(page).to have_content 'Unternehmen löschen'
-        click_link 'Unternehmen bearbeiten'
-        fill_in 'zipcode', with: '66666'
+      expect(page).to have_content 'Unternehmen Bearbeiten'
+      expect(page).to have_content 'Unternehmen löschen'
+      click_link 'Unternehmen Bearbeiten'
+      fill_in 'address_zipcode', with: '66666'
+      expect(page).to have_content 'Zurück'
+      click_link_or_button 'Speichern'
+      page.should have_content 'PLZ: 66666'
 
-        expect(page).to have_content 'Show'
-        expect(page).to have_content 'Back'
-        expect(page).to have_content 'Business aktualisieren'
-        click_link 'Business aktualisieren'
-      end
+    end
 
+    let!(:user3) { FactoryGirl.create(:user) }
+    let!(:profile3) { FactoryGirl.create(:profile, user: user3) }
 
-      # it 'deletes the service' do
-      #
-      #
-      #
-      #
-      #
-      #
+    it 'deletes the business' do
 
-      it 'deletes the business' do
-        click_link 'Unternehmen löschen'
-        #Pop Up Fenster kommt
-        click_link 'OK'
-      end
+      sign_in user3
+      visit profile_path(profile3)
+      click_link_or_button 'Geschäft anlegen'
+      fill_in 'business_name', with: 'DeleteAG'
+      click_link_or_button 'Speichern'
+
+      page.should have_content 'Unternehmen löschen'
+      click_link 'Unternehmen löschen'
+
+      page.should have_content 'Alle Unternehmen'
+      page.should have_content 'DeleteAG wurde entfernt'
+    end
+
   end
 end
+
+
 
 
 

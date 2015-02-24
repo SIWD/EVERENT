@@ -62,6 +62,7 @@ GEM
       execjs
     coffee-script-source (1.8.0)
     commonjs (0.2.7)
+    database_cleaner (1.4.0)
     devise (3.4.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -243,6 +244,7 @@ DEPENDENCIES
   cancancan (~> 1.10)
   capybara
   coffee-rails (~> 4.0.0)
+  database_cleaner
   devise
   devise-bootstrap-views
   factory_girl_rails

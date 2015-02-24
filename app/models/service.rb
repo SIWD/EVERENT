@@ -4,4 +4,7 @@ class Service < ActiveRecord::Base
   has_many :event_services
 
   validates :branch, :business, :name, presence: true
+
+  # validates_format_of :email, :with => /@/
+
 end
