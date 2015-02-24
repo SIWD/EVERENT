@@ -1,7 +1,5 @@
 <% content_for :title, "Branche: #{@branch.name}" %>
 
-
-<p id="notice"><%= notice %></p>
 <div class="well">
   <h4 class="title">Filter:</h4>
   <%= form_for( "Branche/#{@branch.name}", method: :get, :html => {:class => 'reply'} ) do |f| %>
@@ -67,6 +65,14 @@
                           <tr>
                             <td>Kommt aus:</td>
                             <td><%= Address.where(id: Business.where(id: s.business_id).first.address_id).first.city %></td>
+                          </tr>
+                          <tr>
+                            <td>eMail:</td>
+                            <td><%= s.email %></td>
+                          </tr>
+                          <tr>
+                            <td>Telefon:</td>
+                            <td><%= s.phone %></td>
                           </tr>
                         </table>
                       </div>

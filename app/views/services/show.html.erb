@@ -15,6 +15,18 @@
   <%= @service.description %>
 </p>
 
+<p>
+  <strong>eMail:</strong>
+  <%= @service.email %>
+</p>
+
+
+<p>
+  <strong>Telefon:</strong>
+  <%= @service.phone %>
+</p>
+
+
 <% if @userServices %>
     <% if ( @userServices.include?(@service) ) %>
         <%= link_to 'Dienstleistung bearbeiten', edit_service_path(@service) %>&nbsp;|&nbsp;
