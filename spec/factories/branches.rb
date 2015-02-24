@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :branch do
-    name  'Testbranche'
-    branch_category nil
+    name 'Taxi'
+    branchCategory nil
   end
+
 end
