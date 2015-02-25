@@ -1,4 +1,6 @@
-label{ cursor: pointer;  }
+label{
+    cursor: pointer;
+}
 
 textarea { resize:vertical; }
 
@@ -40,3 +42,4 @@ form > .row {
 }
 
 .logo { height: 60px; }
+

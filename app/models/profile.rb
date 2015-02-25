@@ -1,6 +1,8 @@
 class Profile < ActiveRecord::Base
 
   belongs_to :user
+  has_many :event_profiles
+  has_many :events, through: :event_profiles
   validates :user_id, :firstname, :lastname, presence: true
 
   has_attached_file :photo, styles: { medium: "300x300>" },
