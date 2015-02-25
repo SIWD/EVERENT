@@ -2,34 +2,80 @@
 <p id="notice"><%= notice %></p>
 <div class="row">
   <div class="col-lg-9">
-    <div class="banner">
+    <% if ((@event.who_has_access_id  == 2) && !(params['password_for_event'] == (@event.password))) %>
+
+        <%= form_for( events_path(@event), method: :get, :html => {:class => 'reply'} ) do |f| %>
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <%= f.label :password_for_event, "Passwort für dieses Event" %><br>
+                <%= f.text_field :password_for_event, class: "form-control", name: "password_for_event" %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <%= f.submit "Event anzeigen" %>
+              </div>
+            </div>
+        <% end %>
+    <% elsif (@event.who_has_access_id  == 1) ||
+            (@event.who_has_access_id  == 3) &&
+                    (@owner) %>
+
+        <div class="banner">
           <%= image_tag "events/default/banner.png" %>
-    </div>
+        </div>
 
 
-    <p>
-      <strong>Name:</strong>
-      <%= @event.name %>
-    </p>
+        <p>
+          <strong>Name:</strong>
+          <%= @event.name %>
+        </p>
 
-    <p>
-      <strong>Stadt:</strong>
-      <%= @address.city %>
-    </p>
-    <p>
-      <strong>PLZ:</strong>
-      <%= @address.zipcode %>
-    </p>
-    <p>
-      <strong>Starße & Nr.:</strong>
-      <%= @address.streetName %>
-      <%= @address.streetNumber %>
-    </p>
+        <p>
+          <strong>Wer darf das Event aufrufen?:</strong>
+          <%= WhoHasAccessToEvent.find(@event.who_has_access_id).who %>
+        </p>
 
-    <p>
-      <strong>Description:</strong>
-      <%= @event.description %>
-    </p>
+        <% if (@event.who_has_access_id  == 2) %>
+            <p>
+              <strong>Passwort:</strong>
+              <%= @event.password %>
+            </p>
+        <% end %>
+
+        <p>
+          <strong>Datum:</strong>
+          <%= @event.date %>
+        </p>
+
+        <p>
+          <strong>Uhrzeit:</strong>
+          <%= @event.time %>
+        </p>
+
+        <p>
+          <strong>Stadt:</strong>
+          <%= @address.city %>
+        </p>
+        <p>
+          <strong>PLZ:</strong>
+          <%= @address.zipcode %>
+        </p>
+        <p>
+          <strong>Starße & Nr.:</strong>
+          <%= @address.streetName %>
+          <%= @address.streetNumber %>
+        </p>
+
+        <p>
+          <strong>Description:</strong>
+          <%= @event.description %>
+        </p>
+    <% elsif ((@event.who_has_access_id  == 3) && (!@owner))%>
+        <p>
+          <strong>Keine Berechtigung</strong>
+        </p>
+    <% end %>
   </div>
   <div class="col-lg-3">
     Ander Veranstaltungen

@@ -17,6 +17,7 @@ class BusinessesController < ApplicationController
   end
 
   def new
+
     @business = Business.new
     respond_with(@business)
   end
@@ -25,11 +26,11 @@ class BusinessesController < ApplicationController
   end
 
   def create
-    address = Address.create(address_params)
-
+    @address = Address.create(address_params)
     @business = Business.new(business_params)
-    @business.address_id = address.id
+    @business.address_id = @address.id
     if(@business.save == false)
+      @address.destroy
       respond_with(@business)
 
     else
@@ -73,25 +74,26 @@ class BusinessesController < ApplicationController
   end
 
   private
-    def set_business
-      #Check if business exists:
-      if Business.where(id: params[:id]).count <= 0
-        flash[:alert] = "Unternehmen wurde nicht gefunden"
-        redirect_to businesses_path
-        return
-      end
-
-      @business = Business.find(params[:id])
-      @services = Service.where(business_id: @business.id)
-      @address  = Address.where(id: @business.address_id).first
+  def set_business
+    #Check if business exists:
+    if Business.where(id: params[:id]).count <= 0
+      flash[:alert] = "Unternehmen wurde nicht gefunden"
+      redirect_to businesses_path
+      return
     end
+
+    @business = Business.find(params[:id])
+    @services = Service.where(business_id: @business.id)
+    @address  = Address.where(id: @business.address_id).first
+  end
+
 
   def business_params
     params.require(:business).permit(:name)
   end
 
   def address_params
-    params.require(:address).permit(:city, :zipcode, :streetName, :streetNumber)
+      params.require(:address).permit(:city, :zipcode, :streetName, :streetNumber)
   end
 
   def set_user_businesses
@@ -108,7 +110,7 @@ class BusinessesController < ApplicationController
         @admin = false
       end
     end
- end
+  end
 
   def check_access_right
     if current_user
@@ -128,7 +130,7 @@ class BusinessesController < ApplicationController
   end
 
   def set_notice(action)
-    flash[:notice] = @business.name + " wurde " + action
+    flash[:notice] = "'" + @business.name + "'" + " wurde " + action
   end
 
   def set_notice_no_access

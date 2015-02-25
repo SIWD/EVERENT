@@ -86,6 +86,20 @@ ActiveRecord::Schema.define(version: 20150218164721) do
 
   add_index "event_locations", ["address_id"], name: "index_event_locations_on_address_id"
 
+  create_table "event_profiles", force: true do |t|
+    t.integer  "event_id"
+    t.integer  "profile_id"
+    t.integer  "event_user_status_id"
+    t.integer  "event_user_join_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_profiles", ["event_id"], name: "index_event_profiles_on_event_id"
+  add_index "event_profiles", ["event_user_join_id"], name: "index_event_profiles_on_event_user_join_id"
+  add_index "event_profiles", ["event_user_status_id"], name: "index_event_profiles_on_event_user_status_id"
+  add_index "event_profiles", ["profile_id"], name: "index_event_profiles_on_profile_id"
+
   create_table "event_services", force: true do |t|
     t.integer  "event_id"
     t.integer  "service_id"
@@ -111,20 +125,6 @@ ActiveRecord::Schema.define(version: 20150218164721) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "event_users", force: true do |t|
-    t.integer  "event_id"
-    t.integer  "user_id"
-    t.integer  "event_user_status_id"
-    t.integer  "event_user_join_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "event_users", ["event_id"], name: "index_event_users_on_event_id"
-  add_index "event_users", ["event_user_join_id"], name: "index_event_users_on_event_user_join_id"
-  add_index "event_users", ["event_user_status_id"], name: "index_event_users_on_event_user_status_id"
-  add_index "event_users", ["user_id"], name: "index_event_users_on_user_id"
 
   create_table "events", force: true do |t|
     t.string   "name"
