@@ -12,6 +12,10 @@ class Ability
           can :manage, [:business, :user_businesses]
         end
 
+        if user.has_role? :eventOwner
+          can :manage, :event
+        end
+
         if user.has_role? :global_admin
           #admin
           can :manage, :all

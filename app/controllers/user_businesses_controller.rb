@@ -12,7 +12,8 @@ class UserBusinessesController < ApplicationController
   end
 
   def show
-    respond_with(@user_business)
+    redirect_to root_path
+    #respond_with(@user_business)
   end
 
   def new

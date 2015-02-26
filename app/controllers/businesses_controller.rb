@@ -4,6 +4,7 @@ class BusinessesController < ApplicationController
   before_action :set_access_right, only: [:show]
   before_action :check_access_right, only: [:edit, :update, :destroy]
   before_action :set_business_users, only: [:show]
+  before_action :check_for_events, only: [:destroy]
 
   respond_to :html
 
@@ -138,6 +139,14 @@ class BusinessesController < ApplicationController
 
   def set_notice_no_access
     flash[:alert] = "Sie haben keine Berechtigung hierfür"
+  end
+
+  #check for existing events before removing the business
+  def check_for_events
+    if @business.event_businesses.count > 0
+      flash[:alert] = "Bitte löschen Sie zuerst alle Events, in denen dieses Unternehmen Gastgeber ist"
+      redirect_to business_path(@business)
+    end
   end
 
 end

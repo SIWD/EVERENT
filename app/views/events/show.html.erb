@@ -62,15 +62,20 @@
 
                 <p>
                   <strong>Datum:</strong>
-                  <%= @event.date %>
+                  <%= @event.date.strftime('%d %m %Y')%>
                 </p>
 
                 <p>
                   <strong>Uhrzeit:</strong>
-                  <%= @event.time %>
+                  <%= @event.time.strftime('%H:%M') %>
                 </p>
 
-                <p>
+              <p>
+                <strong>Location:</strong>
+                <%= @event.event_location.name %>
+              </p>
+
+              <p>
                   <strong>Stadt:</strong>
                   <%= @address.city %>
                 </p>
@@ -106,9 +111,11 @@
 
 </div>
 
+
+<%= link_to 'Zurück', :back %>
 <% if current_user %>
     <% if current_user.has_role? :eventOwner, @event %>
-        <%= link_to 'Bearbeiten', edit_event_path(@event) %> |
+        &nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_event_path(@event) %>
+        &nbsp;|&nbsp;<%= link_to 'Löschen', @event, method: :delete, data: { confirm: 'Sind Sie sicher?' } %>
     <% end %>
 <% end %>
-<%= link_to 'Zurück', :back %>
