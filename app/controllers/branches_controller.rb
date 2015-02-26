@@ -24,11 +24,12 @@ class BranchesController < ApplicationController
   end
 
   def create
+    flash[:notice] = "Branche erfolgreich erstellt."
     @branch = Branch.new(branch_params)
     @branch.save
     #respond_with(@branch)
     respond_to do |format|
-      format.html { redirect_to action: "index", notice: 'Branche erfolgreich erstellt.'}
+      format.html { redirect_to action: "index"}
     end
   end
 
@@ -62,6 +63,12 @@ class BranchesController < ApplicationController
       name['_'] = ' '
     end
     @branch = Branch.where(name: name).first
+
+    #Check if Branch exists:
+    if ! @branch
+      flash[:alert] = "Branche wurde nicht gefunden"
+      redirect_to branches_path
+    end
   end
 
   def set_branch
@@ -83,7 +90,12 @@ class BranchesController < ApplicationController
       else
         results = Geocoder.search(@loc, :region => 'DE')
         result = results.first
-        @loc_from = Location.create(address: result.address)
+        if result
+          @loc_from = Location.create(address: result.address)
+        else
+          flash[:alert] = "Der Ort aus Ihrer Suche wurde nicht gefunden"
+          redirect_to '/Branche/' + @branch.name
+        end
       end
     end
   end

@@ -50,7 +50,11 @@ class ProfilesController < ApplicationController
     else
       @profile.destroy
       @profile.user.destroy
-      @profile.user.user_businesses.destroy
+      user_businesses = @profile.user.user_businesses
+      user_businesses.each do |user_business|
+        user_business.destroy
+      end
+      
       flash[:notice] = "Ihr Account wurde erfolgreich gelöscht"
       redirect_to root_path
     end
@@ -60,6 +64,13 @@ class ProfilesController < ApplicationController
   private
 
   def set_profile
+    #Check if Profile exists:
+    if Profile.where(id: params[:id]).count <= 0
+      flash[:alert] = "Profil wurde nicht gefunden"
+      redirect_to profiles_path
+      return
+    end
+
     @profile = Profile.find(params[:id])
   end
 

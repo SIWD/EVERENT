@@ -15,7 +15,12 @@
 
   <div class="field">
     <%= u.label :email, 'Mitarbeiter' %><b>&nbsp;(E-Mail)</b><br />
-    <%= u.text_field :email %>
+    <% if @edit %>
+        <%= u.text_field :email, disabled: "disabled" %>
+    <% else %>
+        <%= u.text_field :email %>
+    <% end %>
+
   </div>
 
 <% end %>

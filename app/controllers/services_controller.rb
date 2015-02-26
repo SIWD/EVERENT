@@ -41,6 +41,13 @@ class ServicesController < ApplicationController
 
   private
   def set_service
+    #Check if Service exists:
+    if Service.where(id: params[:id]).count <= 0
+      flash[:alert] = "Dienstleistung wurde nicht gefunden"
+      redirect_to services_path
+      return
+    end
+
     @service = Service.find(params[:id])
     if current_user
       @profile = Profile.find_by_user_id(current_user.id)
@@ -77,6 +84,6 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:description, :name, :teaser, :business_id, :branch_id)
+    params.require(:service).permit(:description, :name, :teaser, :business_id, :branch_id, :email, :phone)
   end
 end
