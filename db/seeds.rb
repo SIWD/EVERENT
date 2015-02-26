@@ -125,7 +125,7 @@ EventUserStatus.create!([
                         ])
 
 EventLocation.create!([
-                        {name: "Bei mir Zuhasuse!", address_id: 6},
+                        {name: "Bei mir Zuhause!", address_id: 6},
                         {name: "Club Veron", address_id: 7}
                       ])
 
