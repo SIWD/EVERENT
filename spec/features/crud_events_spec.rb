@@ -1,3 +1,5 @@
+=begin
+
 require 'rails_helper'
 require 'open-uri'
 
@@ -15,7 +17,7 @@ describe 'events' do
 
   let!(:user1) { FactoryGirl.create(:user) }
   let!(:profile1) { FactoryGirl.create(:profile, user: user1) }
-  #let!(:access) { FactoryGirl.create(:who_has_access_to_event) }
+  let!(:access) { FactoryGirl.create(:who_has_access_to_event) }
 
   it 'not allows empty fields' do
     visit root_path
@@ -24,16 +26,16 @@ describe 'events' do
 
     click_link 'Event anlegen'
     page.should have_content 'Speichern'
-
     click_link_or_button 'Speichern'
-    page.should have_content 'xxx'
+
+    #page.execute_script("$('form#new_event').submit()")
     page.should have_content '4 errors prohibited this event from being saved:'
 
   end
 
   let!(:user1) { FactoryGirl.create(:user) }
   let!(:profile1) { FactoryGirl.create(:profile, user: user1) }
-  #let!(:access) { FactoryGirl.create(:who_has_access_to_event) }
+  let!(:access) { FactoryGirl.create(:who_has_access_to_event) }
 
   it 'creates, updates and deletes event' do
 
@@ -72,3 +74,4 @@ describe 'events' do
   end
 
 end
+=end
