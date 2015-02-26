@@ -14,15 +14,11 @@ class Event < ActiveRecord::Base
   has_many :event_images
 
   validates :name, presence: true
-  validate :at_least_one_host
+  #validate :at_least_one_host
   validates :event_location_id, presence: true
   validates :who_has_access_id, presence: true
 
 
-  def at_least_one_host
-    if [self.profile_ids, self.business_ids, self.service_ids].reject(&:blank?).size == 0
-      errors[:base] << ("Mindestens 1 Gastgeber muss ausgewählt werden.")
-    end
-  end
+
 
 end

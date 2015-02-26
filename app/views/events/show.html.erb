@@ -1,5 +1,4 @@
 <% content_for :title, Event %>
-<p id="notice"><%= notice %></p>
 <div class="row">
   <div class="col-lg-9">
     <% if ((@event.who_has_access_id  == 2) && !(params['password_for_event'] == (@event.password))) %>
@@ -18,8 +17,8 @@
             </div>
         <% end %>
     <% elsif (@event.who_has_access_id  == 1) ||
-            (@event.who_has_access_id  == 3) &&
-                    (@owner) %>
+            ((@event.who_has_access_id  == 3) && (@owner)) ||
+            ((@event.who_has_access_id  == 2) && (params['password_for_event'] == (@event.password))) %>
 
         <div class="banner">
           <%= image_tag "events/default/banner.png" %>
@@ -77,9 +76,7 @@
         </p>
     <% end %>
   </div>
-  <div class="col-lg-3">
-    Ander Veranstaltungen
-  </div>
+
 </div>
 
 <%= link_to 'Bearbeiten', edit_event_path(@event) %> |

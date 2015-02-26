@@ -5,8 +5,9 @@ class EventsController < ApplicationController
   after_action :set_notice_nil, only: [:show]
   before_action :create_host_maps, only: [:new]
   before_action :load_host_maps, only: [:edit]
-  before_action :fill_host_maps, only: [:create]
+  before_action :fill_host_maps, only: [:create, :update]
   before_action :is_owner?, only: [:show, :edit]
+  before_action :has_owner, only: [:update, :create]
   respond_to :html
 
   def index
@@ -28,8 +29,6 @@ class EventsController < ApplicationController
   end
 
   def create
-
-
     @address = Address.create(address_params)
     @event = Event.new(event_params)
 
@@ -43,8 +42,8 @@ class EventsController < ApplicationController
       update_event_member_status
     else
       destroy_event_members
-
     end
+
     respond_with(@event)
   end
 
@@ -220,5 +219,13 @@ class EventsController < ApplicationController
     end
   end
 
+  def has_owner
+    #flash[:notice] = @profiles_map.size.to_s + " " + @businesses_map.size.to_s + " " + @services_map.size.to_s
+
+    if @profiles_map.size <= 1 && @businesses_map.size <= 1 && @services_map.size <= 1
+      flash[:alert] = "Bitte geben Sie mindestens einen Gastgeber an"
+      redirect_to :back
+    end
+  end
 
 end
