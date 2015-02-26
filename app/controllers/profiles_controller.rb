@@ -44,8 +44,8 @@ class ProfilesController < ApplicationController
   end
 
   def destroy
-    if @profile.user.user_businesses.Administrator.all.count > 0
-      flash[:error] = "Bitte verlassen Sie erst alle Unternehmen, in denen Sie ein Administrator sind"
+    if (@profile.user.user_businesses.Administrator.all.count > 0) || (@profile.event_profiles.all.count > 0)
+      flash[:error] = "Bitte verlassen Sie erst alle Unternehmen, in denen Sie ein Administrator sind und/oder löschen Sie all Ihre Events"
       respond_with(@profile)
     else
       @profile.destroy

@@ -70,6 +70,9 @@ class BusinessesController < ApplicationController
 
     @business.destroy
     set_notice("entfernt")
+
+    current_user.remove_role(:business_admin, @business)
+
     respond_with(@business)
   end
 

@@ -29,17 +29,16 @@
                   <%= h.collection_check_boxes :profile_ids, Profile.where(user_id: current_user.id).all, :id, :name_with_initial, multiple: true do |p| %>
                       <tr>
                         <td><%= p.check_box(checked: if @profiles_map.include?(p.object.id.to_s) then true end) + " " + p.label %></td>
-                        <td><%= link_to 'Profil', profile_path(p.object.id) %></td>
+                        <td>&nbsp;|&nbsp;<%= link_to 'Profil', profile_path(p.object.id) %></td>
                       </tr>
                   <% end %>
 
                   <% if(UserBusiness.where(user_id: current_user.id).count > 0) %>
                       <% UserBusiness.where(user_id: current_user.id).each do |ub| %>
-                          <%= @businesses_map %>
                           <%= h.collection_check_boxes :business_ids, Business.where(id: ub.business_id).all, :id, :name, multiple: true do |b| %>
                               <tr>
                                 <td><%= b.check_box(checked: if @businesses_map.include?(b.object.id.to_s) then true end) + " " + b.label %></td>
-                                <td><%= link_to 'Unternehmen', business_path(b.object.id) %></td>
+                                <td>&nbsp;|&nbsp;<%= link_to 'Unternehmen', business_path(b.object.id) %></td>
                               </tr>
                           <% end %>
                       <% end %>
@@ -52,7 +51,7 @@
                                   <%= h.collection_check_boxes :service_ids, Service.where(business_id: b.id).all, :id, :name, multiple: true do |s| %>
                                       <tr>
                                         <td><%= s.check_box(checked: if @services_map.include?(s.object.id.to_s) then true end) + " " + s.label %></td>
-                                        <td><%= link_to 'Dienstleistung', service_path(s.object.id) %></td>
+                                        <td>&nbsp;|&nbsp;<%= link_to 'Dienstleistung', service_path(s.object.id) %></td>
                                       </tr>
                                   <% end %>
                               <% end %>
@@ -155,7 +154,7 @@
 
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <%= f.submit "Speichern", class: "btn btn-normal btn-color submit" %>
+            <%= f.submit "Speichern" %>
           </div>
         </div>
     <% end %>

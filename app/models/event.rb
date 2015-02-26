@@ -1,4 +1,5 @@
 class Event < ActiveRecord::Base
+  resourcify
   belongs_to :event_location
   belongs_to :who_has_access_to_event
 

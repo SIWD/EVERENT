@@ -13,13 +13,13 @@
 
     <div class="field">
       <%= f.label :name %><br>
-      <%= f.text_field :name %>
+      <%= f.text_field :name, :required => true %>
     </div>
 
     <%= fields_for :address, @address do |a| %>
         <div class="field">
           <%= a.label :city, 'Stadt' %><br>
-          <%= a.text_field :city %>
+          <%= a.text_field :city, :required => true %>
         </div>
 
         <div class="field">
