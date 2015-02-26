@@ -24,52 +24,79 @@
           <%= image_tag "events/default/banner.png" %>
         </div>
 
+        <div>
+        <table width="100%">
+          <tr>
+            <td width="60%">
+                <p>
+                  <strong>Name:</strong>
+                  <%= @event.name %>
+                </p>
 
-        <p>
-          <strong>Name:</strong>
-          <%= @event.name %>
-        </p>
+                <p>
+                    <strong>Gastgeber:</strong>
+                    <ul>
+                      <% @profiles.each do |profile| %>
+                        <li><%= link_to profile.profile.firstname + " " + profile.profile.lastname, profile_path(profile.profile) %></li>
+                      <% end %>
+                      <% @businesses.each do |business| %>
+                        <li><%= link_to business.business.name, business_path(business.business) %></li>
+                      <% end %>
+                      <% @services.each do |service| %>
+                        <li><%= link_to service.service.name, service_path(service.service) %></li>
+                      <% end %>
+                    </ul>
+                </p>
 
-        <p>
-          <strong>Wer darf das Event aufrufen?:</strong>
-          <%= WhoHasAccessToEvent.find(@event.who_has_access_id).who %>
-        </p>
+                <p>
+                  <strong>Wer darf das Event aufrufen?:</strong>
+                  <%= WhoHasAccessToEvent.find(@event.who_has_access_id).who %>
+                </p>
 
-        <% if (@event.who_has_access_id  == 2) %>
-            <p>
-              <strong>Passwort:</strong>
-              <%= @event.password %>
-            </p>
-        <% end %>
+                <% if (@event.who_has_access_id  == 2) %>
+                    <p>
+                      <strong>Passwort:</strong>
+                      <%= @event.password %>
+                    </p>
+                <% end %>
 
-        <p>
-          <strong>Datum:</strong>
-          <%= @event.date %>
-        </p>
+                <p>
+                  <strong>Datum:</strong>
+                  <%= @event.date %>
+                </p>
 
-        <p>
-          <strong>Uhrzeit:</strong>
-          <%= @event.time %>
-        </p>
+                <p>
+                  <strong>Uhrzeit:</strong>
+                  <%= @event.time %>
+                </p>
 
-        <p>
-          <strong>Stadt:</strong>
-          <%= @address.city %>
-        </p>
-        <p>
-          <strong>PLZ:</strong>
-          <%= @address.zipcode %>
-        </p>
-        <p>
-          <strong>Starße & Nr.:</strong>
-          <%= @address.streetName %>
-          <%= @address.streetNumber %>
-        </p>
+                <p>
+                  <strong>Stadt:</strong>
+                  <%= @address.city %>
+                </p>
+                <p>
+                  <strong>PLZ:</strong>
+                  <%= @address.zipcode %>
+                </p>
+                <p>
+                  <strong>Starße & Nr.:</strong>
+                  <%= @address.streetName %>
+                  <%= @address.streetNumber %>
+                </p>
 
-        <p>
-          <strong>Description:</strong>
-          <%= @event.description %>
-        </p>
+                <p>
+                  <strong>Beschreibung:</strong>
+                  <%= @event.description %>
+                </p>
+            </td>
+            <td width="40%">
+              <iframe src="http://maps.google.de/maps?hl=de&amp;q=<%= @address.city + ", " + @address.streetName + " " + @address.streetNumber %>&amp;ie=UTF8&amp;t=&amp;z=17&amp;iwloc=B&amp;output=embed"
+                      scrolling="no" marginheight="0" marginwidth="0" frameborder="0" height="300px" width="100%">
+              </iframe>
+            </td>
+          </tr>
+        </table>
+        </div>
     <% elsif ((@event.who_has_access_id  == 3) && (!@owner))%>
         <p>
           <strong>Keine Berechtigung</strong>
@@ -79,5 +106,9 @@
 
 </div>
 
-<%= link_to 'Bearbeiten', edit_event_path(@event) %> |
+<% if current_user %>
+    <% if current_user.has_role? :eventOwner, @event %>
+        <%= link_to 'Bearbeiten', edit_event_path(@event) %> |
+    <% end %>
+<% end %>
 <%= link_to 'Zurück', :back %>

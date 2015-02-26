@@ -5,6 +5,7 @@ class EventsController < ApplicationController
   after_action :set_notice_nil, only: [:show]
   before_action :create_host_maps, only: [:new]
   before_action :load_host_maps, only: [:edit]
+  before_action :load_hosts, only: [:show]
   before_action :fill_host_maps, only: [:create, :update]
   before_action :is_owner?, only: [:show, :edit]
   before_action :has_owner, only: [:update, :create]
@@ -201,6 +202,12 @@ class EventsController < ApplicationController
     @profiles_map = @event.event_profiles.map(&:profile_id).to_s
     @businesses_map = @event.event_businesses.map(&:business_id).to_s
     @services_map = @event.event_services.map(&:service_id).to_s
+  end
+
+  def load_hosts
+    @profiles = @event.event_profiles.all
+    @businesses =  @event.event_businesses.all
+    @services =  @event.event_services.all
   end
 
   def fill_host_maps
