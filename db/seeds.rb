@@ -52,7 +52,7 @@ Address.create!([
                     {city: "Warendorf", zipcode: "48231", streetName: "Gänsestraße", streetNumber: "6", latitude: 51.9229261, longitude: 7.9674978, stateCode: nil, country: nil},
                     {city: "München", zipcode: "80331", streetName: "Marienplatz", streetNumber: "8", latitude: 48.137327, longitude: 11.576052, stateCode: nil, country: nil},
                     {city: "Münster", zipcode: "48145", streetName: "Warendorferstraße", streetNumber: "88", latitude: 51.96444, longitude: 7.649900000000001, stateCode: nil, country: nil},
-                    {city: "Ascheberg", zipcode: "59387", streetName: "Mühlenlamp", streetNumber: "2", latitude: 51.7856499, longitude: 7.61848, stateCode: nil, country: nil},
+                    {city: "Ascheberg", zipcode: "59387", streetName: "Mühlenkamp", streetNumber: "2", latitude: 51.7856499, longitude: 7.61848, stateCode: nil, country: nil},
                     {city: "Münster", zipcode: "48155", streetName: "Albersloher Weg", streetNumber: "14", latitude: 51.94991, longitude: 7.636969999999999, stateCode: nil, country: nil}
                 ])
 
