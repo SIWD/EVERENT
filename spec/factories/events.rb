@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :event do
     name "MyString"
-address nil
-description "MyString"
+  address nil
+
   end
 
 end
