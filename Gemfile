@@ -8,7 +8,6 @@ group :production do
 end
 
 group :development, :test do
-  gem 'rspec-rails'
   gem 'factory_girl_rails'#, :require => false
   gem 'guard-rspec'
   gem 'faker'

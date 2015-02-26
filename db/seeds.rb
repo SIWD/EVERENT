@@ -10,6 +10,18 @@ User.create!([
                  {email: "johnny@coffee.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 17:34:53", last_sign_in_at: "2015-02-22 17:34:53", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"}
              ])
 
+Profile.create!([
+                  {gender: 0, firstname: "/", lastname: "Administrator", phone: "/", city: "/", postcode: "/", streetname: "/", housenumber: "/", user_id: 1, photo_file_name: "admin.jpg", photo_content_type: "image/jpeg", photo_file_size: 700437, photo_updated_at: "2015-02-24 13:18:18", address_id: nil},
+                  {gender: 0, firstname: "Michael", lastname: "Tork", phone: "01234567", city: "Ascheberg", postcode: "59387", streetname: "Sandstraße", housenumber: "12", user_id: 2, photo_file_name: "1.png", photo_content_type: "image/png", photo_file_size: 10305, photo_updated_at: "2015-02-24 13:08:44", address_id: nil},
+                  {gender: 0, firstname: "Florian", lastname: "Wörtler", phone: "01234566", city: "Münster", postcode: "48149", streetname: "Corrensstraße", housenumber: "25", user_id: 3, photo_file_name: "2.jpg", photo_content_type: "image/jpeg", photo_file_size: 27308, photo_updated_at: "2015-02-24 13:19:47", address_id: nil},
+                  {gender: 0, firstname: "Nico", lastname: "Büscher", phone: "01234565", city: "Warendorf", postcode: "48231", streetname: "Gänsestraße", housenumber: "6", user_id: 4, photo_file_name: "medium.jpg", photo_content_type: "image/jpeg", photo_file_size: 18373, photo_updated_at: "2015-02-24 13:21:26", address_id: nil},
+                  {gender: 0, firstname: "Nils", lastname: "Schlauss", phone: "01231234", city: "München", postcode: "80331", streetname: "Marienplatz", housenumber: "8", user_id: 5, photo_file_name: "3.jpg", photo_content_type: "image/jpeg", photo_file_size: 23013, photo_updated_at: "2015-02-24 13:20:19", address_id: nil},
+                  {gender: 0, firstname: "Helge", lastname: "Schneider", phone: "07654321", city: "Berlin", postcode: "11011", streetname: "Platz der Republik", housenumber: "1", user_id: 6, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
+                  {gender: 0, firstname: "Frank", lastname: "White", phone: "07452136", city: "Ascheberg", postcode: "59387", streetname: "Dorfheide", housenumber: "41", user_id: 7, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
+                  {gender: 0, firstname: "Pascal", lastname: "Möller", phone: "01222222", city: "Münster", postcode: "48145", streetname: "Warendorferstraße", housenumber: "88", user_id: 8, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
+                  {gender: 0, firstname: "Johannes", lastname: "Kraut", phone: "012333345", city: "Ascheberg", postcode: "59387", streetname: "Mühlenkamp", housenumber: "2", user_id: 9, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil}
+                ])
+
 BranchCategory.create!([
                            {name: "Musik"},
                            {name: "Essen"},
@@ -93,44 +105,40 @@ User::HABTM_Roles.create!([
                               {user_id: 8, role_id: 6}
                           ])
 
+
+WhoHasAccessToEvent.create!([
+                              {who: "Jeder", icon: "privacy/many_member.png"},
+                              {who: "Jeder mit Passwort", icon: "privacy/many_member_lock.png"},
+                              {who: "Nur Gastgeber", icon: "privacy/one_member.png"}
+                            ])
+
+EventUserJoin.create!([
+                        {status: "join"},
+                        {status: "maybe"},
+                        {status: "reject"}
+                      ])
+
+EventUserStatus.create!([
+                          {status: "owner"},
+                          {status: "moderator"},
+                          {status: "guest"}
+                        ])
+
+EventLocation.create!([
+                        {name: "Bei mir Zuhasuse!", address_id: 6},
+                        {name: "Club Veron", address_id: 7}
+                      ])
+
+EventProfile.create!([
+                    {event_id: 1, profile_id: 9, event_user_status_id: 1, event_user_join_id: 1},
+                    {event_id: 2, profile_id: 9, event_user_status_id: 1, event_user_join_id: 1}
+                  ])
+
 Event.create!([
                   {name: "Geburtstag", description: "Bringt gute Stimmung mit :)", date: "2015-05-09", time: "2000-01-01 22:35:00", event_location_id: 1, who_has_access_id: 1, password: ""},
                   {name: "Hochzeit", description: "Gefangen in der Ehe :)", date: "2015-08-22", time: "2000-01-01 13:00:00", event_location_id: 2, who_has_access_id: 2, password: "123456789"}
               ])
 
-EventLocation.create!([
-                          {name: "Bei mir Zuhasuse!", address_id: 6},
-                          {name: "Club Veron", address_id: 7}
-                      ])
-
-EventUser.create!([
-                      {event_id: 1, user_id: 9, event_user_status_id: 1, event_user_join_id: 1},
-                      {event_id: 2, user_id: 9, event_user_status_id: 1, event_user_join_id: 1}
-                  ])
-
-EventUserJoin.create!([
-                          {status: "join"},
-                          {status: "maybe"},
-                          {status: "reject"}
-                      ])
-
-EventUserStatus.create!([
-                            {status: "owner"},
-                            {status: "moderator"},
-                            {status: "guest"}
-])
-
-Profile.create!([
-                    {gender: 0, firstname: "/", lastname: "Administrator", phone: "/", city: "/", postcode: "/", streetname: "/", housenumber: "/", user_id: 1, photo_file_name: "admin.jpg", photo_content_type: "image/jpeg", photo_file_size: 700437, photo_updated_at: "2015-02-24 13:18:18", address_id: nil},
-                    {gender: 0, firstname: "Michael", lastname: "Tork", phone: "01234567", city: "Ascheberg", postcode: "59387", streetname: "Sandstraße", housenumber: "12", user_id: 2, photo_file_name: "1.png", photo_content_type: "image/png", photo_file_size: 10305, photo_updated_at: "2015-02-24 13:08:44", address_id: nil},
-                    {gender: 0, firstname: "Florian", lastname: "Wörtler", phone: "01234566", city: "Münster", postcode: "48149", streetname: "Corrensstraße", housenumber: "25", user_id: 3, photo_file_name: "2.jpg", photo_content_type: "image/jpeg", photo_file_size: 27308, photo_updated_at: "2015-02-24 13:19:47", address_id: nil},
-                    {gender: 0, firstname: "Nico", lastname: "Büscher", phone: "01234565", city: "Warendorf", postcode: "48231", streetname: "Gänsestraße", housenumber: "6", user_id: 4, photo_file_name: "medium.jpg", photo_content_type: "image/jpeg", photo_file_size: 18373, photo_updated_at: "2015-02-24 13:21:26", address_id: nil},
-                    {gender: 0, firstname: "Nils", lastname: "Schlauss", phone: "01231234", city: "München", postcode: "80331", streetname: "Marienplatz", housenumber: "8", user_id: 5, photo_file_name: "3.jpg", photo_content_type: "image/jpeg", photo_file_size: 23013, photo_updated_at: "2015-02-24 13:20:19", address_id: nil},
-                    {gender: 0, firstname: "Helge", lastname: "Schneider", phone: "07654321", city: "Berlin", postcode: "11011", streetname: "Platz der Republik", housenumber: "1", user_id: 6, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
-                    {gender: 0, firstname: "Frank", lastname: "White", phone: "07452136", city: "Ascheberg", postcode: "59387", streetname: "Dorfheide", housenumber: "41", user_id: 7, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
-                    {gender: 0, firstname: "Pascal", lastname: "Möller", phone: "01222222", city: "Münster", postcode: "48145", streetname: "Warendorferstraße", housenumber: "88", user_id: 8, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil},
-                    {gender: 0, firstname: "Johannes", lastname: "Kraut", phone: "012333345", city: "Ascheberg", postcode: "59387", streetname: "Mühlenkamp", housenumber: "2", user_id: 9, photo_file_name: nil, photo_content_type: nil, photo_file_size: nil, photo_updated_at: nil, address_id: nil}
-                ])
 
 Service.create!([
                     {name: "Buffet-Tork", teaser: "Lecker Buffet-Caterer", description: "Super Lecker Buffet-Caterer",email: "info@tork.de", phone: "01111111", business_id: 1, branch_id: 5},
@@ -149,9 +157,3 @@ UserBusiness.create!([
                          {position: 1, business_id: 1, user_id: 7},
                          {position: 1, business_id: 5, user_id: 8}
                      ])
-
-WhoHasAccessToEvent.create!([
-                                {who: "Jeder", icon: "privacy/many_member.png"},
-                                {who: "Jeder mit Passwort", icon: "privacy/many_member_lock.png"},
-                                {who: "Nur Gastgeber", icon: "privacy/one_member.png"}
-                            ])
