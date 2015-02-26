@@ -53,7 +53,9 @@ Address.create!([
                     {city: "München", zipcode: "80331", streetName: "Marienplatz", streetNumber: "8", latitude: 48.137327, longitude: 11.576052, stateCode: nil, country: nil},
                     {city: "Münster", zipcode: "48145", streetName: "Warendorferstraße", streetNumber: "88", latitude: 51.96444, longitude: 7.649900000000001, stateCode: nil, country: nil},
                     {city: "Ascheberg", zipcode: "59387", streetName: "Mühlenkamp", streetNumber: "2", latitude: 51.7856499, longitude: 7.61848, stateCode: nil, country: nil},
-                    {city: "Münster", zipcode: "48155", streetName: "Albersloher Weg", streetNumber: "14", latitude: 51.94991, longitude: 7.636969999999999, stateCode: nil, country: nil}
+                    {city: "Münster", zipcode: "48155", streetName: "Albersloher Weg", streetNumber: "14", latitude: 51.94991, longitude: 7.636969999999999, stateCode: nil, country: nil},
+                    {city: "Münster", zipcode: "48155", streetName: "Albersloher Weg", streetNumber: "16", latitude: 51.95019689999999, longitude: 7.637523600000001, stateCode: nil, country: nil},
+                    {city: "Ascheberg", zipcode: "59387", streetName: " Mühlenkamp", streetNumber: "2", latitude: 51.7856499, longitude: 7.61848, stateCode: nil, country: nil}
                 ])
 
 Business.create!([
@@ -63,48 +65,6 @@ Business.create!([
                      {name: "Schlauss & Co", address_id: 4},
                      {name: "Pascalo", address_id: 5}
                  ])
-
-Role.create!([
-                 {name: "global_admin", resource_id: nil, resource_type: nil},
-                 {name: "business_admin", resource_id: 1, resource_type: "Business"},
-                 {name: "business_admin", resource_id: 2, resource_type: "Business"},
-                 {name: "business_admin", resource_id: 3, resource_type: "Business"},
-                 {name: "business_admin", resource_id: 4, resource_type: "Business"},
-                 {name: "business_admin", resource_id: 5, resource_type: "Business"}
-             ])
-
-Role::HABTM_Users.create!([
-                              {user_id: 1, role_id: 1},
-                              {user_id: 2, role_id: 2},
-                              {user_id: 3, role_id: 3},
-                              {user_id: 4, role_id: 4},
-                              {user_id: 5, role_id: 5},
-                              {user_id: 7, role_id: 2},
-                              {user_id: 1, role_id: 1},
-                              {user_id: 2, role_id: 2},
-                              {user_id: 3, role_id: 3},
-                              {user_id: 4, role_id: 4},
-                              {user_id: 5, role_id: 5},
-                              {user_id: 7, role_id: 2},
-                              {user_id: 8, role_id: 6}
-                          ])
-
-User::HABTM_Roles.create!([
-                              {user_id: 1, role_id: 1},
-                              {user_id: 2, role_id: 2},
-                              {user_id: 3, role_id: 3},
-                              {user_id: 4, role_id: 4},
-                              {user_id: 5, role_id: 5},
-                              {user_id: 7, role_id: 2},
-                              {user_id: 1, role_id: 1},
-                              {user_id: 2, role_id: 2},
-                              {user_id: 3, role_id: 3},
-                              {user_id: 4, role_id: 4},
-                              {user_id: 5, role_id: 5},
-                              {user_id: 7, role_id: 2},
-                              {user_id: 8, role_id: 6}
-                          ])
-
 
 WhoHasAccessToEvent.create!([
                               {who: "Jeder", icon: "privacy/many_member.png"},
@@ -125,20 +85,92 @@ EventUserStatus.create!([
                         ])
 
 EventLocation.create!([
-                        {name: "Bei mir Zuhause!", address_id: 6},
-                        {name: "Club Veron", address_id: 7}
+                          {name: "Club Soho Münster", address_id: 8},
+                          {name: "Bei mir Zuhause!", address_id: 9}
                       ])
 
 EventProfile.create!([
-                    {event_id: 1, profile_id: 9, event_user_status_id: 1, event_user_join_id: 1},
-                    {event_id: 2, profile_id: 9, event_user_status_id: 1, event_user_join_id: 1}
-                  ])
+                         {event_id: 1, profile_id: 2, event_user_status_id: 1, event_user_join_id: 1},
+                         {event_id: 2, profile_id: 9, event_user_status_id: 1, event_user_join_id: 1}
+                     ])
 
 Event.create!([
-                  {name: "Geburtstag", description: "Bringt gute Stimmung mit :)", date: "2015-05-09", time: "2000-01-01 22:35:00", event_location_id: 1, who_has_access_id: 1, password: ""},
-                  {name: "Hochzeit", description: "Gefangen in der Ehe :)", date: "2015-08-22", time: "2000-01-01 13:00:00", event_location_id: 2, who_has_access_id: 2, password: "123456789"}
+                  {name: "Flashmob Soho", description: "Jeder der will darf kommen, bis der Laden voll ist :D", date: "2015-10-04", time: "2000-01-01 20:00:00", event_location_id: 1, who_has_access_id: 1, password: ""},
+                  {name: "Geburtstag von Kraut", description: "Ich werde mal wieder ein jahr älter :) Für Getränke und andere, nicht legale, Substanzen ist gesorgt ...", date: "2015-08-08", time: "2000-01-01 19:00:00", event_location_id: 2, who_has_access_id: 2, password: "123456789"}
               ])
 
+Role.create!([
+                 {name: "global_admin", resource_id: nil, resource_type: nil},
+                 {name: "business_admin", resource_id: 1, resource_type: "Business"},
+                 {name: "business_admin", resource_id: 2, resource_type: "Business"},
+                 {name: "business_admin", resource_id: 3, resource_type: "Business"},
+                 {name: "business_admin", resource_id: 4, resource_type: "Business"},
+                 {name: "business_admin", resource_id: 5, resource_type: "Business"},
+                 {name: "eventOwner", resource_id: 1, resource_type: "Event"},
+                 {name: "eventOwner", resource_id: 2, resource_type: "Event"}
+             ])
+
+Role::HABTM_Users.create!([
+                              {user_id: 1, role_id: 1},
+                              {user_id: 2, role_id: 2},
+                              {user_id: 3, role_id: 3},
+                              {user_id: 4, role_id: 4},
+                              {user_id: 5, role_id: 5},
+                              {user_id: 7, role_id: 2},
+                              {user_id: 1, role_id: 1},
+                              {user_id: 2, role_id: 2},
+                              {user_id: 3, role_id: 3},
+                              {user_id: 4, role_id: 4},
+                              {user_id: 5, role_id: 5},
+                              {user_id: 7, role_id: 2},
+                              {user_id: 8, role_id: 6},
+                              {user_id: 1, role_id: 1},
+                              {user_id: 2, role_id: 2},
+                              {user_id: 3, role_id: 3},
+                              {user_id: 4, role_id: 4},
+                              {user_id: 5, role_id: 5},
+                              {user_id: 7, role_id: 2},
+                              {user_id: 1, role_id: 1},
+                              {user_id: 2, role_id: 2},
+                              {user_id: 3, role_id: 3},
+                              {user_id: 4, role_id: 4},
+                              {user_id: 5, role_id: 5},
+                              {user_id: 7, role_id: 2},
+                              {user_id: 8, role_id: 6},
+                              {user_id: 2, role_id: 7},
+                              {user_id: 9, role_id: 8}
+                          ])
+
+User::HABTM_Roles.create!([
+                              {user_id: 1, role_id: 1},
+                              {user_id: 2, role_id: 2},
+                              {user_id: 3, role_id: 3},
+                              {user_id: 4, role_id: 4},
+                              {user_id: 5, role_id: 5},
+                              {user_id: 7, role_id: 2},
+                              {user_id: 1, role_id: 1},
+                              {user_id: 2, role_id: 2},
+                              {user_id: 3, role_id: 3},
+                              {user_id: 4, role_id: 4},
+                              {user_id: 5, role_id: 5},
+                              {user_id: 7, role_id: 2},
+                              {user_id: 8, role_id: 6},
+                              {user_id: 1, role_id: 1},
+                              {user_id: 2, role_id: 2},
+                              {user_id: 3, role_id: 3},
+                              {user_id: 4, role_id: 4},
+                              {user_id: 5, role_id: 5},
+                              {user_id: 7, role_id: 2},
+                              {user_id: 1, role_id: 1},
+                              {user_id: 2, role_id: 2},
+                              {user_id: 3, role_id: 3},
+                              {user_id: 4, role_id: 4},
+                              {user_id: 5, role_id: 5},
+                              {user_id: 7, role_id: 2},
+                              {user_id: 8, role_id: 6},
+                              {user_id: 2, role_id: 7},
+                              {user_id: 9, role_id: 8}
+                          ])
 
 Service.create!([
                     {name: "Buffet-Tork", teaser: "Lecker Buffet-Caterer", description: "Super Lecker Buffet-Caterer",email: "info@tork.de", phone: "01111111", business_id: 1, branch_id: 5},
