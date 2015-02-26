@@ -7,6 +7,7 @@
     <col width="150">
     <col width="120">
     <col width="150">
+    <col width="350">
   </colgroup>
   <thead>
   <tr>
@@ -30,7 +31,7 @@
         <td><%= service.name %></td>
         <td><%= service.teaser %></td>
         <td><%= service.description %></td>
-        <td><%= service.email %></td>
+        <td><a href="mailto:<%= service.email %>"><%= service.email %></a></td>
         <td><%= service.phone %></td>
         <% if ! @isInBusiness %>
             <td><%= link_to service.business.name, business_path(service.business) %></td>
