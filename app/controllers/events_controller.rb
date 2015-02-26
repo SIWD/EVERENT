@@ -8,6 +8,7 @@ class EventsController < ApplicationController
   before_action :fill_host_maps, only: [:create, :update]
   before_action :is_owner?, only: [:show, :edit]
   before_action :has_owner, only: [:update, :create]
+  before_action :check_access_right, only: [:update, :edit, :destroy]
   respond_to :html
 
   def index
@@ -41,8 +42,11 @@ class EventsController < ApplicationController
     if @event.save
       update_event_member_status
     else
+      @eventLocation.destroy
       destroy_event_members
     end
+
+    current_user.add_role(:eventOwner, @event)
 
     respond_with(@event)
   end
@@ -72,6 +76,8 @@ class EventsController < ApplicationController
 
 
     @event.destroy
+
+    current_user.remove_role(:eventOwner, @event)
 
     respond_with(@event)
   end
@@ -219,12 +225,20 @@ class EventsController < ApplicationController
     end
   end
 
+
   def has_owner
     #flash[:notice] = @profiles_map.size.to_s + " " + @businesses_map.size.to_s + " " + @services_map.size.to_s
 
     if @profiles_map.size <= 1 && @businesses_map.size <= 1 && @services_map.size <= 1
       flash[:alert] = "Bitte geben Sie mindestens einen Gastgeber an"
       redirect_to :back
+    end
+  end
+
+  def check_access_right
+    if ! current_user.has_role? :eventOwner, @event
+      flash[:alert] = "Sie haben hierfür leider keine Berechtigung ;)"
+      redirect_to events_path
     end
   end
 

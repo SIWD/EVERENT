@@ -1,10 +1,10 @@
 <% content_for :title, 'Events' %>
 
-<table>
+<table class="listingTable">
   <thead>
     <tr>
       <th>Name</th>
-      <th>Description</th>
+      <th>Beschreibung</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -14,9 +14,15 @@
       <tr>
         <td><%= event.name %></td>
         <td><%= event.description %></td>
-        <td><%= link_to 'Anzeigen', event %></td>
-        <td>&nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_event_path(event) %></td>
-        <td>&nbsp;|&nbsp;<%= link_to 'Löschen', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+            <%= link_to 'Anzeigen', event %>
+            <% if current_user %>
+                <% if current_user.has_role? :eventOwner, event %>
+                    &nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_event_path(event) %>
+                    &nbsp;|&nbsp;<%= link_to 'Löschen', event, method: :delete, data: { confirm: 'Are you sure?' } %>
+              <% end %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
