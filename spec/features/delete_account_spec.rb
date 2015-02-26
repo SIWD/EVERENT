@@ -6,7 +6,8 @@ describe 'Accountmanagement' do
 
     let!(:user1) { FactoryGirl.create(:user) }
     let!(:profile1) { FactoryGirl.create(:profile, user: user1) }
-    let!(:business1) { FactoryGirl.create(:business) }
+    let!(:address1) { FactoryGirl.create(:address) }
+    let!(:business1) { FactoryGirl.create(:business, address: address1) }
     let!(:user_business1) { FactoryGirl.create(:user_business, business: business1, user: user1) }
 
     it 'should not delete profile with business admin' do

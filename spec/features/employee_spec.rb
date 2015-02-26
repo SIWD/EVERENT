@@ -20,6 +20,7 @@ describe 'actions employee' do
 
       click_link_or_button 'Geschäft anlegen'
       fill_in 'business_name', with: 'TestAG'
+      fill_in 'address_city', with: 'Meine Stadt'
       click_link_or_button 'Speichern'
       page.should have_content 'TestAG'
 
