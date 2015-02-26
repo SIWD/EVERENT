@@ -4,6 +4,8 @@ de:
       root: "Index"
     pages:
       pages: "Seiten"
+    models:
+      business: "Unternehmen"
   helpers:
     actions: "Aktionen"
     links:
@@ -18,3 +20,18 @@ de:
       save: "%{model} speichern"
       new: "%{model} anlegen"
       delete: "%{model} löschen"
+  activerecord:
+      attributes:
+        user:
+          email: "E-mail address"
+        business:
+          address: "Adresse"
+        event:
+          who_has_access_id: "Privatsphäre"
+          event_location_id: "Location"
+      errors:
+        models:
+          user:
+            attributes:
+              email:
+                blank: "is required"
