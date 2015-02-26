@@ -19,7 +19,7 @@
             <% if current_user %>
                 <% if current_user.has_role? :eventOwner, event %>
                     &nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_event_path(event) %>
-                    &nbsp;|&nbsp;<%= link_to 'Löschen', event, method: :delete, data: { confirm: 'Are you sure?' } %>
+                    &nbsp;|&nbsp;<%= link_to 'Löschen', event, method: :delete, data: { confirm: 'Sind Sie sicher?' } %>
               <% end %>
           <% end %>
         </td>
