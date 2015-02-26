@@ -3,6 +3,7 @@ class ServicesController < ApplicationController
   before_action :set_businesses, only: [:new, :edit, :create]
   before_action :set_user_services, only: [:index, :show, :edit, :update, :destroy]
   before_action :check_access_right, only: [:edit, :update, :destroy]
+  before_action :check_for_events, only: [:destroy]
 
   respond_to :html
 
@@ -86,4 +87,12 @@ class ServicesController < ApplicationController
   def service_params
     params.require(:service).permit(:description, :name, :teaser, :business_id, :branch_id, :email, :phone)
   end
+
+  def check_for_events
+    if @service.event_services.count > 0
+      flash[:alert] = "Bitte löschen Sie zuerst alle Events, in denen diese Dienstleistung Gastgeber ist"
+      redirect_to service_path(@service)
+    end
+  end
+
 end
