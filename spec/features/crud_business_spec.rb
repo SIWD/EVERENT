@@ -22,19 +22,20 @@ describe 'Business' do
         click_link_or_button 'Speichern'
         page.should have_content 'TestAG'
 
-        click_link_or_button 'Neuen Service anlegen'
+        click_link_or_button 'Neue Dienstleistung anlegen'
         choose('TestAG')
         fill_in 'service_name', with: 'Dienstleistung_XY'
         fill_in 'service_teaser', with: 'Kurzbeschreibung der Dienstleistung'
         fill_in 'service_description', with: 'Längere Beschreibung der Dienstleistung'
         page.choose('Taxi')
-        click_link_or_button 'Service erstellen'
+        click_link_or_button 'Speichern'
         page.should have_content 'Dienstleistung bearbeiten'
       end
 
     #-----------------------------------------------------------------------------
 
-    let!(:business1) { FactoryGirl.create(:business) }
+    let!(:address1) { FactoryGirl.create(:address) }
+    let!(:business1) { FactoryGirl.create(:business,address: address1) }
     let!(:user_business1) { FactoryGirl.create(:user_business, business: business1, user: user1) }
     let!(:service1) { FactoryGirl.create(:service, business: business1, branch: branch1) }
 
@@ -46,7 +47,7 @@ describe 'Business' do
         click_link_or_button 'Dienstleistung bearbeiten'
 
         fill_in 'service_teaser', with: 'Geänderte Kurzbeschreibung'
-        click_link_or_button 'Service aktualisieren'
+        click_link_or_button 'Speichern'
         page.should have_content 'Teaser: Geänderte Kurzbeschreibung'
       end
 
@@ -60,6 +61,7 @@ describe 'Business' do
       visit profile_path(profile2)
       click_link_or_button 'Geschäft anlegen'
       fill_in 'business_name', with: '-TestAG-'
+      fill_in 'address_city', with: 'Stadt'
       click_link_or_button 'Speichern'
 
       expect(page).to have_content 'Unternehmen Bearbeiten'
@@ -81,13 +83,14 @@ describe 'Business' do
       visit profile_path(profile3)
       click_link_or_button 'Geschäft anlegen'
       fill_in 'business_name', with: 'DeleteAG'
+      fill_in 'address_city', with: 'Stadt'
       click_link_or_button 'Speichern'
 
       page.should have_content 'Unternehmen löschen'
       click_link 'Unternehmen löschen'
 
       page.should have_content 'Alle Unternehmen'
-      page.should have_content 'DeleteAG wurde entfernt'
+      page.should have_content "'DeleteAG' wurde entfernt"
     end
 
   end
