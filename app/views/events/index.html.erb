@@ -15,7 +15,12 @@
         <td><%= event.name %></td>
         <td><%= event.description %></td>
         <td>
-            <%= link_to 'Anzeigen', event %>
+          <% if event.password.length >= 1 %>
+              <%= link_to 'Anzeigen (Passwort)', event %>
+          <% else %>
+              <%= link_to 'Anzeigen', event %>
+              <% end %>
+
             <% if current_user %>
                 <% if current_user.has_role? :eventOwner, event %>
                     &nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_event_path(event) %>
