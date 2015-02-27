@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe UserBusiness, :type => :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'UserBusiness' do
+    it 'is invalid without a business and a user' do
+      FactoryGirl.build(:user_business).should_not be_valid
+    end
+  end
 end

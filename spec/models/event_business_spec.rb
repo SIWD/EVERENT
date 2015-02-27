@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe EventBusiness, :type => :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'EventBusiness' do
+    it 'is valid' do
+      FactoryGirl.build(:event_business).should be_valid
+    end
+  end
 end

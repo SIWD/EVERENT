@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe EventProfile, :type => :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'EventProfile' do
+    it 'is valid' do
+      FactoryGirl.build(:event_profile).should be_valid
+    end
+  end
 end

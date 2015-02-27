@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Event, :type => :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'Event' do
+    it 'is invalid without location and privacy setting' do
+      FactoryGirl.build(:event).should_not be_valid
+    end
+  end
 end
