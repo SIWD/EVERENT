@@ -63,6 +63,20 @@ h3.title:after {
     width: 99%;
 }
 
+.listingTable {
+    border: 1px solid black;
+}
+
+.listingTable td {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.listingTable th {
+    border: 1px solid black;
+    padding: 3px;
+}
+
 .bg-overlay {
 	background: rgba(0, 0, 0, 0.6);
 	padding: 60px 0;
@@ -117,7 +131,7 @@ ul,li,ol {
 a:hover,a:focus {
     text-decoration: none;
     outline: none;
-	color: #777777;
+    color: #777777;
 }
 
 .btn-special,.btn-normal,.btn-small,.btn-large,.comment-des,.steps .popup,.testimonial p,.contact-box {
