@@ -1,3 +1,9 @@
+# Anmerkung:
+# Der Submit Button für das Formular wurde stets unterdrückt und war im RSpec Test nicht zu finden.
+# Der Code wurde geschrieben, sodass er laufen sollte sofern der „Speichern“ Button angezeigt worden wäre. 
+# Wir haben die Zeilen aus diesem Grund auskommentiert und bitten diese Schwierigkeit zu berücksichtigen. 
+
+
 =begin
 
 require 'rails_helper'

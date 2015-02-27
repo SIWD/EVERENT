@@ -8,7 +8,6 @@ class EventsController < ApplicationController
   before_action :load_hosts, only: [:show]
   before_action :fill_host_maps, only: [:create, :update]
   before_action :is_owner?, only: [:show, :edit]
-  before_action :has_owner, only: [:update, :create]
   before_action :check_access_right, only: [:update, :edit, :destroy]
   respond_to :html
 
@@ -40,21 +39,27 @@ class EventsController < ApplicationController
     @event.event_location_id = @eventLocation.id
 
     add_event_members
+
     if @event.save
       update_event_member_status
+      current_user.add_role(:eventOwner, @event)
     else
       @eventLocation.destroy
       destroy_event_members
     end
 
-    current_user.add_role(:eventOwner, @event)
-
+    if @member_count < 1
+      @event.errors.add(:base, "Sie müssen mindestens einen Gastgeber auswählen")
+    end
     respond_with(@event)
   end
 
   def update
     @event.update(event_params)
     add_event_members
+    if @member_count < 1
+      @event.errors.add(:base, "Sie müssen mindestens einen Gastgeber auswählen")
+    end
 
     update_event_member_status
 
@@ -75,10 +80,8 @@ class EventsController < ApplicationController
       flash[:notice] = "'#{name}' wurde NICHT vollständig gelöscht! Bitte versuchen Sie es später erneut oder wenden Sie sich an Unseren IT-Service"
     end
 
-
-    @event.destroy
-
     current_user.remove_role(:eventOwner, @event)
+    @event.destroy
 
     respond_with(@event)
   end
@@ -141,6 +144,8 @@ class EventsController < ApplicationController
     @event.update(host_profile_params)
     @event.update(host_business_params)
     @event.update(host_service_params)
+
+    @member_count = @event.event_businesses.count + @event.event_profiles.count + @event.event_services.count
   end
 
   def destroy_event_members
@@ -229,16 +234,6 @@ class EventsController < ApplicationController
       @event.event_services.each do |es|
         @owner = if es.service.business_id.in?(businesses_ids) then true end
       end
-    end
-  end
-
-
-  def has_owner
-    #flash[:notice] = @profiles_map.size.to_s + " " + @businesses_map.size.to_s + " " + @services_map.size.to_s
-
-    if @profiles_map.size <= 1 && @businesses_map.size <= 1 && @services_map.size <= 1
-      flash[:alert] = "Bitte geben Sie mindestens einen Gastgeber an"
-      redirect_to :back
     end
   end
 

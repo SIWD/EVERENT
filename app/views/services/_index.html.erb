@@ -7,7 +7,7 @@
     <col width="150">
     <col width="120">
     <col width="150">
-    <col width="350">
+    <!--<col width="350">-->
   </colgroup>
   <thead>
   <tr>
@@ -19,6 +19,7 @@
     <% if ! @isInBusiness %>
         <th>Unternehmen</th>
     <% end %>
+    <th></th>
     <!--<th colspan="3"></th>-->
   </tr>
   </thead>
@@ -41,14 +42,14 @@
 
         <% if @userServices %>
             <% if ( @userServices.include?(service) )  %>
-                &nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_service_path(service) %>
+                <%= link_to 'Bearbeiten', edit_service_path(service) %>
             <% end %>
         <% end %>
 
 
         <% if @userServices %>
             <% if ( @userServices.include?(service) ) %>
-                &nbsp;|&nbsp;<%= link_to 'Löschen', service, method: :delete, data: { confirm: 'Are you sure?' } %>
+                <%= link_to 'Löschen', service, method: :delete, data: { confirm: 'Are you sure?' } %>
             <% end %>
         <% end %>
         </td>
