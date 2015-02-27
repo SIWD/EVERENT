@@ -1,32 +1,31 @@
 <% content_for :title, "#{@service.name}" %>
+<table>
+    <tr>
+      <td><strong>Name:</strong></td>
+      <td><%= @service.name %></td>
+    </tr>
 
-<p>
-  <strong>Name:</strong>
-  <%= @service.name %>
-</p>
+    <tr>
+      <td><strong>Teaser:</strong></td>
+      <td><%= @service.teaser %></td>
+    </tr>
 
-<p>
-  <strong>Teaser:</strong>
-  <%= @service.teaser %>
-</p>
+    <tr>
+      <td><strong>Beschreibung:</strong>&nbsp;&nbsp;</td>
+      <td><%= @service.description %></td>
+    </tr>
 
-<p>
-  <strong>Beschreibung:</strong>
-  <%= @service.description %>
-</p>
+    <tr>
+      <td><strong>eMail:</strong></td>
+      <td><a href="mailto:<%= @service.email %>"><%= @service.email %></a></td>
+    </tr>
 
-<p>
-  <strong>eMail:</strong>
-<a href="mailto:<%= @service.email %>"><%= @service.email %></a>
-</p>
-
-
-<p>
-  <strong>Telefon:</strong>
-  <%= @service.phone %>
-</p>
-
-
+    <tr>
+      <td><strong>Telefon:</strong></td>
+      <td><%= @service.phone %></td>
+    </tr>
+</table>
+<br />
 <% if @userServices %>
     <% if ( @userServices.include?(@service) ) %>
         <%= link_to 'Dienstleistung bearbeiten', edit_service_path(@service) %>&nbsp;|&nbsp;

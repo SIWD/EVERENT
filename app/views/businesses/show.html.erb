@@ -1,22 +1,27 @@
 <% content_for :title, @business.name %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @business.name %>
-</p>
-<p>
-  <strong>Stadt:</strong>
-  <%= @address.city %>
-</p>
-<p>
-  <strong>PLZ:</strong>
-  <%= @address.zipcode %>
-</p>
-<p>
-  <strong>Starße & Nr.:</strong>
-  <%= @address.streetName %>
-  <%= @address.streetNumber %>
-</p>
+<table>
+    <tr>
+      <td><strong>Name:</strong></td>
+      <td><%= @business.name %></td>
+    </tr>
+    <tr>
+      <td><strong>Stadt:</strong></td>
+      <td><%= @address.city %></td>
+    </tr>
+    <tr>
+      <td><strong>PLZ:</strong></td>
+      <td><%= @address.zipcode %></td>
+    </tr>
+    <tr>
+      <td><strong>Starße & Nr.:</strong>&nbsp;&nbsp;</td>
+      <td>
+        <%= @address.streetName %>
+        <%= @address.streetNumber %>
+      </td>
+    </tr>
+</table>
+<br />
 <p>
   <strong>Dienstleistungen:</strong>
 </p>

@@ -3,50 +3,52 @@
 <p id="notice"><%= notice %></p>
 <div class="row">
   <div class="col-md-6">
-    <p>
-      <strong>Geschlecht:</strong>
-      <%= @profile.gender %>
-    </p>
+    <table >
+        <tr>
+          <td><strong>Geschlecht:</strong></td>
+          <td><%= @profile.gender %></td>
+        </tr>
 
-    <p>
-      <strong>Vorname:</strong>
-      <%= @profile.firstname %>
-    </p>
+        <tr>
+          <td><strong>Vorname:</strong></td>
+          <td><%= @profile.firstname %></td>
+        </tr>
 
-    <p>
-      <strong>Nachname:</strong>
-      <%= @profile.lastname %>
-    </p>
+        <tr>
+          <td><strong>Nachname:</strong></td>
+          <td><%= @profile.lastname %></td>
+        </tr>
 
-    <p>
-      <strong>E-Mail:</strong>
-      <%= @profile.user.email %>
-    </p>
+        <tr>
+          <td><strong>E-Mail:</strong></td>
+          <td><%= @profile.user.email %></td>
+        </tr>
 
-    <p>
-      <strong>Telefonnummer:</strong>
-      <%= @profile.phone %>
-    </p>
+        <tr>
+          <td><strong>Telefonnummer:</strong>&nbsp;&nbsp;</td>
+          <td><%= @profile.phone %></td>
+        </tr>
 
-    <p>
-      <strong>Ort:</strong>
-      <%= @profile.city %>
-    </p>
+        <tr>
+          <td><strong>Ort:</strong></td>
+          <td><%= @profile.city %></td>
+        </tr>
 
-    <p>
-      <strong>PLZ:</strong>
-      <%= @profile.postcode %>
-    </p>
+        <tr>
+          <td><strong>PLZ:</strong></td>
+          <td><%= @profile.postcode %></td>
+        </tr>
 
-    <p>
-      <strong>Straße</strong>
-      <%= @profile.streetname %>
-    </p>
+        <tr>
+          <td><strong>Straße</strong></td>
+          <td><%= @profile.streetname %></td>
+        </tr>
 
-    <p>
-      <strong>Hausnummer:</strong>
-      <%= @profile.housenumber %>
-    </p>
+        <tr>
+          <td><strong>Hausnummer:</strong></td>
+          <td><%= @profile.housenumber %></td>
+        </tr>
+    </table>
   </div>
   <div class="col-md-6">
     <% if @profile.photo.blank? %>
