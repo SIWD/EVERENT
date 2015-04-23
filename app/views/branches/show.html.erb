@@ -53,7 +53,7 @@
                             <%= link_to s.name, service_path(s), {:style=>'color:#2EAEF0; font-weight: normal;'} %> vom Unternehmen: <%= link_to s.business.name, business_path(s.business), {:style=>'color:#2EAEF0;font-weight: normal;'} %>
                           </h4>
                           <div class="col-lg-6 col-sm-12">
-                            <table class="text-left">
+                            <table class="pretty-table">
                               <% unless (@usr_loc.nil?) %>
                                   <tr>
                                     <td>Entfernung:</td>
@@ -71,7 +71,7 @@
                             </table>
                           </div>
                           <div class="col-lg-6 col-sm-12">
-                            <table class="text-left">
+                            <table class="pretty-table">
                               <tr>
                                 <td>Beschreibung:</td>
                                 <td><%= s.description %><br/></td>

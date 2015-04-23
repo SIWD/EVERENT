@@ -1,5 +1,5 @@
 <% content_for :title, "#{@service.name}" %>
-<table>
+<table class="pretty-table">
   <tr>
     <td><strong>Name:</strong></td>
     <td><%= @service.name %></td>
@@ -25,23 +25,13 @@
     <td><%= @service.contact.phone %></td>
   </tr>
   <tr>
-    <td><strong>Ort:</strong></td>
-    <td><%= @service.address.city %></td>
-  </tr>
-
-  <tr>
-    <td><strong>PLZ:</strong></td>
-    <td><%= @service.address.postalCode %></td>
-  </tr>
-
-  <tr>
-    <td><strong>Straße & Hausnummer:</strong></td>
-    <td><%= @service.address.street1 %></td>
-  </tr>
-
-  <tr>
-    <td><strong>Adresszusatz:</strong></td>
-    <td><%= @service.address.street2 %></td>
+    <td>Adresse:</td>
+    <td>
+      <%= @service.address.postalCode %>
+      <%= @service.address.city %><br>
+      <%= @service.address.street1 %><br>
+      <%= @service.address.street2 %>
+    </td>
   </tr>
 </table>
 <br />

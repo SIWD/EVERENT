@@ -74,7 +74,16 @@ form > .row {
 
 .pretty-table tr td{
     padding-right: 20px;
+    vertical-align: top;
+    text-align: left;
+}
 
+.pretty-table tr td:first-child{
+    width: 135px;
+    font-weight: bold;
+}
+.pretty-table tr td:last-child{
+    padding-right: 0;
 }
 
 .form-control[disabled],.form-control[readonly],fieldset[disabled] .form-control {
