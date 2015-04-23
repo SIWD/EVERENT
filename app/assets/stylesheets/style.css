@@ -54,7 +54,7 @@ h3.title {
 }
 
 h3.title:after {
-    background: url(../img/bg_off.png) repeat;
+    background: url(bg_off.png) repeat;
     content: "";
     height: 5px;
     margin-left: 10px;
@@ -194,11 +194,11 @@ footer .social li:last-child,footer .social {
 header .social li,footer .social li {
     background-color: transparent;
 	border:2px solid #fafafa;
-    border-radius: 100% 100% 100% 100%;
+    border-radius: 40px;
     display: inline-block;
     height: 35px;
     margin-right: 5px;
-    width: 35px;
+    min-width: 35px;
 	line-height: 30px;
     text-align: center;
     background: transparent;
@@ -223,7 +223,7 @@ header .social i,footer .social i {
 #search-form input.search-text-box {
     background-color: transparent;
 	border: 2px solid #FAFAFA;
-    background-image: url(../img/search-icon.png);
+    background-image: url(search-icon.png);
     background-position: 8px 56%;
     background-repeat: no-repeat;
     color: #fafafa;
@@ -435,7 +435,7 @@ h2.title {
 }
 
 .btn-default {
-	height:44px;
+	/*height:44px;*/
 	background: #EEEEEE;
 	text-shadow: none;
 	box-shadow: none;
@@ -1572,7 +1572,7 @@ a.scrollup:hover i,a.scrollup:focus i {
 
 .contact-us {
     margin: 15px 0 0;
-    background: url("../img/contact-map.png") no-repeat center bottom;
+    background: url("contact-map.png") no-repeat center bottom;
 }
 
 .business-hour i {

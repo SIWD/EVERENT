@@ -2,29 +2,30 @@
 
 <div class="well">
   <h4 class="title">Filter:</h4>
-  <%= form_for( "Branche/#{@branch.name}", method: :get, :html => {:class => 'reply'} ) do |f| %>
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-          <label for="location">Standort</label><br>
-          <input type="text" class="form-control" placeholder="Berlin" name="location" value="<%= if defined? params['location'] then params['location'] end %>" />
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-          <div class="row">
-            <label class="col-lg-6" for="range">Umkreis:</label>
-            <div class="col-lg-6 text-right" >
-              <output name="amount" style="display: inline" for="range"><%= @range || 50 %></output>
-              <span> km</span>
-            </div>
+
+  <form action="" method="get">
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+        <label for="location">Standort</label><br>
+        <input type="text" class="form-control" placeholder="Münster" name="usrloc" value="<%= if @loc_checked then @loc_checked.address end  %>"  onClick="this.select(); this.focus()">
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+        <div class="row">
+          <label class="col-lg-6" for="range">Umkreis:</label>
+          <div class="col-lg-6 text-right" >
+            <output name="amount" style="display: inline" for="range"><%= @range %></output>
+            <span> km</span>
           </div>
-          <input type="range" class="form-control"  name="range" step="10" min="0" max="200" value="<%= @range || 50 %>"  oninput="amount.value=range.value">
         </div>
+        <input type="range" class="form-control"  name="range" step="10" min="0" max="200" value="<%= @range %>"  oninput="amount.value=range.value">
       </div>
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <button class="btn-color btn-normal col-lg-3 col-md-4 col-sm-6 col-xs-12" style="border:none;" type="submit">Filtern</button>
-        </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <button class="btn-color btn-normal col-lg-3 col-md-4 col-sm-6 col-xs-12" style="border:none;" type="submit">Filtern</button>
       </div>
-  <% end %>
+    </div>
+  </form>
 </div>
 
 <div class="well">
@@ -35,30 +36,29 @@
   <% else %>
       <% success = false %>
       <div class="row">
-        <% unless (@loc.nil?) %>
-        <div class="col-lg-12">
-          <span>Ergebnisse beim Standort <i><%= "#{@loc_from.address}"%></i> im Umkreis von <i><%= "#{@range}" %></i> km:</span>
-        </div>
+        <% unless (@usr_loc.nil?) %>
+            <div class="col-lg-12">
+              <span>Ergebnisse beim Standort <i><%= "#{@loc_checked.address}"%></i> im Umkreis von <i><%= "#{@range}" %></i> km:</span>
+            </div>
         <% end %>
         <% @services.each do |s| %>
             <% loc_to = Address.where(id: Business.where(id: s.business_id).first.address_id).first %>
-
-            <% if (@loc.nil? || ((!(@loc_from.nil?) && !(loc_to.nil?)) && (/^[\d]+(\.[\d]+){0,1}$/ === @loc_from.distance_to(loc_to).round(2).to_s) && (/^[\d]+(\.[\d]+){0,1}$/ === @range) )) %>
-                <% if @loc.nil? || (@loc_from.distance_to(loc_to).round(2).to_i <= @range.to_i) %>
+            <% if (@usr_loc.nil? || ((!(@loc_checked.nil?) && !(loc_to.nil?)) && (/^[\d]+(\.[\d]+){0,1}$/ === @loc_checked.distance_to(loc_to).round(2).to_s) && (/^[\d]+(\.[\d]+){0,1}$/ === @range.to_s) )) %>
+                <% if @usr_loc.nil? || (@loc_checked.distance_to(loc_to).round(2).to_i <= @range.to_i) %>
                     <% success = true %>
                     <div class="col-lg-12" style="margin:5px">
                       <div class="portfolio-item">
-                        <div>  <!--class="portfolio-item-title col-lg-12"-->
+                        <div>
                           <h4 class="text-left">
                             <%= link_to s.name, service_path(s), {:style=>'color:#2EAEF0; font-weight: normal;'} %> vom Unternehmen: <%= link_to s.business.name, business_path(s.business), {:style=>'color:#2EAEF0;font-weight: normal;'} %>
                           </h4>
                           <div class="col-lg-6 col-sm-12">
                             <table class="text-left">
-                              <% unless (@loc.nil?) %>
-                              <tr>
-                                <td>Entfernung:</td>
-                                <td><%= @loc_from.distance_to(loc_to).round(2) %> km</td>
-                              </tr>
+                              <% unless (@usr_loc.nil?) %>
+                                  <tr>
+                                    <td>Entfernung:</td>
+                                    <td><%= @loc_checked.distance_to(loc_to).round(2) %> km</td>
+                                  </tr>
                               <% end %>
                               <tr>
                                 <td>Kurzbeschreibung:</td>
@@ -68,20 +68,12 @@
                                 <td>Kommt aus:</td>
                                 <td><%= Address.where(id: Business.where(id: s.business_id).first.address_id).first.city %></td>
                               </tr>
-                              <tr>
-                                <td>eMail:</td>
-                                <td><a style='color:#2EAEF0', href="mailto:<%= s.email %>" ><%= s.email %></a></td>
-                              </tr>
-                              <tr>
-                                <td>Telefon:</td>
-                                <td><%= s.phone %></td>
-                              </tr>
                             </table>
                           </div>
                           <div class="col-lg-6 col-sm-12">
                             <table class="text-left">
                               <tr>
-                                <td>Beschreibung:&nbsp;&nbsp;&nbsp;</td>
+                                <td>Beschreibung:</td>
                                 <td><%= s.description %><br/></td>
                               </tr>
                             </table>

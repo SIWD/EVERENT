@@ -58,19 +58,27 @@
       <div class="slidedown collapse">
         <div class="container">
           <div class="phone-email pull-left">
-            <a><i class="fa fa-phone"></i> Call Us : +49 176 237 210 37</a>
             <a href="mailto:info@partychamp.de"><i class="fa fa-envelope"></i> Email : info@partychamp.de</a>
           </div>
           <div class="follow-us pull-right">
-            <ul class="social pull-left">
-              <li class="facebook"><a href="https://www.facebook.com/partychamp"><i class="fa fa-facebook"></i></a></li>
-              <!--<li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>-->
+            <ul class="no-padding social pull-left">
+              <li class="facebook"><a href="https://www.facebook.com/partychamp" target="_blank"><i class="fa fa-facebook"></i></a></li>
+
+              <li class="location">
+                <form action="" method="get">
+                  <!--<span class="input-group-label-head"><i class="fa fa-crosshairs fa-2x"></i></span>-->
+                  <span class="input-group-label-head"><i class="fa fa-map-marker"></i></span>
+                  <input type="text" class="input-group-input-head " placeholder="Münster" name="usrloc" value="<%= if @loc_checked then @loc_checked.address end  %>" onClick="this.select(); this.focus()">
+                </form>
+              </li>
             </ul>
-            <div id="search-form" class="pull-right">
-            <!--  <form action="#" method="get">
-                <input type="text" class="search-text-box" placeholder="Search...">
-              </form>-->
-            </div>
+
+            <!--<div id="search-form" class="pull-right">
+              <form action="#" method="get">
+                <i class="fa fa-crosshairs fa-2x"></i>
+                  <input type="text" class="search-text-box" placeholder="Berlin" value="<%= %>">
+                </form>
+            </div>-->
           </div>
         </div>
       </div>
@@ -106,16 +114,24 @@
         <nav class="collapse navbar-collapse menu">
           <ul class="nav navbar-nav sf-menu">
             <% unless current_user %>
-                <li><%= link_to "Registrieren", new_user_registration_path  %></li>
                 <li><%= link_to "Login", new_user_session_path %></li>
             <% else %>
                 <li>
-                  <a id="current" href="">
-                    <%= current_user.email %>
-                    <span class="sf-sub-indicator">
-                      <i class="fa fa-angle-down "></i>
-                    </span>
-                  </a>
+                  <% if Profile.where(user_id: current_user.id).first.nil? %>
+                      <%= link_to new_profile_path, {id: "current"} do %>
+                          <%= User.find(current_user).email %>
+                          <span class="sf-sub-indicator">
+                        <i class="fa fa-angle-down "></i>
+                      </span>
+                      <% end %>
+                  <% else %>
+                      <%= link_to profile_path(Profile.find_by_user_id(current_user)), {id: "current"} do %>
+                          <%= Profile.find_by_user_id(current_user).name_with_initial %>
+                          <span class="sf-sub-indicator">
+                        <i class="fa fa-angle-down "></i>
+                      </span>
+                      <% end %>
+                  <% end %>
                   <ul>
                     <% if Profile.find_by_user_id(current_user) %>
                         <li><%= link_to "Mein Profil", profile_path(Profile.find_by_user_id(current_user)), class: 'sf-with-ul' %></li>
@@ -148,6 +164,8 @@
                 <h2 class="title" style="color:red; background:yellow">NO HEADLINE</h2>
             <% end %>
           </div>
+
+          <!--
           <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
             <div class="breadcrumbs pull-right">
               <ul>
@@ -160,6 +178,7 @@
               </ul>
             </div>
           </div>
+          -->
         </div>
       </div>
     </div>
@@ -170,7 +189,32 @@
         <% bootstrap_flash %>
         <%= render 'layouts/messages' %>
 
-        <script src="/assets/custom.js?body=1"></script>
+        <script src="/assets/custom.js?"></script>
+        <script src="/assets/disablor.js"></script>
+
+        <!--<script>
+            if (navigator.geolocation) {
+                var timeoutVal = 10 * 1000 * 1000;
+                navigator.geolocation.getCurrentPosition(
+                        displayPosition,
+                        displayError,
+                        {enableHighAccuracy: true, timeout: timeoutVal, maximumAge: 0}
+                );
+            } else {
+                alert("Geolocation is not supported by this browser");
+            }
+            function displayPosition(position) {
+                alert("Latitude: " + position.coords.latitude + ", Longitude: " + position.coords.longitude);
+            }
+
+            function displayError(error) {
+                var errors = {
+                    1: 'Permission denied',
+                    2: 'Position unavailable',
+                    3: 'Request timeout'
+                };
+                alert("Error: " + errors[error.code]);
+            }</script>-->
         <%= yield %>
       </div> <!-- /container -->
     </div>

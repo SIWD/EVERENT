@@ -1,6 +1,6 @@
 class ServicesController < ApplicationController
   before_action :set_service, only: [:show, :edit, :update, :destroy]
-  before_action :set_businesses, only: [:new, :edit, :create]
+  before_action :set_businesses, only: [:new, :edit, :update, :create, :show]
   before_action :set_user_services, only: [:index, :show, :edit, :update, :destroy]
   before_action :check_access_right, only: [:edit, :update, :destroy]
   before_action :check_for_events, only: [:destroy]
@@ -18,6 +18,7 @@ class ServicesController < ApplicationController
 
   def new
     @service = Service.new
+    @service.sameAddressLikeBusiness = true
     respond_with(@service)
   end
 
@@ -25,13 +26,35 @@ class ServicesController < ApplicationController
   end
 
   def create
+    @address = Address.create(address_params)
+    @contact = Contact.create(contact_params)
     @service = Service.new(service_params)
+    @service.address_id = @address.id
+    @service.contact_id = @contact.id
     @service.save
     respond_with(@service)
   end
 
   def update
     @service.update(service_params)
+
+    if @address.nil? && address_params
+      @address = Address.new
+      @service.address_id = @address.id
+    end
+    if @contact.nil? && address_params
+      @contact = Contact.new
+      @service.address_id = @contact.id
+    end
+
+    unless @service.sameAddressLikeBusiness || @address.update(address_params)
+      @service.errors.add(:base, "Adresse nicht vollständig ausgefüllt")
+    end
+
+    unless @service.sameContactLikeBusiness || @contact.update(contact_params)
+      @service.errors.add(:base, "Kontakt nicht vollständig ausgefüllt")
+    end
+
     respond_with(@service)
   end
 
@@ -50,6 +73,10 @@ class ServicesController < ApplicationController
     end
 
     @service = Service.find(params[:id])
+    @address = @service.address
+    @contact = @service.contact
+    @business = @service.business
+
     if current_user
       @profile = Profile.find_by_user_id(current_user.id)
     end
@@ -85,7 +112,15 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:description, :name, :teaser, :business_id, :branch_id, :email, :phone)
+    params.require(:service).permit(:description, :name, :teaser, :business_id, :branch_id, :sameAddressLikeBusiness, :sameContactLikeBusiness)
+  end
+
+  def address_params
+    params.require(:address).permit(:city, :zipcode, :streetName, :streetNumber)
+  end
+
+  def contact_params
+    params.require(:contact).permit(:phone, :mobilePhone, :mail)
   end
 
   def check_for_events
@@ -94,5 +129,6 @@ class ServicesController < ApplicationController
       redirect_to service_path(@service)
     end
   end
+
 
 end

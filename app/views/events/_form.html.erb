@@ -16,15 +16,51 @@
 
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <%= f.label :name, "Name des Events" %><br>
-            <%= f.text_field :name, class: "form-control", :required => true   %>
+            <%= f.label :name, "Name des Events" %>
+            <%= f.text_field :name, class: "form-control"   %>
+          </div>
+        </div>
+
+
+
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <%= f.label :date, "Termin" %>
+            <%= f.date_select :date, class: "form-control"  %>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+            <%= f.label :time, "Zeit" %>
+            <%= f.time_select :time, class: "form-control" %>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <%= f.label :description, "Sag was über dein Event" %>
+            <%= f.text_area :description, class: "form-control" %>
+          </div>
+        </div>
+
+
+
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <%= fields_for :event_genre do |eg| %>
+                <h3 class="title">Art des Events</h3>
+                  <%= eg.collection_check_boxes :event_genre_ids, EventGenre.all, :id, :name, multiple: true do |p| %>
+                           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                      <%= p.check_box(checked: if @genre_map.include?(p.object.id.to_s) then true end) + " " + p.label %>
+                    </div>
+                  <% end %>
+            <% end %>
           </div>
         </div>
 
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3 class="title">Gastgeber</h3>
             <%= fields_for :host do |h| %>
-                <%= h.label "Gastgeber" %>
                 <table>
                   <%= h.collection_check_boxes :profile_ids, Profile.where(user_id: current_user.id).all, :id, :name_with_initial, multiple: true do |p| %>
                       <tr>
@@ -63,62 +99,23 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <%= f.label :date, "Termin" %><br>
-            <%= f.date_select :date, class: "form-control"  %>
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <%= f.label :time, "Zeit" %><br>
-            <%= f.time_select :time, class: "form-control" %>
-          </div>
-        </div>
 
+
+        <h3 class="title">Location</h3>
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <%= fields_for :eventLocation, @eventLocation do |el| %>
-                <%= el.label :name, "Name der Location" %><br>
-                <%= el.text_field :name, class: "form-control", :required => true  %>
+                <%= el.label :name, "Name der Location" %>
+                <%= el.text_field :name, class: "form-control"  %>
             <% end %>
           </div>
         </div>
-
-
-        <%= fields_for :address, @address do |a| %>
-            <div class="row">
-              <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                <%= a.label :zipcode, "PLZ" %><br>
-                <%= a.text_field :zipcode, class: "form-control", :required => true %>
-              </div>
-              <div class="col-lg-9 col-md-6 col-sm-6 col-xs-12">
-                <%= a.label :city, "Stadt" %><br>
-                <%= a.text_field :city, class: "form-control", :required => true %>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-                <%= a.label :streetName,"Straße" %><br>
-                <%= a.text_field :streetName, class: "form-control", :required => true  %>
-              </div>
-              <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                <%= a.label :streetNumber, "Nr." %><br>
-                <%= a.text_field :streetNumber, class: "form-control" %>
-              </div>
-            </div>
-
-        <% end %>
+        <%= render 'addresses/form' %>
 
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <%= f.label :description, "Beschreibung" %><br>
-            <%= f.text_area :description, class: "form-control" %>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-            <%= f.label :who_has_access_id, "Privatsphäre (Wer darf das Event aufrufen?)" %><br>
+             <h3 class="title">Privatsphäre</h3>
+            <b>Wer darf das Event aufrufen?</b>
             <div class="row">
               <%= f.collection_radio_buttons :who_has_access_id, WhoHasAccessToEvent.all, :id, :who do |radio| %>
                   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
@@ -132,7 +129,7 @@
 
         <div class="row optional-password">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <%= f.label :password %><br>
+            <%= f.label :password %>
             <%= f.text_field :password, class: "form-control" %>
           </div>
         </div>

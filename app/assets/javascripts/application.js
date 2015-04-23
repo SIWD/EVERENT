@@ -39,4 +39,5 @@
 //= require waypoints.min.js
 // require custom.js
 //= require jquery.isotope
-//= require customize
+// require customize
+// require disablor

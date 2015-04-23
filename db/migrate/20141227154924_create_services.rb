@@ -6,8 +6,6 @@ class CreateServices < ActiveRecord::Migration
       t.text :description
       t.references :business, index: true
       t.references :branch, index: true
-      t.string :email
-      t.string :phone
 
       t.timestamps
     end

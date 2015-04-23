@@ -1,29 +1,48 @@
 <% content_for :title, "#{@service.name}" %>
 <table>
-    <tr>
-      <td><strong>Name:</strong></td>
-      <td><%= @service.name %></td>
-    </tr>
+  <tr>
+    <td><strong>Name:</strong></td>
+    <td><%= @service.name %></td>
+  </tr>
 
-    <tr>
-      <td><strong>Teaser:</strong></td>
-      <td><%= @service.teaser %></td>
-    </tr>
+  <tr>
+    <td><strong>Teaser:</strong></td>
+    <td><%= @service.teaser %></td>
+  </tr>
 
-    <tr>
-      <td><strong>Beschreibung:</strong>&nbsp;&nbsp;</td>
-      <td><%= @service.description %></td>
-    </tr>
+  <tr>
+    <td><strong>Beschreibung:</strong></td>
+    <td><%= @service.description %></td>
+  </tr>
 
-    <tr>
-      <td><strong>eMail:</strong></td>
-      <td><a href="mailto:<%= @service.email %>"><%= @service.email %></a></td>
-    </tr>
+  <tr>
+    <td><strong>eMail:</strong></td>
+    <td><a href="mailto:<%= @service.contact.mail %>"><%= @service.contact.mail %></a></td>
+  </tr>
 
-    <tr>
-      <td><strong>Telefon:</strong></td>
-      <td><%= @service.phone %></td>
-    </tr>
+  <tr>
+    <td><strong>Telefon:</strong></td>
+    <td><%= @service.contact.phone %></td>
+  </tr>
+  <tr>
+    <td><strong>Ort:</strong></td>
+    <td><%= @service.address.city %></td>
+  </tr>
+
+  <tr>
+    <td><strong>PLZ:</strong></td>
+    <td><%= @service.address.postalCode %></td>
+  </tr>
+
+  <tr>
+    <td><strong>Straße & Hausnummer:</strong></td>
+    <td><%= @service.address.street1 %></td>
+  </tr>
+
+  <tr>
+    <td><strong>Adresszusatz:</strong></td>
+    <td><%= @service.address.street2 %></td>
+  </tr>
 </table>
 <br />
 <% if @userServices %>

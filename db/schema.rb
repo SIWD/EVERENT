@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150218164721) do
+ActiveRecord::Schema.define(version: 20150331161228) do
 
   create_table "addresses", force: true do |t|
     t.string   "city"
-    t.string   "zipcode"
-    t.string   "streetName"
-    t.string   "streetNumber"
+    t.string   "postalCode"
+    t.string   "street1"
+    t.string   "street2"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "latitude"
@@ -46,9 +46,20 @@ ActiveRecord::Schema.define(version: 20150218164721) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "address_id"
+    t.integer  "contact_id"
   end
 
   add_index "businesses", ["address_id"], name: "index_businesses_on_address_id"
+  add_index "businesses", ["contact_id"], name: "index_businesses_on_contact_id"
+
+  create_table "contacts", force: true do |t|
+    t.string   "phone"
+    t.string   "mail"
+    t.string   "fax"
+    t.string   "mobilePhone"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "event_businesses", force: true do |t|
     t.integer  "event_id"
@@ -63,6 +74,22 @@ ActiveRecord::Schema.define(version: 20150218164721) do
   add_index "event_businesses", ["event_id"], name: "index_event_businesses_on_event_id"
   add_index "event_businesses", ["event_user_join_id"], name: "index_event_businesses_on_event_user_join_id"
   add_index "event_businesses", ["event_user_status_id"], name: "index_event_businesses_on_event_user_status_id"
+
+  create_table "event_event_genres", force: true do |t|
+    t.integer  "event_id"
+    t.integer  "event_genre_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_event_genres", ["event_genre_id"], name: "index_event_event_genres_on_event_genre_id"
+  add_index "event_event_genres", ["event_id"], name: "index_event_event_genres_on_event_id"
+
+  create_table "event_genres", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "event_images", force: true do |t|
     t.string   "album"
@@ -153,11 +180,6 @@ ActiveRecord::Schema.define(version: 20150218164721) do
     t.integer  "gender"
     t.string   "firstname"
     t.string   "lastname"
-    t.string   "phone"
-    t.string   "city"
-    t.string   "postcode"
-    t.string   "streetname"
-    t.string   "housenumber"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -166,6 +188,7 @@ ActiveRecord::Schema.define(version: 20150218164721) do
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
     t.integer  "address_id"
+    t.integer  "contact_id"
   end
 
   add_index "profiles", ["address_id"], name: "index_profiles_on_address_id"
@@ -188,14 +211,18 @@ ActiveRecord::Schema.define(version: 20150218164721) do
     t.text     "description"
     t.integer  "business_id"
     t.integer  "branch_id"
-    t.string   "email"
-    t.string   "phone"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "address_id"
+    t.boolean  "sameAddressLikeBusiness"
+    t.integer  "contact_id"
+    t.boolean  "sameContactLikeBusiness"
   end
 
+  add_index "services", ["address_id"], name: "index_services_on_address_id"
   add_index "services", ["branch_id"], name: "index_services_on_branch_id"
   add_index "services", ["business_id"], name: "index_services_on_business_id"
+  add_index "services", ["contact_id"], name: "index_services_on_contact_id"
 
   create_table "user_businesses", force: true do |t|
     t.integer  "position"

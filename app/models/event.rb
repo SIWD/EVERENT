@@ -3,6 +3,7 @@ class Event < ActiveRecord::Base
   belongs_to :event_location
   belongs_to :who_has_access_to_event
 
+
   has_many :event_profiles
   has_many :profiles, through: :event_profiles
 
@@ -14,12 +15,10 @@ class Event < ActiveRecord::Base
 
   has_many :event_images
 
+  has_many :event_event_genres
+  has_many :event_genres, through: :event_event_genres
+
   validates :name, presence: true
-  #validate :at_least_one_host
   validates :event_location_id, presence: true
   validates :who_has_access_id, presence: true
-
-
-
-
 end

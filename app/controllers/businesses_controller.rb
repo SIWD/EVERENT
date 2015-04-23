@@ -28,10 +28,13 @@ class BusinessesController < ApplicationController
 
   def create
     @address = Address.create(address_params)
+    @contact = Contact.create(contact_params)
     @business = Business.new(business_params)
     @business.address_id = @address.id
+    @business.contact = @contact
     if(@business.save == false)
       @address.destroy
+      @contact.destroy
       respond_with(@business)
 
     else
@@ -47,8 +50,8 @@ class BusinessesController < ApplicationController
     if @business.update(business_params)
       set_notice("bearbeitet")
     end
-    address = Address.find(@business.address_id)
-    address.update(address_params)
+    @address.update(address_params)
+    @contact.update(contact_params)
     respond_with(@business)
   end
 
@@ -88,7 +91,8 @@ class BusinessesController < ApplicationController
 
     @business = Business.find(params[:id])
     @services = Service.where(business_id: @business.id)
-    @address  = Address.where(id: @business.address_id).first
+    @address  = @business.address
+    @contact  = @business.contact
   end
 
 
@@ -97,7 +101,11 @@ class BusinessesController < ApplicationController
   end
 
   def address_params
-      params.require(:address).permit(:city, :zipcode, :streetName, :streetNumber)
+      params.require(:address).permit(:city, :postalCode, :street1, :street2)
+  end
+
+  def contact_params
+    params.require(:contact).permit(:phone, :mobilePhone, :mail)
   end
 
   def set_user_businesses
