@@ -47,69 +47,102 @@
   </form>
 </div>
 
-<table class="listingTable">
-  <tr>
-    <th>Name</th>
-    <th>Beschreibung</th>
-    <th>Art des Events</th>
-    <th></th>
-  </tr>
 
-<% any = false %>
-<% @events.each do |event| %>
-    <%
-       show = false
-       if !params['event_genre'] || params['event_genre'] && params['event_genre']['event_genre_ids'].count == 1 #Es existiert immer ein leerer Eintrag: [""]
-         show = true
-       end
-       if event.event_genres
-         event.event_genres.each { |e|
-           if params['event_genre'] && params['event_genre']['event_genre_ids'].include?(e.id.to_s)
-             show = true
-           end
-         }
-       end
-    %>
-    <% if show %>
-        <% any = true %>
-        <tr>
-          <td><%= event.name %></td>
-          <td><%= event.description %></td>
-          <td>
-            <% EventEventGenre.where(event_id: event.id).each{|eeg| %>
-                <% EventGenre.where(id: eeg.event_genre_id ).each{|eg| %>
-                    <%= eg.name %> <br>
-                <% } %>
-            <% } %>
-          </td>
-          <td>
-            <% if event.password.length >= 1 %>
-                <%= link_to 'Anzeigen (Passwort)', event %>
-            <% else %>
-                <%= link_to 'Anzeigen', event %>
-            <% end %>
 
-            <% if current_user %>
-                <% if current_user.has_role? :eventOwner, event %>
-                    &nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_event_path(event) %>
-                    &nbsp;|&nbsp;<%= link_to 'Löschen', event, method: :delete, data: { confirm: 'Sind Sie sicher?' } %>
-                <% end %>
-            <% end %>
-          </td>
-        </tr>
+
+<div class="well">
+  <h3 class="title">Events:</h3>
+
+  <% success = false %>
+  <div class="row">
+    <% unless (@usr_loc.nil?) %>
+        <div class="col-lg-12">
+          <span>Ergebnisse beim Standort <i><%= "#{@loc_checked.address}"%></i> im Umkreis von <i><%= "#{@range}" %></i> km:</span>
+        </div>
     <% end %>
-<% end %>
-</table>
+    <% @events.each do |event| %>
 
-<% if !any %>
-    <div class="col-lg-12"><br>
-      <span><i class="fa fa-frown-o fa-2x"></i>  Leider keine Ergebnisse gefunden.</span>
-      <br><br>
-      <span>Tipp: <strong>Suchumkreis vergrößern</strong></span>
-    </div>
-<% end %>
+        <%
+           show_genre = false
+           if !params['event_genre'] || params['event_genre'] && params['event_genre']['event_genre_ids'].count == 1 #Es existiert immer ein leerer Eintrag: [""]
+             show_genre = true
+           end
+           if event.event_genres
+             event.event_genres.each { |e|
+               if params['event_genre'] && params['event_genre']['event_genre_ids'].include?(e.id.to_s)
+                 show_genre = true
+               end
+             }
+           end
 
-<br>
+           loc_to = event.event_location.address
+           show_location = false
+           if (@usr_loc.nil? || ((!(@loc_checked.nil?) && !(loc_to.nil?)) && (/^[\d]+(\.[\d]+){0,1}$/ === @loc_checked.distance_to(loc_to).round(2).to_s) && (/^[\d]+(\.[\d]+){0,1}$/ === @range.to_s) )) && (@usr_loc.nil? || (@loc_checked.distance_to(loc_to).round(2).to_i <= @range.to_i))
+             show_location = true
+           end
+        %>
+
+        <% if show_genre && show_location %>
+            <% success = true %>
+            <%= link_to event do %>
+                <div class="col-lg-12" style="margin:5px">
+                  <div class="portfolio-item">
+                    <h4><%= event.name %></h4>
+                    <div class="col-lg-6 col-sm-12">
+                      <table class="pretty-table">
+                        <% unless (@usr_loc.nil?) %>
+                            <tr>
+                              <td>Entfernung:</td>
+                              <td><%= @loc_checked.distance_to(loc_to).round(2) %> km</td>
+                            </tr>
+                        <% end %>
+                        <tr>
+                          <td>Event Location:</td>
+                          <td><%= event.event_location.name %></td>
+                        </tr>
+                        <tr>
+                          <td>Adresse:</td>
+                          <td>
+                            <%= event.event_location.address.postalCode %>
+                            <%= event.event_location.address.city %><br>
+                            <%= event.event_location.address.street1 %><br>
+                            <%= event.event_location.address.street2 %>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                      <table class="pretty-table">
+                        <tr>
+                          <td>Art des Events:</td>
+                          <td>
+                            <% event.event_genres.each{|eg| %>
+                                <%= eg.name %><br>
+                            <% } %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Beschreibung:</td>
+                          <td><%= event.description %></td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+            <% end %>
+        <% end %>
+    <% end %>
+    <% unless success %>
+        <div class="col-lg-12"><br>
+          <span><i class="fa fa-frown-o fa-2x"></i>  Leider keine Ergebnisse gefunden.</span>
+          <br><br>
+          <span>Tipp: <strong>Suchumkreis vergrößern</strong></span>
+        </div>
+    <% end %>
+  </div>
+
+</div>
 
 
 <%= link_to 'Event anlegen', new_event_path %>

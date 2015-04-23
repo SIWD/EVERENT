@@ -6,18 +6,11 @@
     <td><%= @business.name %></td>
   </tr>
   <tr>
-    <td rowspan="2" style="vertical-align: super"><strong>Adresse:</strong></td>
+    <td>Adresse:</td>
     <td>
       <%= @address.postalCode %>
-      <%= @address.city %></td>
-  </tr>
-  <tr>
-    <td>
-      <%= @address.street1 %>
-    </td>
-  </tr>
-  <tr>
-    <td>
+      <%= @address.city %><br>
+      <%= @address.street1 %><br>
       <%= @address.street2 %>
     </td>
   </tr>

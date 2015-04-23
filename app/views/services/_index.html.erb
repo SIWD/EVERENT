@@ -32,8 +32,8 @@
         <td><%= service.name %></td>
         <td><%= service.teaser %></td>
         <td><%= service.description %></td>
-        <td><a href="mailto:<%= service.email %>"><%= service.email %></a></td>
-        <td><%= service.phone %></td>
+        <td><a href="mailto:<%= service.contact.mail %>"><%= service.contact.mail %></a></td>
+        <td><%= service.contact.phone %></td>
         <% if ! @isInBusiness %>
             <td><%= link_to service.business.name, business_path(service.business) %></td>
         <% end %>
