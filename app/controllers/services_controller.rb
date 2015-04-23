@@ -1,6 +1,6 @@
 class ServicesController < ApplicationController
   before_action :set_service, only: [:show, :edit, :update, :destroy]
-  before_action :set_businesses, only: [:new, :edit, :update, :create, :show]
+  before_action :set_businesses, only: [:new, :edit, :update, :create]
   before_action :set_user_services, only: [:index, :show, :edit, :update, :destroy]
   before_action :check_access_right, only: [:edit, :update, :destroy]
   before_action :check_for_events, only: [:destroy]
@@ -116,7 +116,7 @@ class ServicesController < ApplicationController
   end
 
   def address_params
-    params.require(:address).permit(:city, :zipcode, :streetName, :streetNumber)
+    params.require(:address).permit(:city, :postalCode, :street1, :street2)
   end
 
   def contact_params
