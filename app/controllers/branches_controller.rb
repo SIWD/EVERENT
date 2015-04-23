@@ -2,7 +2,6 @@ class BranchesController < ApplicationController
   load_and_authorize_resource
   before_action :set_branch_by_name, only: [:show, :edit, :update, :destroy]
   before_action :set_service, only: [:show, :edit, :update, :destroy]
-  before_action :set_location, only: [:show]
 
   respond_to :html
 
@@ -80,28 +79,11 @@ class BranchesController < ApplicationController
   end
 
 
-  def set_location
-    @range = params['range'] || 50
-    @success = false
-    if (params['location'] && !(params['location'] == ('')))
-      @loc = params['location']
-
-      if @loc_from = Location.where(address: @loc).first
-      else
-        results = Geocoder.search(@loc, :region => 'DE')
-        result = results.first
-        if result
-          @loc_from = Location.create(address: result.address)
-        else
-          flash[:alert] = "Der Ort aus Ihrer Suche wurde nicht gefunden"
-          redirect_to '/Branche/' + @branch.name
-        end
-      end
-    end
-  end
-
-
   def branch_params
     params.require(:branch).permit(:name, :branchCategory_id)
+  end
+
+  def address_params
+    params.require(:address).permit(:city, :postalCode, :street1, :street2)
   end
 end

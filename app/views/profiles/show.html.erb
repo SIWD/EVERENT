@@ -1,101 +1,127 @@
-<% content_for :title, @profile.firstname + ' ' + @profile.lastname %>
+<% content_for :title, 'Profil' %>
 
 <p id="notice"><%= notice %></p>
 <div class="row">
-  <div class="col-md-6">
-    <table >
-        <tr>
-          <td><strong>Geschlecht:</strong></td>
-          <td><%= @profile.gender %></td>
-        </tr>
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 new-section">
+    <h3 class="title"><%= @profile.gender + " " + @profile.firstname + " " + @profile.lastname%></h3>
+    <table class="pretty-table" >
+      <tr>
+        <td colspan="2">
+          <h4>Kontakt</h4>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>E-Mail:</strong></td>
+        <td><%= @profile.contact.mail %></td>
+      </tr>
 
-        <tr>
-          <td><strong>Vorname:</strong></td>
-          <td><%= @profile.firstname %></td>
-        </tr>
+      <tr>
+        <td><strong>Telefonnummer:</strong></td>
+        <td><%= @profile.contact.phone %></td>
+      </tr>
 
-        <tr>
-          <td><strong>Nachname:</strong></td>
-          <td><%= @profile.lastname %></td>
-        </tr>
+      <tr>
+        <td><strong>Mobilfunknummer:</strong></td>
+        <td><%= @profile.contact.mobilePhone %></td>
+      </tr>
 
-        <tr>
-          <td><strong>E-Mail:</strong></td>
-          <td><%= @profile.user.email %></td>
-        </tr>
+      <tr>
+        <td colspan="2">
+          <h4>Adresse</h4>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Ort:</strong></td>
+        <td><%= @profile.address.city %></td>
+      </tr>
 
-        <tr>
-          <td><strong>Telefonnummer:</strong>&nbsp;&nbsp;</td>
-          <td><%= @profile.phone %></td>
-        </tr>
+      <tr>
+        <td><strong>PLZ:</strong></td>
+        <td><%= @profile.address.postalCode %></td>
+      </tr>
 
-        <tr>
-          <td><strong>Ort:</strong></td>
-          <td><%= @profile.city %></td>
-        </tr>
+      <tr>
+        <td><strong>Straße & Hausnummer:</strong></td>
+        <td><%= @profile.address.street1 %></td>
+      </tr>
 
-        <tr>
-          <td><strong>PLZ:</strong></td>
-          <td><%= @profile.postcode %></td>
-        </tr>
-
-        <tr>
-          <td><strong>Straße</strong></td>
-          <td><%= @profile.streetname %></td>
-        </tr>
-
-        <tr>
-          <td><strong>Hausnummer:</strong></td>
-          <td><%= @profile.housenumber %></td>
-        </tr>
+      <tr>
+        <td><strong>Adresszusatz:</strong></td>
+        <td><%= @profile.address.street2 %></td>
+      </tr>
     </table>
   </div>
-  <div class="col-md-6">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 new-section">
     <% if @profile.photo.blank? %>
-        <%= image_tag 'profile/one_member.png', style: 'max-width: 300px; max-height: 300px;' %>
+        <%= image_tag 'profile/default/medium/Profilbild.png', style: 'max-width: 300px; max-height: 300px;' %>
     <% else %>
         <%= image_tag @profile.photo.url(:medium) %>
     <% end %>
   </div>
-</div>
-<p>
-  <strong>Unternehmen:</strong>
-</p>
-<div class="row">
-  <% @profile.user.businesses.each do |business| %>
-      <%= link_to business, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' do %>
-          <%= business.name %>
-      <% end %>
-  <% end %>
 
-  <% if @userProfile %>
-      <% if @userProfile == @profile %>
-          <%= link_to 'Geschäft anlegen', new_business_path, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' %>
-      <% end %>
-  <% end %>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 new-section">
+    <table class="pretty-table" >
+      <tr>
+        <td colspan="2">
+          <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+              <h4>Unternehmen</h4>
+            </div>
 
-</div>
-<% if @profile.user.businesses.count >= 1 %>
-    <p>
-      <strong>Dienstleitungen:</strong>
-    </p>
-    <div class="row">
-      <% Service.where(business: @profile.user.businesses).each do |service| %>
-          <%= link_to service, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' do %>
-              <%= service.name %>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 ">
+              <% if @userProfile %>
+                  <% if @userProfile == @profile %>
+                      <%= link_to '+', new_business_path, class:"btn btn-default btn-small pull-right" %>
+                  <% end %>
+              <% end %>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <% @profile.user.businesses.each do |business| %>
+          <tr>
+            <td><strong><%= business.name %></strong></td>
+            <td><%= link_to "Anzeigen", business_path(business), class: "pull-right" %></td>
+          </tr>
+      <% end %>
+    </table>
+  </div>
+  <a class="btn"></a>
+
+  <% if @profile.user.businesses.count >= 1 %>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 new-section">
+        <table class="pretty-table" >
+          <tr>
+            <td colspan="2">
+
+              <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                  <h4>Dienstleitungen</h4>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 ">
+
+                  <% if @userProfile %>
+                      <% if @userProfile == @profile %>
+                          <%= link_to "+", new_service_path, class:"btn btn-default btn-small pull-right" %>
+                      <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <% Service.where(business: @profile.user.businesses).each do |service| %>
+              <tr>
+                <td><strong><%= service.name %></strong></td>
+                <td><%= link_to "Anzeigen", service_path(service), class: "pull-right" %></td>
+              </tr>
           <% end %>
-      <% end %>
+        </table>
 
-      <% if @userProfile %>
-          <% if @userProfile == @profile %>
-              <%= link_to "Neue Dienstleistung", new_service_path, class:"col-md-2 btn btn-default btn-lg", style:'margin:5px;' %>
-          <% end %>
-      <% end %>
 
-    </div>
-<% end %>
-</br>
-</br>
+      </div>
+  <% end %>
+</div>
 <%= link_to 'Zurück', :back %>
 
 <% if @userProfile %>

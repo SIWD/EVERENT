@@ -4,9 +4,9 @@ class EventsController < ApplicationController
   before_action :check_login_status, only: [:new, :edit, :destroy]
   after_action :set_notice_nil, only: [:show]
   before_action :create_host_maps, only: [:new]
-  before_action :load_host_maps, only: [:edit]
+  before_action :load_maps, only: [:edit]
   before_action :load_hosts, only: [:show]
-  before_action :fill_host_maps, only: [:create, :update]
+  before_action :fill_maps, only: [:create, :update]
   before_action :is_owner?, only: [:show, :edit]
   before_action :check_access_right, only: [:update, :edit, :destroy]
   respond_to :html
@@ -35,9 +35,12 @@ class EventsController < ApplicationController
 
     @eventLocation = EventLocation.new(eventlocation_params)
     @eventLocation.address_id = @address.id
+
+
     @eventLocation.save
     @event.event_location_id = @eventLocation.id
 
+    create_event_genre
     add_event_members
 
     if @event.save
@@ -61,13 +64,18 @@ class EventsController < ApplicationController
       @event.errors.add(:base, "Sie müssen mindestens einen Gastgeber auswählen")
     end
 
+
+    update_event_genre
     update_event_member_status
 
     @eventLocation = EventLocation.find(@event.event_location_id)
     @eventLocation.update(eventlocation_params)
 
     @address = Address.find(@eventLocation.address_id)
-    @address.update(address_params)
+
+    unless @address.update(address_params)
+      @event.errors.add(:base, "Sie müssen die Adresse vollständig ausfüllen")
+    end
 
     respond_with(@event)
   end
@@ -106,7 +114,7 @@ class EventsController < ApplicationController
     params.require(:event).permit(:name, :address_id, :description, :who_has_access_id, :password, :date, :time)
   end
   def address_params
-    params.require(:address).permit(:city, :zipcode, :streetName, :streetNumber)
+    params.require(:address).permit(:city, :postalCode, :street1, :street2)
   end
   def eventlocation_params
     params.require(:eventLocation).permit(:name)
@@ -119,6 +127,9 @@ class EventsController < ApplicationController
   end
   def host_service_params
     params.require(:host).permit(service_ids: [])
+  end
+  def event_genre_params
+    params.require(:event_genre).permit(event_genre_ids: [])
   end
 
   def check_password_for_event
@@ -138,6 +149,22 @@ class EventsController < ApplicationController
     if ((@event.who_has_access_id  == 2) && (params['password_for_event'] == (@event.password)))
       flash[:notice] = nil
     end
+  end
+
+  def create_event_genre
+    event_genre_params[:event_genre_ids].each {|eg|
+      unless eg == ""
+        EventEventGenre.create(event_id: @event.id, event_genre_id: eg)
+      end
+    }
+  end
+
+  def update_event_genre
+    @event.event_event_genres.each {|eeg|
+      EventEventGenre.find(eeg).destroy
+    }
+
+    create_event_genre
   end
 
   def add_event_members
@@ -203,10 +230,11 @@ class EventsController < ApplicationController
     @services_map = [""]
   end
 
-  def load_host_maps
+  def load_maps
     @profiles_map = @event.event_profiles.map(&:profile_id).to_s
     @businesses_map = @event.event_businesses.map(&:business_id).to_s
     @services_map = @event.event_services.map(&:service_id).to_s
+    @genre_map = @event.event_event_genres.map(&:event_genre_id).to_s
   end
 
   def load_hosts
@@ -215,7 +243,7 @@ class EventsController < ApplicationController
     @services =  @event.event_services.all
   end
 
-  def fill_host_maps
+  def fill_maps
     @profiles_map = host_profile_params[:profile_ids]
     @businesses_map = host_business_params[:business_ids]
     @services_map = host_service_params[:service_ids]
@@ -243,5 +271,6 @@ class EventsController < ApplicationController
       redirect_to events_path
     end
   end
+
 
 end

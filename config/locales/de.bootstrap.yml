@@ -23,9 +23,21 @@ de:
   activerecord:
       attributes:
         user:
-          email: "E-mail address"
+          email: "E-mail"
+        profile:
+          firstname: "Vorname"
+          lastname: "Nachname"
+          address_id: "Adresse"
+          contact_id: "Kontakt"
         business:
           address: "Adresse"
+          name: "Name des Unternehmens"
+        service:
+          sameAddressLikeBusiness: "Gleiche Adresse wie Business"
+          sameContactLikeBusiness: "Gleicher Kontakt wie Business"
+          description:  "Beschreibung"
+          teaser: "Kurzbeschreibung"
+          name:   "Name der Dienstleistung"
         event:
           who_has_access_id: "Privatsphäre"
           event_location_id: "Location"

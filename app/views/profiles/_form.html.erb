@@ -1,54 +1,96 @@
-<%= form_for(@profile) do |f| %>
-    <% if @profile.errors.any? %>
-        <div id="error_explanation">
-          <h2>Folgende(r) Fehler muss/müssen erst behoben werden:</h2>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <%= form_for @profile  do |f| %>
+        <% if @profile.errors.any? %>
+            <div id="error_explanation">
+              <h2>Folgende(r) Fehler muss/müssen erst behoben werden:</h2>
 
-          <ul>
-            <% @profile.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
+              <ul>
+                <% @profile.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 new-section">
+            <div class="row">
+              <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                <%= f.label :gender, 'Geschlecht' %>
+                <%= f.select :gender, Profile.genders.keys.to_a,{}, {class: "form-control" }%>
+              </div>
+              <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+                <%= f.label :firstname, 'Vorname' %>
+                <%= f.text_field :firstname, class: "form-control" %>
+              </div>
+              <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                <%= f.label :lastname, 'Nachname' %>
+                <%= f.text_field :lastname, class: "form-control" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 new-section">
+            <h3 class="title">Kontakt</h3>
+            <%= fields_for :contact, @contact do |c| %>
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <%= c.label :mail, 'E-Mail' %>
+                    <div class="input-group">
+                      <span class="input-group-addon">@</span>
+                      <%= c.text_field :mail, class: "form-control" %>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <%= c.label :phone, 'Telefonnummer' %>
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-phone fa-1x"></i></span>
+                      <%= c.text_field :phone, class: "form-control" %>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <%= c.label :mobilePhone, 'Mobilfunknummer' %>
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-mobile-phone fa-2x"></i></span>
+                      <%= c.text_field :mobilePhone, class: "form-control" %>
+                    </div>
+                  </div>
+                </div>
             <% end %>
-          </ul>
-        </div>
-    <% end %>
+          </div>
 
-    <div class="field">
-      <%= f.label :gender, 'Geschlecht' %><br>
-      <%= f.select :gender, Profile.genders.keys.to_a %>
-    </div>
-    <div class="field">
-      <%= f.label :firstname, 'Vorname' %><br>
-      <%= f.text_field :firstname, :required => true %>
-    </div>
-    <div class="field">
-      <%= f.label :lastname, 'Nachname' %><br>
-      <%= f.text_field :lastname, :required => true %>
-    </div>
-    <div class="field">
-      <%= f.label :phone, 'Telefonnummer' %><br>
-      <%= f.text_field :phone %>
-    </div>
-    <div class="field">
-      <%= f.label :city, 'Stadt' %><br>
-      <%= f.text_field :city %>
-    </div>
-    <div class="field">
-      <%= f.label :postcode, 'Postleitzahl' %><br>
-      <%= f.text_field :postcode %>
-    </div>
-    <div class="field">
-      <%= f.label :streetname, 'Straße' %><br>
-      <%= f.text_field :streetname %>
-    </div>
-    <div class="field">
-      <%= f.label :housenumber, 'Hausnummer' %><br>
-      <%= f.text_field :housenumber %>
-    </div>
-    <div class="field">
-      <%= f.label :photo, 'Profilbild (auslassen, wenn keine Änderung gewünscht ist)' %><br>
-      <%= f.file_field :photo %>
-    </div>
-    <br />
-    <div class="actions">
-      <%= f.submit 'Speichern' %>
-    </div>
-<% end %>
+          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 new-section">
+
+            <h3 class="title">Location</h3>
+            <%= render 'addresses/form' %>
+          </div>
+
+
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 new-section">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <h3 class="title">Profilbild</h3>
+                <% if @profile.photo.blank? %>
+                    <%= image_tag 'profile/default/thumb/Profilbild.png', {class: 'thumb-pic'} %>
+                <% else %>
+                    <%= image_tag @profile.photo.url(:thumb), {class: 'thumb-pic'} %>
+                <% end %>
+                <%= f.label :photo, '(auslassen, wenn keine Änderung gewünscht ist)' %>
+                <%= f.file_field :photo, {class: "form-control"} %>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 new-section">
+            <%= f.submit 'Speichern', {class: "btn btn-special btn-color"} %>
+          </div>
+        </div>
+
+    <% end %>
+  </div>
+</div>
