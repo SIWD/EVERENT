@@ -226,3 +226,9 @@ EventGenre.create([
                       {name: "Party"},
                       {name: "Scheunenball"}
                   ])
+
+EventEventGenre.create([
+                           {event_id: 1, event_genre_id: 4},
+                           {event_id: 1, event_genre_id: 5},
+                           {event_id: 2, event_genre_id: 2}
+                       ])
