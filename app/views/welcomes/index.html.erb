@@ -18,7 +18,7 @@
     <%= link_to 'Branchen' do %>
         <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 item">
           <div class="portfolio-item" style="width: 170px">
-           <%= image_tag 'Branchen.png' %>
+            <%= image_tag 'Branchen.png' %>
             <div class="portfolio-item-title">
                 <span class="text-center">
                   Branchen
@@ -31,3 +31,47 @@
     <div class="col-lg-4 col-md-5 col-sm-3 col-xs-12 item"></div>
   </div>
 </div>
+
+<!-- Latest Posts start -->
+<div class="latest-posts">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 com-sm-12 col-xs-12">
+        <h3 class="title">Neuste Events</h3>
+      </div>
+      <div class="clearfix"></div>
+      <div class="blog-showcase col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <ul>
+          <%
+             counter = 0
+             Event.where(who_has_access_id: 1).order(:created_at).first(3).each { |event| %>
+              <% counter = counter + 1 %>
+              <li class="<%= if counter == 3 then "blog-first-el" end %>">
+                    <div class="blog-showcase-thumb col-lg-4 col-md-6 col-sm-6">
+                      <div class="post-body">
+                        <a class="post-item-link" href="assets/portfolio/portfolio-7.jpg" data-rel="prettyPhoto">
+                          <span class="post-item-hover"></span>
+                        <span class="fullscreen">
+                          <i class="fa fa-search"></i>
+                        </span>
+                          <%= image_tag 'portfolio/portfolio-7.jpg' %>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="blog-showcase-extra-info col-lg-4 col-md-6 col-sm-6">
+                    <span>
+                    <%= link_to "#{event.date}", event %></span>
+                      <h4><a href="#" class="title"><%= event.name %></a></h4>
+                      <p><%= event.description[0,200]%></p>
+                      <%= link_to event do %>Mehr lesen <i class="fa fa-angle-double-right"></i><% end %>
+                    </div>
+              </li>
+          <% } %>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <div class="divider"></div>
+  </div>
+</div>
+<!-- Latest Posts End -->

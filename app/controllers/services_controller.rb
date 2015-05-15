@@ -19,6 +19,7 @@ class ServicesController < ApplicationController
   def new
     @service = Service.new
     @service.sameAddressLikeBusiness = true
+    @service.sameContactLikeBusiness = true
     respond_with(@service)
   end
 
@@ -38,21 +39,26 @@ class ServicesController < ApplicationController
   def update
     @service.update(service_params)
 
-    if @address.nil? && address_params
-      @address = Address.new
-      @service.address_id = @address.id
-    end
-    if @contact.nil? && address_params
-      @contact = Contact.new
-      @service.address_id = @contact.id
-    end
-
-    unless @service.sameAddressLikeBusiness || @address.update(address_params)
-      @service.errors.add(:base, "Adresse nicht vollständig ausgefüllt")
+    if !@service.sameAddressLikeBusiness
+      if @address.nil?
+        if @address = Address.create(address_params)
+          @service.address_id = @address.id
+          @service.save
+        end
+      elsif !@service.address.update(address_params)
+        @service.errors.add(:base, "Adresse nicht vollständig ausgefüllt")
+      end
     end
 
-    unless @service.sameContactLikeBusiness || @contact.update(contact_params)
-      @service.errors.add(:base, "Kontakt nicht vollständig ausgefüllt")
+    if !@service.sameContactLikeBusiness
+      if @contact.nil?
+        if @contact = Contact.create(contact_params)
+          @service.contact_id = @contact.id
+          @service.save
+        end
+      elsif !@service.contact.update(contact_params)
+        @service.errors.add(:base, "Kontakt nicht vollständig ausgefüllt")
+      end
     end
 
     respond_with(@service)

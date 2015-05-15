@@ -1,13 +1,14 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :is_owner?, only: [:show, :edit]
   before_action :check_password_for_event, only: [:show]
-  before_action :check_login_status, only: [:new, :edit, :destroy]
+  after_action :clear_flash, only: [:show]
+  before_action :check_login_status, only: [:new, :edit, :update, :destroy]
   after_action :set_notice_nil, only: [:show]
   before_action :create_host_maps, only: [:new]
   before_action :load_maps, only: [:edit]
   before_action :load_hosts, only: [:show]
   before_action :fill_maps, only: [:create, :update]
-  before_action :is_owner?, only: [:show, :edit]
   before_action :check_access_right, only: [:update, :edit, :destroy]
   respond_to :html
 
@@ -98,15 +99,23 @@ class EventsController < ApplicationController
 
   private
   def set_event
-    @event = Event.find(params[:id])
-    @eventLocation = EventLocation.find(@event.event_location_id)
-    @address = Address.find(@eventLocation.address_id)
+    @event = Event.where(id: params[:id]).first
+    if @event.nil?
+      flash[:error] = "Event nicht gefunden"
+    redirect_to(events_path)
+    else
+      @eventLocation = EventLocation.find(@event.event_location_id)
+      @address = Address.find(@eventLocation.address_id)
+    end
   end
 
   def check_login_status
-    unless current_user
-      flash[:error] = "Bitte loggen Sie sich zuerst ein, um ein Event zu erstellen!"
+    if !current_user
+      flash[:error] = "Bitte melden Sie sich an, um ein Event zu erstellen!"
       redirect_to new_user_session_path
+    elsif Profile.where(user_id: current_user.id).count == 0
+      flash[:error] = "Bitte erstellen Sie ein Profil, um ein Event zu erstellen!"
+      redirect_to new_profile_path
     end
   end
 
@@ -133,16 +142,18 @@ class EventsController < ApplicationController
   end
 
   def check_password_for_event
-
     if ((@event.who_has_access_id  == 2) && (params['password_for_event']) && !(params['password_for_event'] == (@event.password)))
-      flash[:error] = "Falsches Passwort"
-      flash[:notice] = nil
+      flash[:error] = "Passwort inkorrekt."
     elsif ((@event.who_has_access_id  == 2) && (params['password_for_event'] == (@event.password)))
-      flash[:notice] = "Zugang gewährt"
-      flash[:error] = nil
-
+      flash[:notice] = "Passwort korrekt, Zugang gewährt."
+    elsif ((@event.who_has_access_id  == 2) && @owner)
+      flash[:notice] = "Sie Sind Gastgeber, Zugang gewährt."
     end
+  end
 
+  def clear_flash
+    flash[:notice] = nil
+    flash[:error] = nil
   end
 
   def set_notice_nil
@@ -152,6 +163,11 @@ class EventsController < ApplicationController
   end
 
   def create_event_genre
+    if event_genre_params[:event_genre_ids].count > 2
+      @event.errors.add(:base, "Sie können max. eine Eventart auswählen.")
+    elsif event_genre_params[:event_genre_ids].count == 1
+      @event.errors.add(:base, "Sie müssen eine Eventart auswählen.")
+    end
     event_genre_params[:event_genre_ids].each {|eg|
       unless eg == ""
         EventEventGenre.create(event_id: @event.id, event_genre_id: eg)
@@ -247,6 +263,7 @@ class EventsController < ApplicationController
     @profiles_map = host_profile_params[:profile_ids]
     @businesses_map = host_business_params[:business_ids]
     @services_map = host_service_params[:service_ids]
+    @genre_map = event_genre_params[:event_genre_ids]
   end
 
   def is_owner?

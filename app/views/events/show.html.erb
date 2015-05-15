@@ -1,7 +1,7 @@
-<% content_for :title, Event %>
+<% content_for :title, @event.name %>
 <div class="row">
   <div class="col-lg-9">
-    <% if ((@event.who_has_access_id  == 2) && !(params['password_for_event'] == (@event.password))) %>
+    <% if ((@event.who_has_access_id  == 2) && !(params['password_for_event'] == (@event.password))) && !@owner %>
 
         <%= form_for( events_path(@event), method: :get, :html => {:class => 'reply'} ) do |f| %>
             <div class="row">
@@ -17,7 +17,7 @@
             </div>
         <% end %>
     <% elsif (@event.who_has_access_id  == 1) ||
-            ((@event.who_has_access_id  == 3) && (@owner)) ||
+            ((@owner)) ||
             ((@event.who_has_access_id  == 2) && (params['password_for_event'] == (@event.password))) %>
 
         <div class="banner">
@@ -25,10 +25,6 @@
         </div>
 
         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 new-section">
-          <p>
-            <strong>Name:</strong>
-            <%= @event.name %>
-          </p>
 
           <p>
             <strong>Gastgeber:</strong>
@@ -73,25 +69,24 @@
           </p>
 
           <p>
-            <strong>Stadt:</strong>
+            <strong>Adresse:</strong>
             <%= @address.city %>
-          </p>
-          <p>
-            <strong>PLZ:</strong>
-            <%= @address.postalCode %>
-          </p>
-          <p>
-            <strong>Starße & Hausnummer:</strong>
-            <%= @address.street1 %>
-          </p>
-          <p>
-            <strong>Adresszusatz:</strong>
+            <%= @address.postalCode %><br>
+            <%= @address.street1 %><br>
             <%= @address.street2 %>
           </p>
 
           <p>
             <strong>Beschreibung:</strong>
-            <%= @event.description %>
+            <%
+               @event.description.chars.each{|c|
+                 if c == "\n"
+                    %><br><%
+                 else
+                    %><%= c %><%
+                 end
+                }
+            %>
           </p>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 new-section">

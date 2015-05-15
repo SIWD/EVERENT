@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150331161228) do
+ActiveRecord::Schema.define(version: 20150427183010) do
 
   create_table "addresses", force: true do |t|
     t.string   "city"
@@ -57,6 +57,11 @@ ActiveRecord::Schema.define(version: 20150331161228) do
     t.string   "mail"
     t.string   "fax"
     t.string   "mobilePhone"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "errors", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -160,6 +165,8 @@ ActiveRecord::Schema.define(version: 20150331161228) do
     t.datetime "updated_at"
     t.date     "date"
     t.time     "time"
+    t.date     "end_date"
+    t.time     "end_time"
     t.integer  "event_location_id"
     t.integer  "who_has_access_id"
     t.string   "password"
@@ -267,6 +274,7 @@ ActiveRecord::Schema.define(version: 20150331161228) do
 
   create_table "who_has_access_to_events", force: true do |t|
     t.string   "who"
+    t.string   "title"
     t.string   "icon"
     t.datetime "created_at"
     t.datetime "updated_at"

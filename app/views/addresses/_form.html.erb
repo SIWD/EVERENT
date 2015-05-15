@@ -1,25 +1,25 @@
 
-  <%= fields_for :address, @address do |a| %>
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <%= a.label :street1,"Straße & Hausnummer" %>
-          <%= a.text_field :street1, class: "form-control"  %>
-        </div>
+<%= fields_for :address, @address do |a| %>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <%= a.label :street1 %>
+        <%= a.text_field :street1, class: "form-control"  %>
       </div>
-      <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <%= a.label :street2,"Adresszusatz (optional)" %>
-          <%= a.text_field :street2, class: "form-control"  %>
-        </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <%= a.label :street2 %>
+        <%= a.text_field :street2, class: "form-control"  %>
       </div>
-      <div class="row">
-        <div class="col-lg-3 col-md-6 col-sm-3 col-xs-3">
-          <%= a.label :postalCode, "PLZ" %>
-          <%= a.text_field :postalCode, class: "form-control" %>
-        </div>
-        <div class="col-lg-9 col-md-6 col-sm-9 col-xs-9">
-          <%= a.label :city, "Stadt" %>
-          <%= a.text_field :city, class: "form-control" %>
-        </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-3 col-xs-3">
+        <%= a.label :postalCode %>
+        <%= a.text_field :postalCode, class: "form-control" %>
       </div>
-  <% end %>
+      <div class="col-lg-9 col-md-6 col-sm-9 col-xs-9">
+        <%= a.label :city %>
+        <%= a.text_field :city, class: "form-control" %>
+      </div>
+    </div>
+<% end %>

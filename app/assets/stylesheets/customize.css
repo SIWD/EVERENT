@@ -72,6 +72,10 @@ form > .row {
     margin-bottom: 50px;
 }
 
+.small-new-section{
+    margin-bottom: 20px;
+}
+
 .pretty-table tr td{
     padding-right: 20px;
     vertical-align: top;
@@ -79,7 +83,6 @@ form > .row {
 }
 
 .pretty-table tr td:first-child{
-    width: 135px;
     font-weight: bold;
 }
 .pretty-table tr td:last-child{
@@ -124,3 +127,24 @@ form > .row {
     padding:0;
 }
 
+.time-select-style{
+    width: auto;
+    display: inline;
+}
+
+.event-listings{
+    margin: 0 0 20px;
+}
+
+
+.event-listings > div{
+    border: solid 1px;
+}
+
+span.listing:after{
+    content: ", ";
+}
+
+span.listing:last-of-type:after{
+    content: "";
+}

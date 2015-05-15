@@ -45,7 +45,7 @@ Address.create!([
                     {city: "Münster", postalCode: "48155", street1: "Albersloher Weg 14", street2: "", latitude: 51.94991, longitude: 7.636969999999999, stateCode: nil, country: nil},
                     {city: "Münster", postalCode: "48155", street1: "Albersloher Weg 16", street2: "", latitude: 51.95019689999999, longitude: 7.637523600000001, stateCode: nil, country: nil},
                     {city: "Ascheberg", postalCode: "59387", street1: " Mühlenkamp 2", street2: "", latitude: 51.7856499, longitude: 7.61848, stateCode: nil, country: nil},
-                    {city: "/", postalCode: "/", street1: "/", street2: "", latitude: "/", longitude: "/", stateCode: nil, country: nil},
+                    {city: "/", postalCode: "12345", street1: "/", street2: "", latitude: "/", longitude: "/", stateCode: nil, country: nil},
                     {city: "Münster", postalCode: "48155", street1: "Albersloher Weg 14", street2: "", latitude: 51.94991, longitude: 7.636969999999999, stateCode: nil, country: nil},
                     {city: "Münster", postalCode: "48155", street1: "Albersloher Weg 16", street2: "", latitude: 51.95019689999999, longitude: 7.637523600000001, stateCode: nil, country: nil},
                     {city: "Ascheberg", postalCode: "59387", street1: " Mühlenkamp 2", street2: "", latitude: 51.7856499, longitude: 7.61848, stateCode: nil, country: nil},
@@ -94,9 +94,9 @@ Business.create!([
                  ])
 
 WhoHasAccessToEvent.create!([
-                                {who: "Jeder", icon: "privacy/many_member.png"},
-                                {who: "Jeder mit Passwort", icon: "privacy/many_member_lock.png"},
-                                {who: "Nur Gastgeber", icon: "privacy/one_member.png"}
+                                {who: "Jeder", title: "Öffentlich", icon: "privacy/many_member.png"},
+                                {who: "Jeder mit Passwort", title: "Privat (Passwort)", icon: "privacy/many_member_lock.png"},
+                                {who: "Nur Gastgeber", title: "Gesperrt", icon: "privacy/one_member.png"}
                             ])
 
 EventUserJoin.create!([
@@ -219,16 +219,29 @@ UserBusiness.create!([
 
 
 EventGenre.create([
-                      {name: "Hochzeit"},
-                      {name: "Geburtstag"},
-                      {name: "Firmenfeier"},
-                      {name: "Club"},
-                      {name: "Party"},
-                      {name: "Scheunenball"}
+                      {id: 1, name: "Club"},
+                      {id: 2, name: "Live Auftritt"},
+                      {id: 3, name: "ABI-Party"},
+                      {id: 4, name: "Zeltparty"},
+                      {id: 5, name: "Scheunenball"},
+                      {id: 6, name: "Mottoparty"},
+                      {id: 7, name: "Sceneparty"},
+                      {id: 8, name: "Konzert"}
+                  ])
+
+MusicGenre.create([
+                      {name: "House"},
+                      {name: "Elektro"},
+                      {name: "Techno"},
+                      {name: "Black"},
+                      {name: "Charts"},
+                      {name: "Rock"},
+                      {name: "Oldies"},
+                      {name: "Classics"},
+                      {name: "Schlager"}
                   ])
 
 EventEventGenre.create([
                            {event_id: 1, event_genre_id: 4},
-                           {event_id: 1, event_genre_id: 5},
-                           {event_id: 2, event_genre_id: 2}
+                           {event_id: 2, event_genre_id: 1}
                        ])

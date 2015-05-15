@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
   before_action :set_location_main
   before_action :set_range
 
-
   def set_location_main
 
     if (params['usrloc'] && !(params['usrloc'] == ('')))
@@ -22,12 +21,16 @@ class ApplicationController < ActionController::Base
           flash[:alert] = "'#{@usr_loc}' wurde nicht gefunden"
         end
       end
+    elsif (params['usrloc'] && (params['usrloc'] == ('')))
+      @usr_loc = nil
+      @loc_checked = nil
     elsif cookies[:location]
       @loc_checked = Location.where(address: cookies[:location]).first
       if @loc_checked
         @usr_loc = @loc_checked.address
       end
     end
+
   end
 
   def set_range

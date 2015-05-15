@@ -7,22 +7,15 @@ class Service < ActiveRecord::Base
 
   validates :branch, :business, :name, presence: true
 
-  # validates_format_of :email, :with => /@/
 
+  before_validation do
 
-  def contact
     if self.sameContactLikeBusiness
-      self.business.contact
-    else
-      self.contact
+      self.contact = self.business.contact
     end
-  end
 
-  def address
     if self.sameAddressLikeBusiness
-      self.business.address
-    else
-      self.address
+      self.address = self.business.address
     end
   end
 
