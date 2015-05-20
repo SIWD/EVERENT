@@ -19,7 +19,12 @@
 //= require jquery.min
 //= require jquery-migrate-1.2.1.min
 //= require jquery-ui
+//= require jquery.timepicker.min
 //= require bootstrap
+//= require bootstrap-datepicker.min
+//= require datepair.min
+//= require jquery.datepair.min
+//= require locales/bootstrap-datepicker.de.min
 //= require jquery.parallax
 //= require jquery.wait
 //= require modernizr-2.6.2.min.js
@@ -37,7 +42,7 @@
 //= require jflickrfeed.js
 //= require imagesloaded.pkgd.min.js
 //= require waypoints.min.js
-//= require custom.js
 //= require jquery.isotope
+
 // require customize
 // require disablor

@@ -221,12 +221,14 @@ UserBusiness.create!([
 EventGenre.create([
                       {id: 1, name: "Club"},
                       {id: 2, name: "Live Auftritt"},
-                      {id: 3, name: "ABI-Party"},
-                      {id: 4, name: "Zeltparty"},
-                      {id: 5, name: "Scheunenball"},
-                      {id: 6, name: "Mottoparty"},
-                      {id: 7, name: "Sceneparty"},
-                      {id: 8, name: "Konzert"}
+                      {id: 3, name: "Studentenparty"},
+                      {id: 4, name: "ABI-Party"},
+                      {id: 5, name: "Zeltparty"},
+                      {id: 6, name: "Scheunenball"},
+                      {id: 7, name: "Mottoparty"},
+                      {id: 8, name: "Sceneparty"},
+                      {id: 9, name: "Festival"},
+                      {id: 10, name: "Konzert"}
                   ])
 
 MusicGenre.create([

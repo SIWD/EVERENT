@@ -14,7 +14,7 @@ class Profile < ActiveRecord::Base
   enum gender: [:Herr, :Frau]
 
 
-  has_attached_file :photo, styles: { medium: "300x300>", thumb: "50x50>" },
+  has_attached_file :photo, styles: { event_index: "300x300>", thumb: "50x50>" },
 
                     :url => '/assets/:class/:id/:style/ProfilBild.:extension'
                     #:url => ":rails_root/public/assets/:class/:id/:style.:extension"

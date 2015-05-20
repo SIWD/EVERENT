@@ -1,0 +1,30 @@
+
+<%= fields_for :contact, @contact do |c| %>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <%= c.label :mail, 'E-Mail' %>
+        <div class="input-group">
+          <span class="input-group-addon">@</span>
+          <%= c.text_field :mail, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <%= c.label :phone, 'Telefonnummer' %>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-phone fa-1x"></i></span>
+          <%= c.text_field :phone, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <%= c.label :mobilePhone, 'Mobilfunknummer' %>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-mobile-phone fa-2x"></i></span>
+          <%= c.text_field :mobilePhone, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+<% end %>

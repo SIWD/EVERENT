@@ -22,4 +22,15 @@ class Event < ActiveRecord::Base
   validates_length_of :name, maximum: 100
   validates :event_location_id, presence: true
   validates :who_has_access_id, presence: true
+
+  def flyer
+    images = EventImage.where(event_id: self.id)
+    if images.count > 0
+      images.last.image
+    else
+      nil
+    end
+  end
+
+
 end

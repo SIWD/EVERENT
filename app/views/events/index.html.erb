@@ -10,48 +10,57 @@
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="row">
 
-              <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12 new-section">
+              <div class="col-lg-12 col-md-4 col-sm-5 col-xs-12 small-new-section">
                 <h3 class="title">Wo willst du feiern:</h3>
                 <%= fields_for :event_genre do |eg| %>
                     <%= eg.collection_check_boxes :event_genre_ids, EventGenre.all, :id, :name, multiple: true do |p| %>
 
-                        <div class="col-lg-12 col-md-6 col-sm-6 col-xs-6">
-                          <%= p.check_box(checked: if !params['event_genre'] || params['event_genre'] && params['event_genre']['event_genre_ids'].include?(p.object.id.to_s) then true end) + " " + p.label %>
+                        <div class="col-lg-12 col-md-6 col-sm-12 col-xs-6">
+                          <%= p.check_box(checked: if !params['event_genre'] || params['event_genre'] && params['event_genre']['event_genre_ids'].include?(p.object.id.to_s) then
+                                                     true
+                                                   end) + " " + p.label %>
                         </div>
                     <% end %>
                 <% end %>
               </div>
 
-              <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12 new-section">
+              <div class="col-lg-12 col-md-4 col-sm-7 col-xs-12 small-new-section">
                 <h3 class="title">Art des Events</h3>
-                <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+
+                <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
                   <label for="location">Standort</label><br>
-                  <input type="text" class="form-control" placeholder="Münster" name="usrloc" value="<%= if @loc_checked then @loc_checked.address end  %>"  onClick="this.select(); this.focus()">
+                  <input type="text" class="form-control" placeholder="Münster" name="usrloc" value="<%= if @loc_checked then
+                                                                                                           @loc_checked.address
+                                                                                                         end %>" onClick="this.select(); this.focus()">
                 </div>
-                <div class="col-lg-12 col-md-6 col-sm-6 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12">
                   <div class="row">
                     <label class="col-lg-6" for="range">Umkreis:</label>
-                    <div class="col-lg-6 text-right" >
+
+                    <div class="col-lg-6 text-right">
                       <output name="amount" style="display: inline" for="range"><%= @range %></output>
                       <span> km</span>
                     </div>
                   </div>
-                  <input type="range" class="form-control"  name="range" step="10" min="0" max="200" value="<%= @range %>"  oninput="amount.value=range.value">
+                  <input type="range" class="form-control" name="range" step="10" min="0" max="200" value="<%= @range %>" oninput="amount.value=range.value">
                 </div>
               </div>
 
-              <!--<div class="col-lg-12 col-md-6 col-sm-6 col-xs-12 new-section">
-                <h3 class="title">Anzeigen:</h3>
+              <div class="col-lg-12 col-md-4 col-sm-7 col-xs-12 small-new-section">
+                <h3 class="title">Zeitpunkt:</h3>
 
-                <%= fields_for :privacy do |eg| %>
-                    <%= eg.collection_check_boxes :privacy_ids, WhoHasAccessToEvent.where(id: [1,2]), :id, :title, multiple: true do |p| %>
+                <div class="col-lg-12">
+                  <%= radio_button_tag :when, "future", if !params["when"] || params["when"] == "future" then
+                                                          "true"
+                                                        end %>
+                  <%= label_tag :when_future, "Zukünftige Events" %><br>
 
-                        <div class="col-lg-12 col-md-6 col-sm-6 col-xs-6">
-                          <%= p.check_box(checked: if params['privacy'] && params['privacy']['privacy_ids'].include?(p.object.id.to_s) || !params['privacy'] && p.object.id == 1 then true end)  + " " + p.label %>
-                        </div>
-                    <% end %>
-                <% end %>
-              </div>-->
+                  <%= radio_button_tag :when, "past", if params["when"] == "past" then
+                                                        "true"
+                                                      end %>
+                  <%= label_tag :when_past, "Vergangende Events" %><br>
+                </div>
+              </div>
 
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                 <button class="btn-color btn-normal" style="border:none;" type="submit">Filtern</button>
@@ -66,6 +75,7 @@
   <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
     <div class=" well ">
       <h3 class="title">Events:</h3>
+
       <div class="widget tabs animate_afb d1 animate_start">
         <div id="horizontal-tabs">
           <ul class="tabs">
@@ -73,13 +83,16 @@
             <li id="tab2">Privat</li>
           </ul>
           <div class="contents">
-            <div class="tabscontent" id="content1" style="display: block;">
+            <div class="tabscontent" id="content1">
 
               <% success = false %>
               <div class="row">
                 <% unless (@loc_checked.nil?) %>
                     <div class="col-lg-12">
-                      <span>Ergebnisse beim Standort <i><%= "#{@loc_checked.address}"%></i> im Umkreis von <i><%= "#{@range}" %></i> km:</span>
+                      <div class="col-lg-12 small-new-section">
+                        <h5>Ergebnisse beim Standort <i><%= "#{@loc_checked.address}" %></i>im Umkreis von
+                          <i><%= "#{@range}" %></i>km:</h5>
+                      </div>
                     </div>
                 <% end %>
                 <% @events.where(who_has_access_id: 1).order(:date).each do |event| %>
@@ -99,103 +112,101 @@
 
                        loc_to = event.event_location.address
                        show_location = false
-                       if (@usr_loc.nil? || ((!(@loc_checked.nil?) && !(loc_to.nil?)) && (/^[\d]+(\.[\d]+){0,1}$/ === @loc_checked.distance_to(loc_to).round(2).to_s) && (/^[\d]+(\.[\d]+){0,1}$/ === @range.to_s) )) && (@usr_loc.nil? || (@loc_checked.distance_to(loc_to).round(2).to_i <= @range.to_i))
+                       if (@usr_loc.nil? || ((!(@loc_checked.nil?) && !(loc_to.nil?)) && (/^[\d]+(\.[\d]+){0,1}$/ === @loc_checked.distance_to(loc_to).round(2).to_s) && (/^[\d]+(\.[\d]+){0,1}$/ === @range.to_s))) && (@usr_loc.nil? || (@loc_checked.distance_to(loc_to).round(2).to_i <= @range.to_i))
                          show_location = true
+                       end
+
+                       show_when = false
+                       if (!params["when"] || params["when"] == "future") && (event.date.today? || event.date.future?)
+                         show_when = true
+                       elsif params["when"] == "past" && event.date.past?
+
+                         show_when = true
                        end
 
                     %>
 
-                    <% if show_genre && show_location %>
+                    <% if show_genre && show_location && show_when %>
                         <% success = true %>
-                        <%# link_to event do %>
                         <div class="col-lg-12 event-listings">
-                          <div class="portfolio-item">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 small-new-section">
-                              <div class="row">
-                                <h4 class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                  <% if (event.who_has_access_id == 2) %>
-                                      <i class="fa fa-lock"></i>
-                                  <% end %>
-                                  <%= event.name %>
-                                </h4>
-                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-right pull-right">
-                                  <%
-                                     if event.date == Date.today
-                                       day = "Heute"
-                                     elsif event.date == Date.tomorrow
-                                       day = "Morgen"
-                                     else
-                                       day =  I18n.localize(event.date, :format => "%A")
-                                     end
-                                  %>
-                                  <span><i class="fa fa-calendar"></i> <b><%= day %></b><%= I18n.localize(event.date, :format => ", %-d.%-m.%y")%></span>
-                                  <% unless (@usr_loc.nil?) %>
-                                      <br><span><i class="fa fa-road"></i> <%= @loc_checked.distance_to(loc_to).round(2) %> km</span>
-                                  <% end %>
+                          <div class="portfolio-item nice">
+                            <% if event.flyer %>
+
+
+                                <div class="portfolio-item-image col-lg-3 col-md-3 col-sm-5 col-xs-12">
+                                  <div class="row">
+                                    <a href="<%= event.flyer.url %>">
+                                      <span class="img-hover"></span>
+                                      <span class="fullscreen"><i class="fa fa-eye"></i></span>
+                                      <%= image_tag event.flyer.url(:event_index) %>
+                                    </a>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8 small-new-section">
-                              <table class="pretty-table">
-                                <tr>
-                                  <td><i class="fa fa-map-marker fa-3x"></i></td>
-                                  <td><%= event.event_location.name %><br>
-                                <span class="small"><%= event.event_location.address.postalCode %>
-                                  <%= event.event_location.address.city %>,
-                                  <%= event.event_location.address.street1 %></span>
-                                  </td>
-                                </tr>
-                              </table>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4 small-new-section">
-                              <table class="pretty-table">
-                                <tr>
-                                  <td><i class="fa fa-music fa-3x"></i></td>
-                                  <td>
-                                    <% event.event_genres.each{|eg| %>
+
+                            <% end %>
+
+
+                            <div class="post-content-wrap">
+                              <!-- Event-Head -->
+                              <header class="post-header">
+                                <div class="post-date pull-right">
+                                  <a class="date" href="">
+                                    <strong><%= event.date.day %></strong>
+                                    <i><%= I18n.localize(event.date, :format => "%B").upcase %></i>
+                                  </a>
+                                </div>
+                                <%= link_to (event) do %>
+                                    <h3 class="content-title">
+                                      <% if (event.who_has_access_id == 2) %>
+                                          <i class="fa fa-lock"></i>
+                                      <% end %>
+                                      <%= event.name %>
+                                    </h3>
+                                <% end %>
+
+                                <div class="blog-entry-meta">
+
+                                  <% unless (@usr_loc.nil?) %>
+                                      <div class="blog-entry-meta-tags">
+                                        <i class="fa fa-road"></i>
+                                        <span> <%= @loc_checked.distance_to(loc_to).round(2) %>km</span>
+                                      </div>
+                                  <% end %>
+
+                                  <div class="blog-entry-meta-tags">
+                                    <i class="fa fa-map-marker"></i>
+                                    <%= event.event_location.name %><br>
+                                    <!--<span class="small"><%= event.event_location.address.postalCode %> <%= event.event_location.address.city %>,<%= event.event_location.address.street1 %></span>
+                                  -->
+                                  </div>
+
+                                  <div class="blog-entry-meta-tags">
+                                    <i class="fa fa-music"></i>
+                                    <% event.event_genres.each { |eg| %>
                                         <span class="listing"><%= eg.name %></span>
                                     <% } %>
-                                  </td>
-                                </tr>
-                              </table>
+                                  </div>
+                                </div>
+
+                              </header>
+
+                              <!-- Event-Body -->
+                              <%= link_to event do %>
+                                  <p>
+                                    <b>Beschreibung:</b><br>
+                                    <%= event.description[0, 200] %>
+                                    <% if (event.description.size > 200) %>
+                                        ...<br><b>Klick für mehr Info</b>
+                                    <% end %>
+                                  </p>
+                              <% end %>
                             </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 small-new-section">
-                              <b>Beschreibung:</b><br>
-                              <td><span>
-                            <%= event.description[0,200]%>
-                            </span>
-                                <% if (event.description.size > 200) %>
-                                    <b>... Klick für mehr Info</b>
-                                <% end %>
-                              </td>
-                            </div>
-                            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 small-new-section">
-                          <button class="your_class" value="<%= event.id %>">ADD</button>
-                            <script>
-                                $( ".your_class" ).on('click', function() {
-                                    var item_id = $(this).data('item');
-                                    var favourite = $(this).val();
-
-                                    $.ajax({
-                                        dataType: 'json',
-                                        url: '/events',
-                                        data: { favourite: <%= event.id %> },
-                                        type: "POST",
-                                        success: function(r){
-                                            alert("success");
-                                        }
-                                    }) ;
-                                })
-
-
-                            </script>
-                        </div>-->
                             <div class="clearfix"></div>
                           </div>
+                              <div class="blog-divider"></div>
                         </div>
                     <% end %>
                 <% end %>
-                <% #end %>
                 <% unless success %>
                     <div class="col-lg-12"><br>
                       <span><i class="fa fa-frown-o fa-2x"></i>  Leider keine Ergebnisse gefunden.</span>
@@ -206,13 +217,24 @@
               </div>
             </div>
             <div class="tabscontent" id="content2">
-              Privates Event finden:
-              <%= form_tag event_id_path, :method => :post do %>
-                  <%= label_tag :language_english, 'Event-ID' %>
-                  <%= text_field_tag :id %>
-                  <%= submit_tag %>
-              <% end %>
-            </div>
+
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 small-new-section">
+                <h3>Privates Event finden:</h3>
+                <%= form_tag event_id_path, :method => :post do %>
+
+                    <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <%= label_tag :id, 'Event-ID' %>
+                        <%= text_field_tag :id, "", {class: "form-control"} %>
+                      </div>
+                    </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 small-new-section">
+                      <%= submit_tag 'Suchen', {class: "btn btn-special btn-color"} %>
+                    </div>
+                <% end %>
+                </div>
           </div>
         </div>
       </div>

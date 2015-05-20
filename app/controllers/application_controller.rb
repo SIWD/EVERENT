@@ -37,4 +37,5 @@ class ApplicationController < ActionController::Base
     @range = params['range'] || 50
   end
 
+private
 end

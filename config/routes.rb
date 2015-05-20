@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  post "/events/event_id" => "events#show", :as => 'event_id'
+  post "/events/event_id" => "events#event_id", :as => 'event_id'
 
   resources :user_businesses
 

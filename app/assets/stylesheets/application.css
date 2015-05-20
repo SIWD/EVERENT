@@ -13,6 +13,9 @@
  *= require_self
  *= require bootstrap
  *= require bootstrap-theme
+ *= require bootstrap-datepicker3
+ *= require bootstrap-datepicker3.standalone
+ *= require jquery.timepicker
  *= require fonts/font-awesome/css/font-awesome
  *= require animations
  *= require superfish

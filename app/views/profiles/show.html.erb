@@ -55,7 +55,7 @@
     <% if @profile.photo.blank? %>
         <%= image_tag 'profile/default/medium/Profilbild.png', style: 'max-width: 300px; max-height: 300px;' %>
     <% else %>
-        <%= image_tag @profile.photo.url(:medium) %>
+        <%= image_tag @profile.photo.url(:event_index) %>
     <% end %>
   </div>
 

@@ -1,157 +1,192 @@
-<div class="row">
-  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-    <%= form_for @event do |f| %>
-        <% if @event.errors.any? || @address && @address.errors.any? %>
-            <div id="error_explanation">
-              <h2>Es kann nicht gespeichert werden, weil:</h2>
+<%= form_for @event, :html => {:multipart => true} do |f| %>
+    <% if @event.errors.any? || @address && @address.errors.any? %>
+        <div id="error_explanation">
+          <h2>Es kann nicht gespeichert werden, weil:</h2>
 
-              <ul>
-                <% (@event.errors.full_messages + @address.errors.full_messages).each do |message| %>
-                    <li><%= message %></li>
-                <% end %>
-              </ul>
-              <br />
-            </div>
-        <% end %>
+          <ul>
+            <% (@event.errors.full_messages + @address.errors.full_messages).each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+          <br/>
+        </div>
+    <% end %>
 
+    <div class="row">
+      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 new-section">
+        <h3 class="title">Facts</h3>
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <%= f.label :name, "Name des Events" %>
-            <%= f.text_field :name, class: "form-control"   %>
+            <%= f.text_field :name, class: "form-control" %>
           </div>
-        </div>
 
-
-        <div class="row">
-          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
             <b>Termin</b><br>
-            <%= f.date_select :date, {}, {class: "form-control time-select-style" }  %>
-          </div>
-          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <b>Start</b><br>
-            <%= f.time_select :time, {}, {class: "form-control time-select-style" } %>
-          </div>
-        </div>
 
+            <div id="datepair" class="input-daterange input-group">
+              <%= f.text_field :date, class: "date start input-sm form-control" %>
+              <%= f.text_field :time, class: "time start input-sm form-control" %>
+              <span class="input-group-addon">bis</span>
+              <%= f.text_field :end_date, class: "date end input-sm form-control" %>
+              <%= f.text_field :end_time, class: "time end input-sm form-control" %>
+            </div>
+            <script>
+                // initialize input widgets first
+                $('#datepair .time').timepicker({
+                    'showDuration': true,
+                    'timeFormat': 'H:i'
+                });
 
-        <div class="row">
+                $('#datepair .date').datepicker({
+                    'format': 'yyyy-m-d',
+                    language: "de",
+                    'autoclose': true
+                });
+
+                // initialize datepair
+                $('#datepair').datepair();
+            </script>
+          </div>
+
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <%= f.label :description, "Sag was über dein Event" %>
             <%= f.text_area :description, class: "form-control" %>
           </div>
         </div>
+      </div>
 
 
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <%= fields_for :event_genre do |eg| %>
-                <h3 class="title">Art des Events</h3>
-                  <%= eg.collection_check_boxes :event_genre_ids, EventGenre.all, :id, :name, multiple: true do |p| %>
-                           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                      <%= p.check_box(checked: if @genre_map && @genre_map.include?(p.object.id.to_s) then true end) + " " + p.label %>
-                    </div>
-                  <% end %>
-            <% end %>
-          </div>
-        </div>
+      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 new-section">
+        <h3 class="title">Flyer</h3>
+        <% if @event.flyer %>
+            <%= image_tag @event.flyer.url(:thumb), {class: 'thumb-pic'} %>
+        <% else %>
+            <%= image_tag 'privacy/many_member.png', {class: 'thumb-pic'} %>
+        <% end %>
+
+        <%= fields_for :event_image, :html => {:multipart => true} do |image| %>
+            <%= image.label :image, '(auslassen, wenn keine Änderung gewünscht ist)' %>
+            <%= image.file_field :image, {class: "form-control"} %>
+        <% end %>
+      </div>
 
 
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <h3 class="title">Gastgeber</h3>
-            <%= fields_for :host do |h| %>
-                <table>
-                  <%= h.collection_check_boxes :profile_ids, Profile.where(user_id: current_user.id).all, :id, :name_with_initial, multiple: true do |p| %>
-                      <tr>
-                        <td><%= p.check_box(checked: if @profiles_map.include?(p.object.id.to_s) then true end) + " " + p.label %></td>
-                        <td>&nbsp;|&nbsp;<%= link_to 'Profil', profile_path(p.object.id) %></td>
-                      </tr>
-                  <% end %>
+      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 new-section">
+        <h3 class="title">Gastgeber</h3>
+        <%= fields_for :host do |h| %>
+            <table>
+              <%= h.collection_check_boxes :profile_ids, Profile.where(user_id: current_user.id).all, :id, :name_with_initial, multiple: true do |p| %>
+                  <tr>
+                    <td><%= p.check_box(checked: if @profiles_map.include?(p.object.id.to_s) then
+                                                   true
+                                                 end) + " " + p.label %></td>
+                    <td>&nbsp;|&nbsp;<%= link_to 'Profil', profile_path(p.object.id) %></td>
+                  </tr>
+              <% end %>
 
-                  <% if(UserBusiness.where(user_id: current_user.id).count > 0) %>
-                      <% UserBusiness.where(user_id: current_user.id).each do |ub| %>
-                          <%= h.collection_check_boxes :business_ids, Business.where(id: ub.business_id).all, :id, :name, multiple: true do |b| %>
-                              <tr>
-                                <td><%= b.check_box(checked: if @businesses_map.include?(b.object.id.to_s) then true end) + " " + b.label %></td>
-                                <td>&nbsp;|&nbsp;<%= link_to 'Unternehmen', business_path(b.object.id) %></td>
-                              </tr>
-                          <% end %>
+              <% if (UserBusiness.where(user_id: current_user.id).count > 0) %>
+                  <% UserBusiness.where(user_id: current_user.id).each do |ub| %>
+                      <%= h.collection_check_boxes :business_ids, Business.where(id: ub.business_id).all, :id, :name, multiple: true do |b| %>
+                          <tr>
+                            <td><%= b.check_box(checked: if @businesses_map.include?(b.object.id.to_s) then
+                                                           true
+                                                         end) + " " + b.label %></td>
+                            <td>&nbsp;|&nbsp;<%= link_to 'Unternehmen', business_path(b.object.id) %></td>
+                          </tr>
                       <% end %>
                   <% end %>
+              <% end %>
 
-                  <% if(UserBusiness.where(user_id: current_user.id).count > 0) %>
-                      <% UserBusiness.where(user_id: current_user.id).each do |ub| %>
-                          <% Business.where(id: ub.business_id).each do |b| %>
-                              <% if (Service.where(business_id: b.id).count > 0 ) %>
-                                  <%= h.collection_check_boxes :service_ids, Service.where(business_id: b.id).all, :id, :name, multiple: true do |s| %>
-                                      <tr>
-                                        <td><%= s.check_box(checked: if @services_map.include?(s.object.id.to_s) then true end) + " " + s.label %></td>
-                                        <td>&nbsp;|&nbsp;<%= link_to 'Dienstleistung', service_path(s.object.id) %></td>
-                                      </tr>
-                                  <% end %>
+              <% if (UserBusiness.where(user_id: current_user.id).count > 0) %>
+                  <% UserBusiness.where(user_id: current_user.id).each do |ub| %>
+                      <% Business.where(id: ub.business_id).each do |b| %>
+                          <% if (Service.where(business_id: b.id).count > 0) %>
+                              <%= h.collection_check_boxes :service_ids, Service.where(business_id: b.id).all, :id, :name, multiple: true do |s| %>
+                                  <tr>
+                                    <td><%= s.check_box(checked: if @services_map.include?(s.object.id.to_s) then
+                                                                   true
+                                                                 end) + " " + s.label %></td>
+                                    <td>&nbsp;|&nbsp;<%= link_to 'Dienstleistung', service_path(s.object.id) %></td>
+                                  </tr>
                               <% end %>
                           <% end %>
                       <% end %>
                   <% end %>
-                </table>
+              <% end %>
+            </table>
+        <% end %>
+      </div>
+
+      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 new-section">
+        <%= fields_for :event_genre do |eg| %>
+            <h3 class="title">Art des Events</h3>
+            <%= eg.collection_radio_buttons :event_genre_ids, EventGenre.all, :id, :name, multiple: true do |p| %>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                  <div class="row">
+                    <%= p.radio_button(checked: if @genre_map && @genre_map.include?(p.object.id.to_s) then
+                                                  true
+                                                end) + " " + p.label %>
+                  </div>
+                </div>
             <% end %>
-          </div>
-        </div>
+        <% end %>
+      </div>
 
 
-        <h3 class="title">Location</h3>
+      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 new-section">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3 class="title">Location</h3>
             <%= fields_for :eventLocation, @eventLocation do |el| %>
                 <%= el.label :name, "Name der Location" %>
-                <%= el.text_field :name, class: "form-control"  %>
+                <%= el.text_field :name, class: "form-control" %>
             <% end %>
           </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <%= render 'addresses/form' %>
+          </div>
         </div>
-        <%= render 'addresses/form' %>
+      </div>
 
+      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 new-section">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-             <h3 class="title">Privatsphäre</h3>
+            <h3 class="title">Privatsphäre</h3>
             <b>Wer darf das Event aufrufen?</b>
             <div class="row">
               <%= f.collection_radio_buttons :who_has_access_id, WhoHasAccessToEvent.all, :id, :who do |radio| %>
                   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <%= radio.label(class: "form-icon #{radio.object.who}"){radio.radio_button + image_tag(radio.object.icon) } %>
-                    <%= radio.label{radio.label} %>
+                    <%= radio.label(class: "form-icon #{radio.object.who}") { radio.radio_button + image_tag(radio.object.icon) } %>
+                    <%= radio.label { radio.label } %>
                   </div>
               <% end %>
             </div>
           </div>
-        </div>
 
-        <div class="row optional-password">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 optional-password">
             <%= f.label :password %>
             <%= f.text_field :password, class: "form-control" %>
           </div>
+          <script>
+              $(document).ready(function () {
+                  $(document).on('click', 'form', function () {
+                      if ($('#event_who_has_access_id_2').is(':checked')) {
+                          $('.optional-password').slideDown();
+                      }
+                      else {
+                          $('.optional-password').slideUp();
+                      }
+                  });
+              });
+          </script>
+
         </div>
-
-        <script>
-            $(document).ready(function (){
-                $(document).on('click', 'form', function(){
-                    if ($('#event_who_has_access_id_2').is(':checked')){
-                        $('.optional-password').slideDown();
-                    }
-                    else {
-                        $('.optional-password').slideUp();
-                    }
-                });
-            });
-        </script>
+      </div>
 
 
-
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <%= f.submit "Speichern", class: "btn btn-normal btn-color submit" %>
-          </div>
-        </div>
-    <% end %>
-  </div>
-</div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <%= f.submit "Speichern", class: "btn btn-normal btn-color submit" %>
+      </div>
+    </div>
+<% end %>

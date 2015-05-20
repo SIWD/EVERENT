@@ -37,7 +37,6 @@
 
   <%= javascript_include_tag "application" %>
 
-
 </head>
 <body>
 <!--
@@ -188,8 +187,6 @@
         <% bootstrap_flash %>
         <%= render 'layouts/messages' %>
 
-        <script src="/assets/custom.js?"></script>
-        <script src="/assets/disablor.js"></script>
         <!--<script>
             if (navigator.geolocation) {
                 var timeoutVal = 10 * 1000 * 1000;
@@ -275,4 +272,7 @@
 </div> <!-- /wrap -->
 
 </body>
+
+
+<%= javascript_include_tag "application_last" %>
 </html>

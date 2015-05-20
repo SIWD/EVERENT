@@ -22,6 +22,21 @@ class EventsController < ApplicationController
     respond_with(@event)
   end
 
+  def event_id
+    num = params[:id].to_i
+    if num > 0 && num <= Event.order(:id).last.id
+      @event = Event.where(id: num).first
+      if @event.present? && @event.who_has_access_id == 2
+        respond_with(@event)
+      else
+        not_found
+      end
+    else
+      not_found
+    end
+
+  end
+
   def new
     @event = Event.new
     respond_with(@event)
@@ -41,10 +56,10 @@ class EventsController < ApplicationController
     @eventLocation.save
     @event.event_location_id = @eventLocation.id
 
-    create_event_genre
     add_event_members
 
     if @event.save
+      create_event_genre
       update_event_member_status
       current_user.add_role(:eventOwner, @event)
     else
@@ -55,6 +70,11 @@ class EventsController < ApplicationController
     if @member_count < 1
       @event.errors.add(:base, "Sie müssen mindestens einen Gastgeber auswählen")
     end
+
+    unless @event.errors.any?
+      @event.event_images.create(image_params)
+    end
+
     respond_with(@event)
   end
 
@@ -65,6 +85,15 @@ class EventsController < ApplicationController
       @event.errors.add(:base, "Sie müssen mindestens einen Gastgeber auswählen")
     end
 
+    unless params[:event_image].nil?
+      unless @event.event_images.first.nil?
+        @event.event_images.first.destroy
+      end
+
+      image = @event.event_images.new(image_params)
+      image.album = "Flyer"
+      image.save
+    end
 
     update_event_genre
     update_event_member_status
@@ -102,11 +131,12 @@ class EventsController < ApplicationController
     @event = Event.where(id: params[:id]).first
     if @event.nil?
       flash[:error] = "Event nicht gefunden"
-    redirect_to(events_path)
+      redirect_to(events_path)
     else
       @eventLocation = EventLocation.find(@event.event_location_id)
       @address = Address.find(@eventLocation.address_id)
     end
+
   end
 
   def check_login_status
@@ -120,33 +150,43 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:name, :address_id, :description, :who_has_access_id, :password, :date, :time)
+    params.require(:event).permit(:name, :address_id, :description, :who_has_access_id, :password, :date, :time, :end_date, :end_time)
   end
+
   def address_params
     params.require(:address).permit(:city, :postalCode, :street1, :street2)
   end
+
   def eventlocation_params
     params.require(:eventLocation).permit(:name)
   end
+
   def host_profile_params
     params.require(:host).permit(profile_ids: [])
   end
+
   def host_business_params
     params.require(:host).permit(business_ids: [])
   end
+
   def host_service_params
     params.require(:host).permit(service_ids: [])
   end
+
   def event_genre_params
     params.require(:event_genre).permit(event_genre_ids: [])
   end
 
+  def image_params
+    params.require(:event_image).permit(:image)
+  end
+
   def check_password_for_event
-    if ((@event.who_has_access_id  == 2) && (params['password_for_event']) && !(params['password_for_event'] == (@event.password)))
+    if ((@event.who_has_access_id == 2) && (params['password_for_event']) && !(params['password_for_event'] == (@event.password)))
       flash[:error] = "Passwort inkorrekt."
-    elsif ((@event.who_has_access_id  == 2) && (params['password_for_event'] == (@event.password)))
+    elsif ((@event.who_has_access_id == 2) && (params['password_for_event'] == (@event.password)))
       flash[:notice] = "Passwort korrekt, Zugang gewährt."
-    elsif ((@event.who_has_access_id  == 2) && @owner)
+    elsif ((@event.who_has_access_id == 2) && @owner)
       flash[:notice] = "Sie Sind Gastgeber, Zugang gewährt."
     end
   end
@@ -157,18 +197,18 @@ class EventsController < ApplicationController
   end
 
   def set_notice_nil
-    if ((@event.who_has_access_id  == 2) && (params['password_for_event'] == (@event.password)))
+    if ((@event.who_has_access_id == 2) && (params['password_for_event'] == (@event.password)))
       flash[:notice] = nil
     end
   end
 
   def create_event_genre
-    if event_genre_params[:event_genre_ids].count > 2
+    if event_genre_params[:event_genre_ids].count > 2 # && event_genre_params[:event_genre_ids].any.empty? || event_genre_params[:event_genre_ids].count > 1
       @event.errors.add(:base, "Sie können max. eine Eventart auswählen.")
-    elsif event_genre_params[:event_genre_ids].count == 1
+    elsif event_genre_params[:event_genre_ids].count == 1 # && event_genre_params[:event_genre_ids].last == "" || event_genre_params[:event_genre_ids].count == 0
       @event.errors.add(:base, "Sie müssen eine Eventart auswählen.")
     end
-    event_genre_params[:event_genre_ids].each {|eg|
+    event_genre_params[:event_genre_ids].each { |eg|
       unless eg == ""
         EventEventGenre.create(event_id: @event.id, event_genre_id: eg)
       end
@@ -176,7 +216,7 @@ class EventsController < ApplicationController
   end
 
   def update_event_genre
-    @event.event_event_genres.each {|eeg|
+    @event.event_event_genres.each { |eeg|
       EventEventGenre.find(eeg).destroy
     }
 
@@ -255,8 +295,8 @@ class EventsController < ApplicationController
 
   def load_hosts
     @profiles = @event.event_profiles.all
-    @businesses =  @event.event_businesses.all
-    @services =  @event.event_services.all
+    @businesses = @event.event_businesses.all
+    @services = @event.event_services.all
   end
 
   def fill_maps
@@ -271,23 +311,36 @@ class EventsController < ApplicationController
     if current_user
       businesses_ids = UserBusiness.where(user_id: current_user.id).map(&:business_id)
       @event.event_profiles.each do |ep|
-        @owner = if ep.profile_id.in?(Profile.where(user_id: current_user.id).map(&:id)) then true end
+        @owner = if ep.profile_id.in?(Profile.where(user_id: current_user.id).map(&:id)) then
+                   true
+                 end
       end
       @event.event_businesses.each do |eb|
-        @owner = if eb.business_id.in?(businesses_ids) then true end
+        @owner = if eb.business_id.in?(businesses_ids) then
+                   true
+                 end
       end
       @event.event_services.each do |es|
-        @owner = if es.service.business_id.in?(businesses_ids) then true end
+        @owner = if es.service.business_id.in?(businesses_ids) then
+                   true
+                 end
       end
     end
   end
 
   def check_access_right
-    if ! current_user.has_role? :eventOwner, @event
+    if !current_user.has_role? :eventOwner, @event
       flash[:alert] = "Sie haben hierfür leider keine Berechtigung ;)"
       redirect_to events_path
     end
   end
+
+
+  def not_found
+    flash[:error] = "Privates Event nicht gefunden."
+    redirect_to(events_path + '#privat')
+  end
+
 
 
 end

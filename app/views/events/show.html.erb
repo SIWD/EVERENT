@@ -1,9 +1,9 @@
 <% content_for :title, @event.name %>
 <div class="row">
-  <div class="col-lg-9">
-    <% if ((@event.who_has_access_id  == 2) && !(params['password_for_event'] == (@event.password))) && !@owner %>
+  <div class="col-lg-12">
+    <% if ((@event.who_has_access_id == 2) && !(params['password_for_event'] == (@event.password))) && !@owner %>
 
-        <%= form_for( events_path(@event), method: :get, :html => {:class => 'reply'} ) do |f| %>
+        <%= form_for(events_path(@event), method: :get, :html => {:class => 'reply'}) do |f| %>
             <div class="row">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <%= f.label :password_for_event, "Passwort für dieses Event" %><br>
@@ -16,15 +16,18 @@
               </div>
             </div>
         <% end %>
-    <% elsif (@event.who_has_access_id  == 1) ||
+    <% elsif (@event.who_has_access_id == 1) ||
             ((@owner)) ||
-            ((@event.who_has_access_id  == 2) && (params['password_for_event'] == (@event.password))) %>
+            ((@event.who_has_access_id == 2) && (params['password_for_event'] == (@event.password))) %>
 
-        <div class="banner">
-          <%= image_tag "events/default/banner.png" %>
-        </div>
 
-        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 new-section">
+          <% if @event.flyer %>
+                <div class="flyer-show">
+                  <%= image_tag @event.flyer.url(:banner) %>
+                </div>
+          <% end %>
+
+        <div class="col-lg-7 col-md-9 col-sm-8 col-xs-8 new-section">
 
           <p>
             <strong>Gastgeber:</strong>
@@ -46,7 +49,7 @@
             <%= WhoHasAccessToEvent.find(@event.who_has_access_id).who %>
           </p>
 
-          <% if (@event.who_has_access_id  == 2) %>
+          <% if (@event.who_has_access_id == 2) %>
               <p>
                 <strong>Passwort:</strong>
                 <%= @event.password %>
@@ -55,7 +58,7 @@
 
           <p>
             <strong>Datum:</strong>
-            <%= @event.date.strftime('%d %m %Y')%>
+            <%= @event.date.strftime('%d %m %Y') %>
           </p>
 
           <p>
@@ -79,22 +82,24 @@
           <p>
             <strong>Beschreibung:</strong>
             <%
-               @event.description.chars.each{|c|
+               @event.description.chars.each { |c|
                  if c == "\n"
-                    %><br><%
-                 else
+            %><br><%
+                       else
                     %><%= c %><%
-                 end
-                }
-            %>
+                   end
+                   }
+                %>
           </p>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 new-section">
+        <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12 new-section">
+          <div class="row">
           <iframe src="http://maps.google.de/maps?hl=de&amp;q=<%= @address.city + ", " + @address.street1 + " " + @address.street2 %>&amp;ie=UTF8&amp;t=&amp;z=17&amp;iwloc=B&amp;output=embed"
                   scrolling="no" marginheight="0" marginwidth="0" frameborder="0" height="300px" width="100%">
           </iframe>
+          </div>
         </div>
-    <% elsif ((@event.who_has_access_id  == 3) && (!@owner))%>
+    <% elsif ((@event.who_has_access_id == 3) && (!@owner)) %>
         <p>
           <strong>Keine Berechtigung</strong>
         </p>
@@ -108,6 +113,6 @@
 <% if current_user %>
     <% if current_user.has_role? :eventOwner, @event %>
         &nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_event_path(@event) %>
-        &nbsp;|&nbsp;<%= link_to 'Löschen', @event, method: :delete, data: { confirm: 'Sind Sie sicher?' } %>
+        &nbsp;|&nbsp;<%= link_to 'Löschen', @event, method: :delete, data: {confirm: 'Sind Sie sicher?'} %>
     <% end %>
 <% end %>

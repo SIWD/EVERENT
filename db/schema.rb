@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150427183010) do
+ActiveRecord::Schema.define(version: 20150518152241) do
 
   create_table "addresses", force: true do |t|
     t.string   "city"
@@ -105,6 +105,10 @@ ActiveRecord::Schema.define(version: 20150427183010) do
     t.string   "file_content_type"
     t.integer  "file_file_size"
     t.datetime "file_updated_at"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   add_index "event_images", ["event_id"], name: "index_event_images_on_event_id"

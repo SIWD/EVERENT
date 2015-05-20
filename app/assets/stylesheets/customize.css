@@ -2,7 +2,10 @@ label{
     cursor: pointer;
 }
 
-textarea { resize:vertical; }
+textarea {
+    resize: vertical;
+    min-height: 80px !important;
+}
 
 .form-icon{
     display: block;
@@ -133,12 +136,11 @@ form > .row {
 }
 
 .event-listings{
-    margin: 0 0 20px;
+    margin: 0 0 0px;
 }
 
 
 .event-listings > div{
-    border: solid 1px;
 }
 
 span.listing:after{
@@ -147,4 +149,71 @@ span.listing:after{
 
 span.listing:last-of-type:after{
     content: "";
+}
+
+
+.post-item-link{
+    height: 200px;
+}
+
+.latest-posts .portfolio-item{
+    height: 200px;
+    background: none;
+}
+
+.latest-posts .portfolio-item img{
+    max-height:100%;
+    width:auto;
+    margin:auto
+}
+
+
+@media handheld,only screen and (max-width:640px) {
+
+    .latest-posts .portfolio-item{
+        height: auto;
+    }
+}
+
+.flyer-show {
+    max-height:600px;
+    max-width:100%;
+    float:left;
+}
+.flyer-show img{
+    max-height:100%;
+    max-width:100%;
+}
+
+.flyer-event-index img{
+    max-height: 300px;
+    width:auto;
+    float:left;
+}
+
+.portfolio-item-image{
+    margin-right: 20px;
+    max-height: 500px;
+    overflow: hidden;
+}
+
+.nice{
+    background-color: #f4f4f4;
+}
+
+.portfolio-item .post-header{
+    margin-bottom: 10px;
+    margin-left:20px;
+}
+
+.portfolio-item .post-header h3.content-title{
+    margin-bottom: 10px;
+}
+
+.portfolio-item p{
+    margin:20px 20px;
+}
+
+#horizontal-tabs .tabscontent{
+    padding: 0;
 }

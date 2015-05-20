@@ -6,13 +6,13 @@ class Address < ActiveRecord::Base
 
   validates :city, presence: true
   validates :street1, presence: true
-  validate :postalCode, :postalCodeLegal?
+  #validate :postalCode, :postalCodeLegal?
 
   geocoded_by :address
   after_validation :geocode, if: ->(obj){ obj.address.present? and obj.address_changed? }
 
   def address
-    [city, postalCode, street1, street2].compact.join(', ')
+    ["Stadt: " + city, postalCode, street1, street2].compact.join(', ')
   end
 
 

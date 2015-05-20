@@ -1758,7 +1758,7 @@ ul.why li:before {
 
 .blog-divider {
 	margin:35px 0;
-	background: url(../img/bg_off.png) repeat;
+	background: url(bg_off.png) repeat;
     content: "";
     height: 5px;
 }
