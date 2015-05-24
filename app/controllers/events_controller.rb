@@ -46,9 +46,8 @@ class EventsController < ApplicationController
   end
 
   def create
-    @address = Address.create(address_params)
     @event = Event.new(event_params)
-
+    @address = Address.create(address_params)
     @eventLocation = EventLocation.new(eventlocation_params)
     @eventLocation.address_id = @address.id
 
@@ -57,22 +56,26 @@ class EventsController < ApplicationController
     @event.event_location_id = @eventLocation.id
 
     add_event_members
+    if @member_count < 1
+      @event.errors.add(:base, "Sie müssen mindestens einen Gastgeber auswählen")
+    end
 
-    if @event.save
+    if @member_count > 0 && @event.save
+      if @address.latitude.nil? || @address.latitude == ""
+        @event.errors.add(:base, "Adresse nicht gefunden")
+      end
+      unless image_params.nil?
+        image = @event.event_images.new(image_params)
+        image.album = "Flyer"
+        image.save
+      end
       create_event_genre
       update_event_member_status
       current_user.add_role(:eventOwner, @event)
     else
       @eventLocation.destroy
+      @address.destroy
       destroy_event_members
-    end
-
-    if @member_count < 1
-      @event.errors.add(:base, "Sie müssen mindestens einen Gastgeber auswählen")
-    end
-
-    unless @event.errors.any?
-      @event.event_images.create(image_params)
     end
 
     respond_with(@event)
@@ -85,11 +88,10 @@ class EventsController < ApplicationController
       @event.errors.add(:base, "Sie müssen mindestens einen Gastgeber auswählen")
     end
 
-    unless params[:event_image].nil?
+    unless image_params.nil?
       unless @event.event_images.first.nil?
         @event.event_images.first.destroy
       end
-
       image = @event.event_images.new(image_params)
       image.album = "Flyer"
       image.save
@@ -105,6 +107,10 @@ class EventsController < ApplicationController
 
     unless @address.update(address_params)
       @event.errors.add(:base, "Sie müssen die Adresse vollständig ausfüllen")
+    else
+      if @address.latitude.nil? || @address.latitude == ""
+        @event.errors.add(:base, "Adresse nicht gefunden")
+      end
     end
 
     respond_with(@event)
@@ -112,8 +118,12 @@ class EventsController < ApplicationController
 
   def destroy
     name = @event.name
+
+
+    event_images = @event.event_images.all
     if (destroy_event_members && @event.destroy)
       flash[:notice] = "'#{name}' wurde gelöscht"
+      event_images.destroy_all
     else
       flash[:notice] = "'#{name}' wurde NICHT vollständig gelöscht! Bitte versuchen Sie es später erneut oder wenden Sie sich an Unseren IT-Service"
     end
@@ -125,7 +135,6 @@ class EventsController < ApplicationController
   end
 
 
-
   private
   def set_event
     @event = Event.where(id: params[:id]).first
@@ -135,6 +144,7 @@ class EventsController < ApplicationController
     else
       @eventLocation = EventLocation.find(@event.event_location_id)
       @address = Address.find(@eventLocation.address_id)
+      @image = @event.event_images.where(album: "Flyer").last
     end
 
   end
@@ -174,11 +184,15 @@ class EventsController < ApplicationController
   end
 
   def event_genre_params
-    params.require(:event_genre).permit(event_genre_ids: [])
+    params.require(:event_genre).permit(:event_genre_ids)
   end
 
   def image_params
-    params.require(:event_image).permit(:image)
+    if params[:event_image]
+      params.require(:event_image).permit(:image)
+    else
+      nil
+    end
   end
 
   def check_password_for_event
@@ -203,16 +217,7 @@ class EventsController < ApplicationController
   end
 
   def create_event_genre
-    if event_genre_params[:event_genre_ids].count > 2 # && event_genre_params[:event_genre_ids].any.empty? || event_genre_params[:event_genre_ids].count > 1
-      @event.errors.add(:base, "Sie können max. eine Eventart auswählen.")
-    elsif event_genre_params[:event_genre_ids].count == 1 # && event_genre_params[:event_genre_ids].last == "" || event_genre_params[:event_genre_ids].count == 0
-      @event.errors.add(:base, "Sie müssen eine Eventart auswählen.")
-    end
-    event_genre_params[:event_genre_ids].each { |eg|
-      unless eg == ""
-        EventEventGenre.create(event_id: @event.id, event_genre_id: eg)
-      end
-    }
+    EventEventGenre.create(event_id: @event.id, event_genre_id: event_genre_params[:event_genre_ids])
   end
 
   def update_event_genre
@@ -228,7 +233,35 @@ class EventsController < ApplicationController
     @event.update(host_business_params)
     @event.update(host_service_params)
 
-    @member_count = @event.event_businesses.count + @event.event_profiles.count + @event.event_services.count
+
+    if params[:host]
+      @member_count = 0
+      if params[:host][:profile_ids]
+        params[:host][:profile_ids].each { |p|
+          unless p.empty?
+            @member_count += 1
+          end
+        }
+      end
+
+      if params[:host][:business_ids]
+        params[:host][:business_ids].each { |p|
+          unless p.empty?
+            @member_count += 1
+          end
+        }
+      end
+
+      if params[:host][:service_ids]
+        params[:host][:service_ids].each { |p|
+          unless p.empty?
+            @member_count += 1
+          end
+        }
+      end
+    else
+      @member_count = @event.event_businesses.count + @event.event_profiles.count + @event.event_services.count
+    end
   end
 
   def destroy_event_members
@@ -340,7 +373,6 @@ class EventsController < ApplicationController
     flash[:error] = "Privates Event nicht gefunden."
     redirect_to(events_path + '#privat')
   end
-
 
 
 end

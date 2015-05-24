@@ -4,7 +4,7 @@ label{
 
 textarea {
     resize: vertical;
-    min-height: 80px !important;
+    min-height: 200px !important;
 }
 
 .form-icon{
@@ -216,4 +216,13 @@ span.listing:last-of-type:after{
 
 #horizontal-tabs .tabscontent{
     padding: 0;
+}
+
+.hover-show-content{
+    opacity: 0;
+    height:0;
+}
+
+hr {
+    border-top-color: #c9c9c9;
 }

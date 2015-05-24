@@ -230,6 +230,7 @@ EventGenre.create([
                       {id: 9, name: "Festival"},
                       {id: 10, name: "Konzert"}
                   ])
+=begin
 
 MusicGenre.create([
                       {name: "House"},
@@ -242,6 +243,7 @@ MusicGenre.create([
                       {name: "Classics"},
                       {name: "Schlager"}
                   ])
+=end
 
 EventEventGenre.create([
                            {event_id: 1, event_genre_id: 4},

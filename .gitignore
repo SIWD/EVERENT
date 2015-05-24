@@ -17,3 +17,6 @@
 
 # Ignore Ruby Mine Settings
 .idea/
+
+/public/assets/event_images/*
+/public/assets/profiles/*

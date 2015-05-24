@@ -1,7 +1,7 @@
 <%= form_for @event, :html => {:multipart => true} do |f| %>
     <% if @event.errors.any? || @address && @address.errors.any? %>
         <div id="error_explanation">
-          <h2>Es kann nicht gespeichert werden, weil:</h2>
+          <h2>Es kann nicht gespeichert werden:</h2>
 
           <ul>
             <% (@event.errors.full_messages + @address.errors.full_messages).each do |message| %>
@@ -56,7 +56,6 @@
         </div>
       </div>
 
-
       <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 new-section">
         <h3 class="title">Flyer</h3>
         <% if @event.flyer %>
@@ -65,12 +64,11 @@
             <%= image_tag 'privacy/many_member.png', {class: 'thumb-pic'} %>
         <% end %>
 
-        <%= fields_for :event_image, :html => {:multipart => true} do |image| %>
+        <%= fields_for :event_image, accept: 'image/png,image/jpeg', :html => {:multipart => true} do |image| %>
             <%= image.label :image, '(auslassen, wenn keine Änderung gewünscht ist)' %>
             <%= image.file_field :image, {class: "form-control"} %>
         <% end %>
       </div>
-
 
       <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 new-section">
         <h3 class="title">Gastgeber</h3>
@@ -119,18 +117,16 @@
       </div>
 
       <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 new-section">
-        <%= fields_for :event_genre do |eg| %>
             <h3 class="title">Art des Events</h3>
-            <%= eg.collection_radio_buttons :event_genre_ids, EventGenre.all, :id, :name, multiple: true do |p| %>
+            <%= collection_radio_buttons :event_genre, :event_genre_ids, EventGenre.all, :id, :name do |p| %>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                   <div class="row">
-                    <%= p.radio_button(checked: if @genre_map && @genre_map.include?(p.object.id.to_s) then
+                    <%= p.radio_button(checked: if !params[:event_genre] && EventGenre.first == p.object || @genre_map && @genre_map.include?(p.object.id.to_s) then
                                                   true
                                                 end) + " " + p.label %>
                   </div>
                 </div>
             <% end %>
-        <% end %>
       </div>
 
 
