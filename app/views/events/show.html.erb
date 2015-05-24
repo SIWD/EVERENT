@@ -57,13 +57,14 @@
           <% end %>
 
           <p>
-            <strong>Datum:</strong>
-            <%= @event.date.strftime('%d %m %Y') %>
+            <strong>Termin:</strong>
+            <% unless @event.end_date.nil? then "Von " end %>
+            <%= @event.date %> um <%= @event.time %> Uhr<% unless @event.end_date.nil? then " bis #{@event.end_date} um #{@event.end_time} Uhr" end %>
           </p>
 
           <p>
             <strong>Uhrzeit:</strong>
-            <%= @event.time.strftime('%H:%M') %>
+            <%= @event.time %>
           </p>
 
           <p>
@@ -94,7 +95,7 @@
         </div>
         <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12 new-section">
           <div class="row">
-          <iframe src="http://maps.google.de/maps?hl=de&amp;q=<%= @address.city + ", " + @address.street1 + " " + @address.street2 %>&amp;ie=UTF8&amp;t=&amp;z=17&amp;iwloc=B&amp;output=embed"
+          <iframe src="http://maps.google.de/maps?hl=de&amp;q=<%= @address.latitude.to_s + " " + @address.longitude.to_s %>&amp;ie=UTF8&amp;t=&amp;z=17&amp;iwloc=B&amp;output=embed"
                   scrolling="no" marginheight="0" marginwidth="0" frameborder="0" height="300px" width="100%">
           </iframe>
           </div>

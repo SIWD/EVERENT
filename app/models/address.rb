@@ -5,7 +5,7 @@ class Address < ActiveRecord::Base
   has_one :service
 
   validates :city, presence: true
-  validates :street1, presence: true
+  #validates :street1, presence: true
   #validate :postalCode, :postalCodeLegal?
 
   geocoded_by :address

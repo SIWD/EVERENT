@@ -85,7 +85,6 @@
           <div class="contents">
             <div class="tabscontent" id="content1">
 
-              <% success = false %>
               <div class="row">
                 <% unless (@loc_checked.nil?) %>
                     <div class="col-lg-12">
@@ -95,6 +94,8 @@
                       </div>
                     </div>
                 <% end %>
+
+                <% success = false %>
                 <% @events.where(who_has_access_id: 1).order(:date).each do |event| %>
 
                     <%
@@ -112,18 +113,20 @@
 
                        loc_to = event.event_location.address
                        show_location = false
-                       if (@usr_loc.nil? || ((!(@loc_checked.nil?) && !(loc_to.nil?)) && (/^[\d]+(\.[\d]+){0,1}$/ === @loc_checked.distance_to(loc_to).round(2).to_s) && (/^[\d]+(\.[\d]+){0,1}$/ === @range.to_s))) && (@usr_loc.nil? || (@loc_checked.distance_to(loc_to).round(2).to_i <= @range.to_i))
+                       if @usr_loc.nil?
+                         show_location = true
+                       elsif ((!(@loc_checked.nil?) && !(loc_to.nil?)) && (/^[\d]+(\.[\d]+){0,1}$/ === @loc_checked.distance_to(loc_to).round(2).to_s) && (/^[\d]+(\.[\d]+){0,1}$/ === @range.to_s)) && (@usr_loc.nil? || (@loc_checked.distance_to(loc_to).round(2).to_i <= @range.to_i))
                          show_location = true
                        end
 
                        show_when = false
-                       if (!params["when"] || params["when"] == "future") && (event.date.today? || event.date.future?)
+                       if !params["when"]
+                         show_when = true
+                       elsif params["when"] == "future" && (event.date.today? || event.date.future?)
                          show_when = true
                        elsif params["when"] == "past" && event.date.past?
-
                          show_when = true
                        end
-
                     %>
 
                     <% if show_genre && show_location && show_when %>
@@ -131,18 +134,15 @@
                         <div class="col-lg-12 event-listings">
                           <div class="portfolio-item nice">
                             <% if event.flyer %>
-
-
                                 <div class="portfolio-item-image col-lg-3 col-md-3 col-sm-5 col-xs-12">
                                   <div class="row">
-                                    <a href="<%= event.flyer.url %>">
+                                    <%= link_to event do %>
                                       <span class="img-hover"></span>
                                       <span class="fullscreen"><i class="fa fa-eye"></i></span>
                                       <%= image_tag event.flyer.url(:event_index) %>
-                                    </a>
+                                    <% end %>
                                   </div>
                                 </div>
-
                             <% end %>
 
 
@@ -169,15 +169,24 @@
                                   <% unless (@usr_loc.nil?) %>
                                       <div class="blog-entry-meta-tags">
                                         <i class="fa fa-road"></i>
-                                        <span> <%= @loc_checked.distance_to(loc_to).round(2) %>km</span>
+                                        <span><%= @loc_checked.distance_to(loc_to).round(2) %>km</span>
                                       </div>
                                   <% end %>
 
-                                  <div class="blog-entry-meta-tags">
+                                  <div class="blog-entry-meta-tags hover-show">
                                     <i class="fa fa-map-marker"></i>
                                     <%= event.event_location.name %><br>
-                                    <!--<span class="small"><%= event.event_location.address.postalCode %> <%= event.event_location.address.city %>,<%= event.event_location.address.street1 %></span>
-                                  -->
+
+                                    <div class="small hover-show-content">
+                                      <%= event.event_location.address.postalCode %> <%= event.event_location.address.city %>
+                                      , <%= event.event_location.address.street1 %>
+                                    </div>
+
+                                    <script>
+                                        $(document).on('hover', '.hover-show', function () {
+                                            $(this).find('.hover-show-content').fadeTo("slow", 1);
+                                        })
+                                    </script>
                                   </div>
 
                                   <div class="blog-entry-meta-tags">
@@ -203,44 +212,41 @@
                             </div>
                             <div class="clearfix"></div>
                           </div>
-                              <div class="blog-divider"></div>
+                          <div class="blog-divider"></div>
                         </div>
                     <% end %>
                 <% end %>
                 <% unless success %>
-                    <div class="col-lg-12"><br>
-                      <span><i class="fa fa-frown-o fa-2x"></i>  Leider keine Ergebnisse gefunden.</span>
-                      <br><br>
-                      <span>Tipp: <strong>Suchumkreis vergrößern</strong></span>
+                    <div class="col-lg-12 small-new-section">
+                      <div class="col-lg-12">
+                        <span><i class="fa fa-frown-o fa-2x"></i>  Leider keine Ergebnisse gefunden.</span>
+                        <br><br>
+                        <span>Tipp: <strong>Suchumkreis vergrößern</strong></span>
+                      </div>
                     </div>
                 <% end %>
               </div>
             </div>
             <div class="tabscontent" id="content2">
-
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 small-new-section">
                 <h3>Privates Event finden:</h3>
                 <%= form_tag event_id_path, :method => :post do %>
-
                     <div class="row">
                       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         <%= label_tag :id, 'Event-ID' %>
                         <%= text_field_tag :id, "", {class: "form-control"} %>
                       </div>
                     </div>
-                    </div>
-
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 small-new-section">
                       <%= submit_tag 'Suchen', {class: "btn btn-special btn-color"} %>
                     </div>
                 <% end %>
-                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>
-
 <%= link_to 'Event anlegen', new_event_path %>

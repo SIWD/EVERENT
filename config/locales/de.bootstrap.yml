@@ -41,7 +41,15 @@ de:
         event:
           who_has_access_id: "Privatsphäre"
           event_location_id: "Location"
-
+          date: "Startdatum"
+          end_date: "Enddatum"
+          time: "Startuhrzeit"
+          end_time: "Enduhrzeit"
+        address:
+          city: "Stadt"
+          street1: 'Straße & Hausnummer'
+          street2: 'Adresszusatz (optional)'
+          postalCode: "PLZ"
       errors:
         models:
           user:
