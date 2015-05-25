@@ -2,10 +2,36 @@
 
 <table class="pretty-table">
   <tr>
-    <td><strong>Name:</strong></td>
-    <td><%= @business.name %></td>
+    <td colspan="2">
+      <h4>Kontakt</h4>
+    </td>
+  </tr>
+  <% unless @contact.mail.empty? %>
+  <tr>
+    <td><strong>E-Mail:</strong></td>
+    <td><%= @contact.mail %></td>
+  </tr>
+    <% end %>
+  <% unless @contact.phone.empty? %>
+  <tr>
+    <td><strong>Telefonnummer:</strong></td>
+    <td><%= @contact.phone %></td>
+  </tr>
+  <% end %>
+  <% unless @contact.mobilePhone.empty? %>
+  <tr>
+    <td><strong>Mobilfunknummer:</strong></td>
+    <td><%= @contact.mobilePhone %></td>
+  </tr>
+  <% end %>
+
+  <tr>
+    <td colspan="2">
+      <h4>Adresse</h4>
+    </td>
   </tr>
   <tr>
+
     <td>Adresse:</td>
     <td>
       <%= @address.postalCode %>
@@ -15,33 +41,72 @@
     </td>
   </tr>
 </table>
-<br />
-<p>
-  <strong>Dienstleistungen:</strong>
-</p>
-<p>
-<div>
-  <% if @services.count > 0 %>
-      <% servicessting = "" %>
-      <% @isInBusiness = true %>
-      <% @services.each do |s| %>
-          <% servicessting << "\n - " + s.name %>
-      <% end %>
-      <%= render 'services/index' %>
-  <% end %>
-</div>
-</p>
-<% if @admin %>
-    <%= link_to 'Neue Dienstleistung anlegen', new_service_path %>
-<% end %>
-<p><p>
-  <strong>Mitarbeiter:</strong>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 new-section">
+    <table class="pretty-table">
+      <tr>
+        <td colspan="2">
+          <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+              <h4>Events</h4>
+            </div>
 
-  <br />
-  <% if @businessUsers %>
-    <table class="listingTable"> <tr><th>Name</th><th>Rang</th><th></th></tr>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 ">
+              <% if @admin %>
+                  <%= link_to '+', new_event_path, class: "btn btn-default btn-small pull-right" %>
+              <% end %>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <% @business.events.each do |event| %>
+          <tr>
+            <td><strong><%= event.name %></strong></td>
+            <td><%= link_to "Anzeigen", event, class: "pull-right" %></td>
+          </tr>
+      <% end %>
+
+      <tr>
+        <td colspan="2">
+          <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+              <h4>Dienstleitungen</h4>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 ">
+              <% if @admin %>
+                  <%= link_to '+', new_event_path, class: "btn btn-default btn-small pull-right" %>
+              <% end %>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <% servicessting = "" %>
+      <% @business.services.each do |service| %>
+          <% servicessting << "\n - " + service.name %>
+          <tr>
+            <td><strong><%= service.name %></strong></td>
+            <td><%= link_to "Anzeigen", service_path(service), class: "pull-right" %></td>
+          </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<% if @businessUsers %>
+    <p>
+      <strong>Mitarbeiter:</strong>
+    </p>
+    <table class="listingTable">
+      <tr>
+        <th>Name</th>
+        <th>Rang</th>
+        <th></th>
+      </tr>
       <% @businessUsers.each do |user_business| %>
-          <tr><td><%= user_business.user.email %></td><td><%= user_business.position %></td>
+          <tr>
+            <td><%= user_business.user.email %></td>
+            <td><%= user_business.position %></td>
             <td>
               <% usrProfile = user_business.user.profile %>
               <% if usrProfile %>
@@ -53,7 +118,7 @@
                   &nbsp;|&nbsp;
                   <%= link_to 'Bearbeiten', edit_user_business_path(id: user_business.id, business: @business) %>
                   &nbsp;|&nbsp;
-                  <%= link_to 'Aus Unternehmen entfernen', user_business, method: :delete, data: { confirm: "Möchten Sie wirklich den Mitarbeiter '#{user_business.user.email}' entfernen?" } %>
+                  <%= link_to 'Aus Unternehmen entfernen', user_business, method: :delete, data: {confirm: "Möchten Sie wirklich den Mitarbeiter '#{user_business.user.email}' entfernen?"} %>
               <% end %>
             </td>
           </tr>
@@ -78,8 +143,8 @@
 
 
     <% if Service.where(business_id: @business.id).count > 0 %>
-        <%= link_to 'Unternehmen löschen', @business, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Unternehmen '#{@business.name}' löschen?\nDamit löschen Sie auch folgende Dienstleistungen:\n#{servicessting}" } %>
+        <%= link_to 'Unternehmen löschen', @business, method: :delete, data: {confirm: "Möchten Sie wirklich Ihr Unternehmen '#{@business.name}' löschen?\nDamit löschen Sie auch folgende Dienstleistungen:\n#{servicessting}"} %>
     <% else %>
-        <%= link_to 'Unternehmen löschen', @business, method: :delete, data: { confirm: "Möchten Sie wirklich Ihr Unternehmen '#{@business.name}' löschen?" } %>
+        <%= link_to 'Unternehmen löschen', @business, method: :delete, data: {confirm: "Möchten Sie wirklich Ihr Unternehmen '#{@business.name}' löschen?"} %>
     <% end %>
 <% end %>
