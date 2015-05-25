@@ -47,35 +47,58 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.new(event_params)
+    current_user.add_role(:eventOwner, @event)
+
     @address = Address.create(address_params)
+    if @address.nil?
+      address_error = true
+    else
+      address_error = false
+    end
+
     @eventLocation = EventLocation.new(eventlocation_params)
     @eventLocation.address_id = @address.id
-
-
-    @eventLocation.save
-    @event.event_location_id = @eventLocation.id
+    unless @eventLocation.save
+      location_error = true
+      @address.destroy
+    else
+      @event.event_location_id = @eventLocation.id
+      location_error = false
+    end
 
     add_event_members
+
     if @member_count < 1
       @event.errors.add(:base, "Sie müssen mindestens einen Gastgeber auswählen")
     end
 
-    if @member_count > 0 && @event.save
-      if @address.latitude.nil? || @address.latitude == ""
-        @event.errors.add(:base, "Adresse nicht gefunden")
+    if @member_count > 0 && !location_error && !address_error
+      if @event.save
+        if @address.latitude.nil? || @address.latitude == ""
+          @event.errors.add(:base, "Adresse nicht gefunden")
+        end
+        unless image_params.nil?
+          image = @event.event_images.new(image_params)
+          image.album = "Flyer"
+          image.save
+        end
+        create_event_genre
+        update_event_member_status
       end
-      unless image_params.nil?
-        image = @event.event_images.new(image_params)
-        image.album = "Flyer"
-        image.save
-      end
-      create_event_genre
-      update_event_member_status
-      current_user.add_role(:eventOwner, @event)
     else
       @eventLocation.destroy
       @address.destroy
       destroy_event_members
+    end
+
+    if location_error
+      @event.errors.add(:base, "Name der Location muss ausgefüllt werden")
+    end
+    if address_error
+      @event.errors.add(:base, "Sie müssen die Adresse vollständig ausfüllen")
+    end
+    if location_error || address_error
+      @event.destroy
     end
 
     respond_with(@event)
@@ -100,11 +123,13 @@ class EventsController < ApplicationController
     update_event_genre
     update_event_member_status
 
-    @eventLocation = EventLocation.find(@event.event_location_id)
+    @eventLocation = EventLocation.where(id: @event.event_location_id).first
     @eventLocation.update(eventlocation_params)
+    unless @eventLocation.update(eventlocation_params)
+      @event.errors.add(:base, "Name der Location muss ausgefüllt werden")
+    end
 
     @address = Address.find(@eventLocation.address_id)
-
     unless @address.update(address_params)
       @event.errors.add(:base, "Sie müssen die Adresse vollständig ausfüllen")
     else
@@ -142,8 +167,10 @@ class EventsController < ApplicationController
       flash[:error] = "Event nicht gefunden"
       redirect_to(events_path)
     else
-      @eventLocation = EventLocation.find(@event.event_location_id)
-      @address = Address.find(@eventLocation.address_id)
+      @eventLocation = EventLocation.where(id: @event.event_location_id).first
+      unless @eventLocation.nil?
+        @address = Address.where(id: @eventLocation.address_id).first
+      end
       @image = @event.event_images.where(album: "Flyer").last
     end
 
@@ -373,6 +400,5 @@ class EventsController < ApplicationController
     flash[:error] = "Privates Event nicht gefunden."
     redirect_to(events_path + '#privat')
   end
-
 
 end

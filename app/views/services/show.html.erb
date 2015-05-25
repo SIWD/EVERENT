@@ -1,9 +1,5 @@
 <% content_for :title, "#{@service.name}" %>
 <table class="pretty-table">
-  <tr>
-    <td><strong>Name:</strong></td>
-    <td><%= @service.name %></td>
-  </tr>
 
   <tr>
     <td><strong>Teaser:</strong></td>
@@ -14,17 +10,33 @@
     <td><strong>Beschreibung:</strong></td>
     <td><%= @service.description %></td>
   </tr>
-
   <tr>
-    <td><strong>eMail:</strong></td>
-    <td><a href="mailto:<%= @service.contact.mail %>"><%= @service.contact.mail %></a></td>
+    <td colspan="2">
+      <h4>Kontakt</h4>
+    </td>
+  </tr>
+  <tr>
+    <td><strong>E-Mail:</strong></td>
+    <td><a href="mailto:<%= @contact.mail %>"><%= @contact.mail %></a></td>
   </tr>
 
   <tr>
-    <td><strong>Telefon:</strong></td>
-    <td><%= @service.contact.phone %></td>
+    <td><strong>Telefonnummer:</strong></td>
+    <td><%= @contact.phone %></td>
+  </tr>
+
+  <tr>
+    <td><strong>Mobilfunknummer:</strong></td>
+    <td><%= @contact.mobilePhone %></td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <h4>Adresse</h4>
+    </td>
   </tr>
   <tr>
+
     <td>Adresse:</td>
     <td>
       <%= @address.postalCode %>
@@ -34,15 +46,42 @@
     </td>
   </tr>
 </table>
-<br />
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 new-section">
+    <table class="pretty-table">
+      <tr>
+        <td colspan="2">
+          <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+              <h4>Events</h4>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 ">
+              <% if @admin %>
+                  <%= link_to '+', new_event_path, class: "btn btn-default btn-small pull-right" %>
+              <% end %>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <% @business.events.each do |event| %>
+          <tr>
+            <td><strong><%= event.name %></strong></td>
+            <td><%= link_to "Anzeigen", event, class: "pull-right" %></td>
+          </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+<br/>
 <% if @userServices %>
-    <% if ( @userServices.include?(@service) ) %>
+    <% if (@userServices.include?(@service)) %>
         <%= link_to 'Dienstleistung bearbeiten', edit_service_path(@service) %>&nbsp;|&nbsp;
-        <%= link_to 'Dienstleistung löschen', @service, method: :delete, data: { confirm: "Möchten Sie diese Dienstleistung wirklich entfernen?" } %>
-        <br />
+        <%= link_to 'Dienstleistung löschen', @service, method: :delete, data: {confirm: "Möchten Sie diese Dienstleistung wirklich entfernen?"} %>
+        <br/>
     <% end %>
 <% end %>
 
 <%= link_to 'Zum Unternehmen: ' + @service.business.name, business_path(@service.business) %>
-<br />
+<br/>
 <%= link_to 'Zurück', :back %>

@@ -22,6 +22,11 @@ de:
       delete: "%{model} löschen"
   activerecord:
       attributes:
+        address:
+          city: "Stadt"
+          street1: 'Straße & Hausnummer'
+          street2: 'Adresszusatz (optional)'
+          postalCode: "PLZ"
         user:
           email: "E-mail"
         profile:
@@ -32,6 +37,8 @@ de:
         business:
           address: "Adresse"
           name: "Name des Unternehmens"
+          address_id: "Adresse"
+          contact_id: "Kontakt"
         service:
           sameAddressLikeBusiness: "Gleiche Adresse wie Business"
           sameContactLikeBusiness: "Gleicher Kontakt wie Business"
@@ -45,11 +52,7 @@ de:
           end_date: "Enddatum"
           time: "Startuhrzeit"
           end_time: "Enduhrzeit"
-        address:
-          city: "Stadt"
-          street1: 'Straße & Hausnummer'
-          street2: 'Adresszusatz (optional)'
-          postalCode: "PLZ"
+          name: "Name der Lacation"
       errors:
         models:
           user:

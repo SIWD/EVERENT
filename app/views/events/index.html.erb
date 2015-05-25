@@ -111,12 +111,14 @@
                          }
                        end
 
-                       loc_to = event.event_location.address
                        show_location = false
-                       if @usr_loc.nil?
-                         show_location = true
-                       elsif ((!(@loc_checked.nil?) && !(loc_to.nil?)) && (/^[\d]+(\.[\d]+){0,1}$/ === @loc_checked.distance_to(loc_to).round(2).to_s) && (/^[\d]+(\.[\d]+){0,1}$/ === @range.to_s)) && (@usr_loc.nil? || (@loc_checked.distance_to(loc_to).round(2).to_i <= @range.to_i))
-                         show_location = true
+                       unless event.event_location.nil?
+                         loc_to = event.event_location.address
+                         if @usr_loc.nil?
+                           show_location = true
+                         elsif ((!(@loc_checked.nil?) && !(loc_to.nil?)) && (/^[\d]+(\.[\d]+){0,1}$/ === @loc_checked.distance_to(loc_to).round(2).to_s) && (/^[\d]+(\.[\d]+){0,1}$/ === @range.to_s)) && (@usr_loc.nil? || (@loc_checked.distance_to(loc_to).round(2).to_i <= @range.to_i))
+                           show_location = true
+                         end
                        end
 
                        show_when = false
@@ -137,9 +139,9 @@
                                 <div class="portfolio-item-image col-lg-3 col-md-3 col-sm-5 col-xs-12">
                                   <div class="row">
                                     <%= link_to event do %>
-                                      <span class="img-hover"></span>
-                                      <span class="fullscreen"><i class="fa fa-eye"></i></span>
-                                      <%= image_tag event.flyer.url(:event_index) %>
+                                        <span class="img-hover"></span>
+                                        <span class="fullscreen"><i class="fa fa-eye"></i></span>
+                                        <%= image_tag event.flyer.url(:event_index) %>
                                     <% end %>
                                   </div>
                                 </div>

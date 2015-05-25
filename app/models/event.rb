@@ -20,7 +20,7 @@ class Event < ActiveRecord::Base
 
   validates :name, presence: true
   validates_length_of :name, maximum: 100
-  validates :event_location_id, presence: true
+  #validates :event_location_id, presence: true
   validates :who_has_access_id, presence: true
   validates :date, presence: true
   validates_format_of :time, :with => /(((([0]?|[1])[0-9])|([2][0-3])):([0-5])([0-9]))/, message: "hat ein ungültiges Format (Beispiel: 21:30)"
