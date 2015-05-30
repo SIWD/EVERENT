@@ -41,49 +41,52 @@
       <h3 class="title">Neuste Events</h3>
     </div>
     <div class="blog-showcase row">
-      <ul class="col-lg-12 col-md-12 com-sm-12 col-xs-12>
+      <ul class="col-lg-12 col-md-12 com-sm-12 col-xs-12">
         <%
            counter = 0
-           Event.where(who_has_access_id: 1).order(:created_at).last(3).each { |event| %>
-            <% counter = counter + 1 %>
-            <li class="<%= if counter == 3 then
-                             "blog-first-el"
-                           end %>">
+           Event.where(who_has_access_id: 1).order("created_at").each { |event|
+             if (event.flyer && (counter <= 2))
+               counter = counter + 1
+        %>
 
+                <% if (counter == 3) %>
+                    <li class="blog-first-el">
+                <% else %>
+                    <li class="">
+                <% end %>
 
-              <% if event.flyer %>
-                  <%= link_to event do %>
-                      <div class="blog-showcase-thumb col-lg-4">
-                        <div class="portfolio-item">
-                          <span class="portfolio-item-hover"></span>
-                          <span class="fullscreen"><i class="fa fa-eye"></i></span>
-                          <%= image_tag event.flyer.url, html = {alt: event.name} %>
-                        </div>
+                <%= link_to event do %>
+                    <div class="blog-showcase-thumb col-lg-4">
+                      <div class="portfolio-item">
+                        <span class="portfolio-item-hover"></span>
+                        <span class="fullscreen"><i class="fa fa-eye"></i></span>
+                        <%= image_tag event.flyer.url, html = {alt: event.name} %>
                       </div>
-                  <% end %>
-              <% end %>
+                    </div>
+                <% end %>
 
-              <div class="blog-showcase-extra-info col-lg-4">
-                <span><%= link_to "#{event.date}", event %></span>
-                <h4><%= link_to event.name, event %></h4>
-                <table class="pretty-table">
-                  <tr>
-                    <td><i class="fa fa-map-marker fa-3x"></i></td>
-                    <td><%= event.event_location.name %><br>
+                <div class="blog-showcase-extra-info col-lg-4">
+                  <span><%= link_to "#{event.date}", event %></span>
+                  <h4><%= link_to event.name, event %></h4>
+                  <table class="pretty-table">
+                    <tr>
+                      <td><i class="fa fa-map-marker fa-3x"></i></td>
+                      <td><%= event.event_location.name %><br>
                        <span class="small">
                          <%= event.event_location.address.postalCode %>
                          <%= event.event_location.address.city %>,
                          <%= event.event_location.address.street1 %>
                        </span>
-                    </td>
-                  </tr>
-                </table>
-                
-                <%= link_to event do %>
-                    Mehr lesen <i class="fa fa-angle-double-right"></i>
-                <% end %>
-              </div>
-            </li>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <%= link_to event do %>
+                      Mehr lesen <i class="fa fa-angle-double-right"></i>
+                  <% end %>
+                </div>
+                </li>
+            <% end %>
         <% } %>
       </ul>
     </div>

@@ -61,13 +61,16 @@
           </div>
           <div class="follow-us pull-right">
             <ul class="no-padding social pull-left">
-              <li class="facebook"><a href="https://www.facebook.com/partychamp" target="_blank"><i class="fa fa-facebook"></i></a></li>
+              <li class="facebook">
+                <a href="https://www.facebook.com/partychamp" target="_blank"><i class="fa fa-facebook"></i></a></li>
 
               <li class="location">
                 <form action="" method="get">
                   <!--<span class="input-group-label-head"><i class="fa fa-crosshairs fa-2x"></i></span>-->
                   <span class="input-group-label-head"><i class="fa fa-map-marker"></i></span>
-                  <input type="text" class="input-group-input-head " placeholder="Münster" name="usrloc" value="<%= if @loc_checked then @loc_checked.address end  %>" onClick="this.select(); this.focus()">
+                  <input type="text" class="input-group-input-head " placeholder="Münster" name="usrloc" value="<%= if @loc_checked then
+                                                                                                                      @loc_checked.address
+                                                                                                                    end %>" onClick="this.select(); this.focus()">
                 </form>
               </li>
             </ul>
@@ -170,7 +173,7 @@
               <ul>
                 <li>Sie Sind hier:</li>
                 <li><%= link_to 'Partychamp', root_path %></li>
-                <% if params[:action] != 'index' && Rails.application.routes.routes.map{|route| route.defaults}.include?({:controller => controller_name, :action => action_name}) %>
+                <% if params[:action] != 'index' && Rails.application.routes.routes.map { |route| route.defaults }.include?({:controller => controller_name, :action => action_name}) %>
                     <li><%= link_to params[:controller].titleize, "/#{params[:controller]}" %></li>
                 <% end %>
                 <li><%= yield(:title) %></li>
@@ -212,7 +215,8 @@
                 alert("Error: " + errors[error.code]);
             }</script>-->
         <%= yield %>
-      </div> <!-- /container -->
+      </div>
+      <!-- /container -->
     </div>
   </div>
   <footer id="footer">
@@ -221,16 +225,18 @@
         <div class="row">
           <section class="col-lg-6 col-md-6 col-xs-12 col-sm-6 footer-one">
             <h3>Über uns</h3>
+
             <p>
               Partychamp - Suchen Finden Feiern <br>
               Alles für Ihr Event!
             </p>
           </section>
-          <section class="col-lg-6 col-md-6 col-xs-12 col-sm-6 footer-two">
+          <section class="col-lg-3 col-md-3 col-xs-12 col-sm-6 footer-two">
             <h3>Kontakt</h3>
             <ul class="contact-us">
               <li>
                 <i class="fa fa-map-marker"></i>
+
                 <p>
                   <strong class="contact-pad">Adresse:</strong>
                   Partychamp<br>
@@ -246,9 +252,18 @@
               -->
               <li>
                 <i class="fa fa-envelope"></i>
+
                 <p><strong>Email:</strong><a href="mailto:info@partychamp.de">info@partychamp.de</a></p>
               </li>
             </ul>
+          </section>
+          <section class="col-lg-3 col-md-3 col-xs-12 col-sm-12 footer-three">
+            <h3>Verweise</h3>
+              <ul class=""> 
+                <li><%= link_to "Impressum", impressum_path %></li>
+                <li><%= link_to "AGB", agb_path %></li>
+                <li><%= link_to "Datenschutzerklärung", privacy_path %></li>
+              </ul>
           </section>
         </div>
       </div>
@@ -257,10 +272,12 @@
     <div class="footer-bottom">
       <div class="container">
         <div class="row">
-          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 ">&copy; Partychamp 2015. All Rights Reserved.</div>
-          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6 ">
+          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 ">&copy; Partychamp 2015. All Rights Reserved.</div>
+          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 ">
             <ul class="social social-icons-footer-bottom">
-              <li class="facebook"><a href="https://www.facebook.com/partychamp" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+              <li class="facebook">
+                <a href="https://www.facebook.com/partychamp" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a>
+              </li>
               <!--<li class="twitter"><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>-->
             </ul>
           </div>
@@ -270,7 +287,8 @@
   </footer>
   <!-- Scroll To Top -->
   <a href="#" class="scrollup"><i class="fa fa-angle-up"></i></a>
-</div> <!-- /wrap -->
+</div>
+<!-- /wrap -->
 
 </body>
 

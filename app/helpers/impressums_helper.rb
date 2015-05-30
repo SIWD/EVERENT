@@ -1,0 +1,2 @@
+module ImpressumsHelper
+end

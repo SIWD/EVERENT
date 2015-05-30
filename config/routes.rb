@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
+
   post "/events/event_id" => "events#event_id", :as => 'event_id'
 
   resources :user_businesses
 
   get 'address/new'
+  get 'Impressum', to: 'impressums#index', as: 'impressum'
+  get 'Datenschutzerklärung', to: 'impressums#show', as: 'privacy'
+  get 'AGB', to: 'agbs#index', as: 'agb'
+  get '', to: 'welcomes#index', as: "welcomes"
 
   resources :events
 
@@ -26,8 +31,6 @@ Rails.application.routes.draw do
   resources :services
 
   resources :businesses
-
-  resources :welcomes
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
