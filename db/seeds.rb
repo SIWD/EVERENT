@@ -1,62 +1,70 @@
-BranchCategory.create!([
-                           {name: "Musik"},
-                           {name: "Essen"},
-                           {name: "Transport"},
-                           {name: "Dekorateur"},
-                           {name: "Trinken"}
-                       ])
+admin = User.where(email: "admin@partychamp.de").first
+#admin.profile.destroy
+admin.destroy
+admin = User.create!(email: "admin@partychamp.de", password: 'ibAvPChamp!', password_confirmation: 'ibAvPChamp!')
+admin.add_role :admin
+address = Address.create(city: "Steinhagen")
+contact = Contact.create(mail: admin.email)
+profile = Profile.create(gender: 0, firstname: "Admin", lastname: "Partychamp", user_id: admin.id, address_id: address.id, contact_id: contact.id)
 
+
+BranchCategory.destroy_all
+musik = BranchCategory.create!(name: "Musik")
+essen = BranchCategory.create!(name: "Essen")
+trans = BranchCategory.create!(name: "Transport")
+dekor = BranchCategory.create!(name: "Dekorateur")
+trink = BranchCategory.create!(name: "Trinken")
+
+Branch.destroy_all
 Branch.create!([
-                   {name: "DJ", branchCategory_id: 1},
-                   {name: "Band", branchCategory_id: 1},
-                   {name: "Solist", branchCategory_id: 1},
-                   {name: "Koch", branchCategory_id: 2},
-                   {name: "Buffet-Caterer", branchCategory_id: 2},
-                   {name: "Lieferservice", branchCategory_id: 2},
-                   {name: "Kutsche", branchCategory_id: 3},
-                   {name: "Taxi", branchCategory_id: 3},
-                   {name: "Limousinen Service", branchCategory_id: 3},
-                   {name: "Bus", branchCategory_id: 3},
-                   {name: "Florist", branchCategory_id: 4},
-                   {name: "Cocktailmixer", branchCategory_id: 5},
-                   {name: "Barkeeper", branchCategory_id: 5}
+                   {name: "DJ", branchCategory_id: musik.id},
+                   {name: "Band", branchCategory_id: musik.id},
+                   {name: "Solist", branchCategory_id: musik.id},
+                   {name: "Koch", branchCategory_id: essen.id},
+                   {name: "Buffet-Caterer", branchCategory_id: essen.id},
+                   {name: "Lieferservice", branchCategory_id: essen.id},
+                   {name: "Kutsche", branchCategory_id: trans.id},
+                   {name: "Taxi", branchCategory_id: trans.id},
+                   {name: "Limousinen Service", branchCategory_id: trans.id},
+                   {name: "Bus", branchCategory_id: trans.id},
+                   {name: "Florist", branchCategory_id: dekor.id},
+                   {name: "Cocktailmixer", branchCategory_id: trink.id},
+                   {name: "Barkeeper", branchCategory_id: trink.id}
                ])
 
+WhoHasAccessToEvent.destroy_all
 WhoHasAccessToEvent.create!([
-                                {who: "Jeder", title: "Öffentlich", icon: "privacy/many_member.png"},
-                                {who: "Jeder mit Passwort", title: "Privat (Passwort)", icon: "privacy/many_member_lock.png"},
-                                {who: "Nur Gastgeber", title: "Gesperrt", icon: "privacy/one_member.png"}
+                                {id: 1, who: "Jeder", title: "Öffentlich", icon: "privacy/many_member.png"},
+                                {id: 2, who: "Jeder mit Passwort", title: "Privat (Passwort)", icon: "privacy/many_member_lock.png"},
+                                {id: 3, who: "Nur Gastgeber", title: "Gesperrt", icon: "privacy/one_member.png"}
                             ])
 
+EventUserJoin.destroy_all
 EventUserJoin.create!([
-                          {status: "join"},
-                          {status: "maybe"},
-                          {status: "reject"}
+                          {id: 1, status: "join"},
+                          {id: 2, status: "maybe"},
+                          {id: 3, status: "reject"}
                       ])
 
+EventUserStatus.destroy_all
 EventUserStatus.create!([
-                            {status: "owner"},
-                            {status: "moderator"},
-                            {status: "guest"}
+                            {id: 1, status: "owner"},
+                            {id: 2, status: "moderator"},
+                            {id: 3, status: "guest"}
                         ])
 
-Event.create!([
-                  {name: "Flashmob Soho", description: "Jeder der will darf kommen, bis der Laden voll ist :D", date: "2015-10-04", time: "2000-01-01 20:00:00", event_location_id: 1, who_has_access_id: 1, password: ""},
-                  {name: "Geburtstag von Kraut", description: "Ich werde mal wieder ein jahr älter :) Für Getränke und andere, nicht legale, Substanzen ist gesorgt ...", date: "2015-08-08", time: "2000-01-01 19:00:00", event_location_id: 2, who_has_access_id: 2, password: "123456789"}
-              ])
-
-
+EventGenre.destroy_all
 EventGenre.create([
-                      {id: 1, name: "Club"},
-                      {id: 2, name: "Live Auftritt"},
-                      {id: 3, name: "Studentenparty"},
-                      {id: 4, name: "ABI-Party"},
-                      {id: 5, name: "Zeltparty"},
-                      {id: 6, name: "Scheunenball"},
-                      {id: 7, name: "Mottoparty"},
-                      {id: 8, name: "Sceneparty"},
-                      {id: 9, name: "Festival"},
-                      {id: 10, name: "Konzert"}
+                      {name: "Club"},
+                      {name: "Live Auftritt"},
+                      {name: "Studentenparty"},
+                      {name: "ABI-Party"},
+                      {name: "Zeltparty"},
+                      {name: "Scheunenball"},
+                      {name: "Mottoparty"},
+                      {name: "Sceneparty"},
+                      {name: "Festival"},
+                      {name: "Konzert"}
                   ])
 
 
@@ -64,7 +72,6 @@ case Rails.env
   when "development"
 
     User.create!([
-                     {email: "admin@admin.com", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 2, current_sign_in_at: "2015-02-22 17:28:13", last_sign_in_at: "2015-02-22 16:43:47", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
                      {email: "michael@tork.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 3, current_sign_in_at: "2015-02-22 17:00:50", last_sign_in_at: "2015-02-22 16:59:25", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
                      {email: "florian@woertler.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 16:48:59", last_sign_in_at: "2015-02-22 16:48:59", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
                      {email: "nico@buescher.de", password: '123456789', password_confirmation: '123456789', reset_password_token: nil, reset_password_sent_at: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-22 16:51:18", last_sign_in_at: "2015-02-22 16:51:18", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1"},
@@ -114,7 +121,6 @@ case Rails.env
                     ])
 
     Profile.create!([
-                        {gender: 0, firstname: "/", lastname: "Administrator", user_id: 1, photo_file_name: "admin.jpg", photo_content_type: "image/jpeg", photo_file_size: 700437, photo_updated_at: "2015-02-24 13:18:18", address_id: 10, contact_id: 1},
                         {gender: 0, firstname: "Michael", lastname: "Tork", user_id: 2, photo_file_name: "1.png", photo_content_type: "image/png", photo_file_size: 10305, photo_updated_at: "2015-02-24 13:08:44", address_id: 11, contact_id: 2},
                         {gender: 0, firstname: "Florian", lastname: "Wörtler", user_id: 3, photo_file_name: "2.jpg", photo_content_type: "image/jpeg", photo_file_size: 27308, photo_updated_at: "2015-02-24 13:19:47", address_id: 12, contact_id: 3},
                         {gender: 0, firstname: "Nico", lastname: "Büscher", user_id: 4, photo_file_name: "medium.jpg", photo_content_type: "image/jpeg", photo_file_size: 18373, photo_updated_at: "2015-02-24 13:21:26", address_id: 13, contact_id: 4},
@@ -233,6 +239,13 @@ case Rails.env
                              {position: 1, business_id: 1, user_id: 7},
                              {position: 1, business_id: 5, user_id: 8}
                          ])
+
+
+
+    Event.create!([
+                      {name: "Flashmob Soho", description: "Jeder der will darf kommen, bis der Laden voll ist :D", date: "2015-10-04", time: "2000-01-01 20:00:00", event_location_id: 1, who_has_access_id: 1, password: ""},
+                      {name: "Geburtstag von Kraut", description: "Ich werde mal wieder ein jahr älter :) Für Getränke und andere, nicht legale, Substanzen ist gesorgt ...", date: "2015-08-08", time: "2000-01-01 19:00:00", event_location_id: 2, who_has_access_id: 2, password: "123456789"}
+                  ])
 
 
     EventEventGenre.create([

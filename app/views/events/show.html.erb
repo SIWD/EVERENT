@@ -112,7 +112,7 @@
 
 <%= link_to 'Zurück', :back %>
 <% if current_user %>
-    <% if current_user.has_role? :eventOwner, @event %>
+    <% if (current_user.has_role? :eventOwner, @event) || (current_user.has_role? :admin) %>
         &nbsp;|&nbsp;<%= link_to 'Bearbeiten', edit_event_path(@event) %>
         &nbsp;|&nbsp;<%= link_to 'Löschen', @event, method: :delete, data: {confirm: 'Sind Sie sicher?'} %>
     <% end %>

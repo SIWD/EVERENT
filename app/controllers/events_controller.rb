@@ -389,7 +389,7 @@ class EventsController < ApplicationController
   end
 
   def check_access_right
-    if !current_user.has_role? :eventOwner, @event
+    unless (current_user.has_role? :eventOwner, @event) || (current_user.has_role? :admin)
       flash[:alert] = "Sie haben hierfür leider keine Berechtigung ;)"
       redirect_to events_path
     end
