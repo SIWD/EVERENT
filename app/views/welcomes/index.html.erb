@@ -2,25 +2,27 @@
 <div class="row">
   <div class="portfolio-pad">
     <div class="col-lg-3 col-md-3 col-sm-0 col-xs-0 "></div>
-    <%= link_to 'events' do %>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 item">
-          <div class="portfolio-item">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 item">
+      <%= link_to 'events', class: 'portfolio-item' do %>
+          <div class="portfolio-item-link">
+            <span class="portfolio-item-hover"></span>
+            <span class="fullscreen"><i class="fa fa-external-link fa-2x"></i></span>
             <%= image_tag 'Events.png' %>
             <div class="portfolio-item-title">
-                <span class="text-center">
-                  EVENTS
+              EVENTS
               <p>
                 Suchen und erstellen
               </p>
-                </span>
             </div>
             <div class="clearfix"></div>
           </div>
-        </div>
-    <% end %>
-    <%= link_to 'Branchen', class: 'not-active' do %>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 item">
-          <div class="portfolio-item">
+      <% end %>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 item">
+      <%= link_to 'Branchen', class: 'not-active portfolio-item' do %>
+          <div class="portfolio-item-link">
+            <span class="portfolio-item-hover"></span>
+            <span class="fullscreen"><i class="fa fa-external-link fa-2x"></i></span>
             <%= image_tag 'Branchen.png' %>
             <div class="portfolio-item-title">
               BRANCHEN
@@ -30,8 +32,8 @@
             </div>
             <div class="clearfix"></div>
           </div>
-        </div>
-    <% end %>
+      <% end %>
+    </div>
     <div class="col-lg-3 col-md-3 col-sm-0 col-xs-0 "></div>
   </div>
 </div>

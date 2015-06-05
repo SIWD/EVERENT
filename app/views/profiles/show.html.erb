@@ -61,15 +61,17 @@
 
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 ">
               <% if @userProfile && @userProfile == @profile %>
-                  <%= link_to '+', new_event_path, class: "btn btn-default btn-small pull-right" %>
+                  <%= link_to new_event_path, class: "btn btn-default btn-small pull-right" do %>
+                      <i class="fa fa-plus"></i>
+                  <% end %>
               <% end %>
             </div>
           </div>
         </td>
       </tr>
-      <% @profile.events.each do |event| %>
+      <% @profile.events.order(:date).each do |event| %>
           <tr>
-            <td><strong><%= event.name %></strong></td>
+            <td><span class="date"><%= I18n.localize(event.date, :format => "%d.%m.%Y")%> |</span> <strong><%= event.name %></strong></td>
             <td><%= link_to "Anzeigen", event, class: "pull-right" %></td>
           </tr>
       <% end %>
@@ -82,7 +84,9 @@
 
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 ">
               <% if @userProfile && @userProfile == @profile %>
-                  <%= link_to '+', new_business_path, class: "btn btn-default btn-small pull-right" %>
+                  <%= link_to new_business_path, class: "btn btn-default btn-small pull-right" do %>
+                      <i class="fa fa-plus"></i>
+                  <% end %>
               <% end %>
             </div>
           </div>
@@ -104,7 +108,9 @@
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 ">
                   <% if @userProfile && @userProfile == @profile %>
-                      <%= link_to '+', new_service_path, class: "btn btn-default btn-small pull-right" %>
+                      <%= link_to new_service_path, class: "btn btn-default btn-small pull-right" do %>
+                          <i class="fa fa-plus"></i>
+                      <% end %>
                   <% end %>
                 </div>
               </div>

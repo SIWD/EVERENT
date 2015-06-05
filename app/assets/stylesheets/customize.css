@@ -210,8 +210,8 @@ span.listing:last-of-type:after{
     margin-bottom: 10px;
 }
 
-.portfolio-item p{
-   /* margin:20px 20px; */
+.event-listings .portfolio-item p{
+    margin:20px 20px;
 }
 
 #horizontal-tabs .tabscontent{
@@ -234,4 +234,8 @@ hr {
 }
 .not-active img{
     opacity: 0.5;
+}
+
+td span.date{
+    font-weight: 100;
 }
