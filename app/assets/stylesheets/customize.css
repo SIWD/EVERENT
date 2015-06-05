@@ -211,7 +211,7 @@ span.listing:last-of-type:after{
 }
 
 .portfolio-item p{
-    margin:20px 20px;
+   /* margin:20px 20px; */
 }
 
 #horizontal-tabs .tabscontent{
@@ -225,4 +225,13 @@ span.listing:last-of-type:after{
 
 hr {
     border-top-color: #c9c9c9;
+}
+
+.not-active {
+    pointer-events: none;
+    cursor: default;
+    color:grey;
+}
+.not-active img{
+    opacity: 0.5;
 }

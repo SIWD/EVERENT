@@ -1,13 +1,16 @@
 Rails.application.routes.draw do
 
+  resources :simple_sites
+
   post "/events/event_id" => "events#event_id", :as => 'event_id'
 
   resources :user_businesses
 
   get 'address/new'
-  get 'Impressum', to: 'impressums#index', as: 'impressum'
-  get 'Datenschutzerklärung', to: 'impressums#show', as: 'privacy'
-  get 'AGB', to: 'agbs#index', as: 'agb'
+
+  get 'Impressum', to: 'simple_sites#impressum', as: 'impressum'
+  get 'Datenschutzerklärung', to: 'simple_sites#privacy', as: 'privacy'
+  get 'AGB', to: 'simple_sites#agb', as: 'agb'
   get '', to: 'welcomes#index', as: "welcomes"
 
   resources :events
