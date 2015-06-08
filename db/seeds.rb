@@ -1,6 +1,10 @@
 admin = User.where(email: "admin@partychamp.de").first
-#admin.profile.destroy
-admin.destroy
+unless admin.nil?
+  unless admin.profile.nil?
+    admin.profile.destroy
+  end
+  admin.destroy
+end
 admin = User.create!(email: "admin@partychamp.de", password: 'ibAvPChamp!', password_confirmation: 'ibAvPChamp!')
 admin.add_role :admin
 address = Address.create(city: "Steinhagen")
@@ -11,24 +15,24 @@ profile = Profile.create(gender: 0, firstname: "Admin", lastname: "Partychamp", 
 BranchCategory.destroy_all
 musik = BranchCategory.create!(id: 1, name: "Musik")
 trans = BranchCategory.create!(id: 2, name: "Transport")
-rent  = BranchCategory.create!(id: 3, name: "Technik, Verleih & Dekoration")
+rent = BranchCategory.create!(id: 3, name: "Technik, Verleih & Dekoration")
 gastr = BranchCategory.create!(id: 4, name: "Gastronomie")
-orga  = BranchCategory.create!(id: 5, name: "Organisation")
-show  = BranchCategory.create!(id: 6, name: "Showact & Unterhaltung")
-foto  = BranchCategory.create!(id: 7, name: "Foto & Video")
-loc   = BranchCategory.create!(id: 8, name: "Location")
+orga = BranchCategory.create!(id: 5, name: "Organisation")
+show = BranchCategory.create!(id: 6, name: "Showact & Unterhaltung")
+foto = BranchCategory.create!(id: 7, name: "Foto & Video")
+loc = BranchCategory.create!(id: 8, name: "Location")
 
 Branch.destroy_all
 Branch.create!([
-                   {id:  1, name: "DJ", branchCategory_id: musik.id},
-                   {id:  2, name: "Kutsche", branchCategory_id: trans.id},
-                   {id:  3, name: "Koch", branchCategory_id: gastr.id},
-                   {id:  4, name: "Eventplaner", branchCategory_id: orga.id},
-                   {id:  5, name: "Feuerspucker", branchCategory_id: show.id},
-                   {id:  6, name: "Zeltverleih", branchCategory_id: rent.id},
-                   {id:  7, name: "Partyraum", branchCategory_id: loc.id},
-                   {id:  8, name: "Hochzeitsrepotage", branchCategory_id: foto.id},
-                   {id:  9, name: "Band", branchCategory_id: musik.id},
+                   {id: 1, name: "DJ", branchCategory_id: musik.id},
+                   {id: 2, name: "Kutsche", branchCategory_id: trans.id},
+                   {id: 3, name: "Koch", branchCategory_id: gastr.id},
+                   {id: 4, name: "Eventplaner", branchCategory_id: orga.id},
+                   {id: 5, name: "Feuerspucker", branchCategory_id: show.id},
+                   {id: 6, name: "Zeltverleih", branchCategory_id: rent.id},
+                   {id: 7, name: "Partyraum", branchCategory_id: loc.id},
+                   {id: 8, name: "Hochzeitsrepotage", branchCategory_id: foto.id},
+                   {id: 9, name: "Band", branchCategory_id: musik.id},
                    {id: 10, name: "Taxi", branchCategory_id: trans.id},
                    {id: 11, name: "Catering", branchCategory_id: gastr.id},
                    {id: 12, name: "Kinderbetreuung", branchCategory_id: orga.id},
