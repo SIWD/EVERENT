@@ -9,27 +9,57 @@ profile = Profile.create(gender: 0, firstname: "Admin", lastname: "Partychamp", 
 
 
 BranchCategory.destroy_all
-musik = BranchCategory.create!(name: "Musik")
-essen = BranchCategory.create!(name: "Essen")
-trans = BranchCategory.create!(name: "Transport")
-dekor = BranchCategory.create!(name: "Dekorateur")
-trink = BranchCategory.create!(name: "Trinken")
+musik = BranchCategory.create!(id: 1, name: "Musik")
+trans = BranchCategory.create!(id: 2, name: "Transport")
+rent  = BranchCategory.create!(id: 3, name: "Technik, Verleih & Dekoration")
+gastr = BranchCategory.create!(id: 4, name: "Gastronomie")
+orga  = BranchCategory.create!(id: 5, name: "Organisation")
+show  = BranchCategory.create!(id: 6, name: "Showact & Unterhaltung")
+foto  = BranchCategory.create!(id: 7, name: "Foto & Video")
+loc   = BranchCategory.create!(id: 8, name: "Location")
 
 Branch.destroy_all
 Branch.create!([
-                   {name: "DJ", branchCategory_id: musik.id},
-                   {name: "Band", branchCategory_id: musik.id},
-                   {name: "Solist", branchCategory_id: musik.id},
-                   {name: "Koch", branchCategory_id: essen.id},
-                   {name: "Buffet-Caterer", branchCategory_id: essen.id},
-                   {name: "Lieferservice", branchCategory_id: essen.id},
-                   {name: "Kutsche", branchCategory_id: trans.id},
-                   {name: "Taxi", branchCategory_id: trans.id},
-                   {name: "Limousinen Service", branchCategory_id: trans.id},
-                   {name: "Bus", branchCategory_id: trans.id},
-                   {name: "Florist", branchCategory_id: dekor.id},
-                   {name: "Cocktailmixer", branchCategory_id: trink.id},
-                   {name: "Barkeeper", branchCategory_id: trink.id}
+                   {id:  1, name: "DJ", branchCategory_id: musik.id},
+                   {id:  2, name: "Kutsche", branchCategory_id: trans.id},
+                   {id:  3, name: "Koch", branchCategory_id: gastr.id},
+                   {id:  4, name: "Eventplaner", branchCategory_id: orga.id},
+                   {id:  5, name: "Feuerspucker", branchCategory_id: show.id},
+                   {id:  6, name: "Zeltverleih", branchCategory_id: rent.id},
+                   {id:  7, name: "Partyraum", branchCategory_id: loc.id},
+                   {id:  8, name: "Hochzeitsrepotage", branchCategory_id: foto.id},
+                   {id:  9, name: "Band", branchCategory_id: musik.id},
+                   {id: 10, name: "Taxi", branchCategory_id: trans.id},
+                   {id: 11, name: "Catering", branchCategory_id: gastr.id},
+                   {id: 12, name: "Kinderbetreuung", branchCategory_id: orga.id},
+                   {id: 13, name: "Zauberer", branchCategory_id: show.id},
+                   {id: 14, name: "Veranstaltungstechnik", branchCategory_id: rent.id},
+                   {id: 15, name: "Club", branchCategory_id: loc.id},
+                   {id: 16, name: "Partyfotograf", branchCategory_id: foto.id},
+                   {id: 17, name: "Solist", branchCategory_id: musik.id},
+                   {id: 18, name: "Limousinen Service", branchCategory_id: trans.id},
+                   {id: 19, name: "Cocktailmixer", branchCategory_id: gastr.id},
+                   {id: 20, name: "Sicherheitsdienst", branchCategory_id: orga.id},
+                   {id: 21, name: "Tänzer", branchCategory_id: show.id},
+                   {id: 22, name: "Sanitäranlagen", branchCategory_id: rent.id},
+                   {id: 23, name: "Bar", branchCategory_id: loc.id},
+                   {id: 24, name: "Photobooth", branchCategory_id: foto.id},
+                   {id: 25, name: "Busvermietung", branchCategory_id: trans.id},
+                   {id: 26, name: "Konditor", branchCategory_id: gastr.id},
+                   {id: 27, name: "Marketing", branchCategory_id: orga.id},
+                   {id: 28, name: "Walking Act", branchCategory_id: show.id},
+                   {id: 29, name: "Möbel", branchCategory_id: rent.id},
+                   {id: 30, name: "Eventhalle", branchCategory_id: loc.id},
+                   {id: 31, name: "Videograf", branchCategory_id: foto.id},
+                   {id: 32, name: "Autovermietung", branchCategory_id: trans.id},
+                   {id: 33, name: "Mobiler Imbiss", branchCategory_id: gastr.id},
+                   {id: 34, name: "Stripper", branchCategory_id: show.id},
+                   {id: 35, name: "Florist", branchCategory_id: rent.id},
+                   {id: 36, name: "Oldtimer", branchCategory_id: trans.id},
+                   {id: 37, name: "Barkeeper", branchCategory_id: gastr.id},
+                   {id: 38, name: "Präsentationstechnik", branchCategory_id: rent.id},
+                   {id: 39, name: "Servicepersonal", branchCategory_id: gastr.id},
+                   {id: 40, name: "Pyrotechnik", branchCategory_id: show.id}
                ])
 
 WhoHasAccessToEvent.destroy_all
@@ -239,7 +269,6 @@ case Rails.env
                              {position: 1, business_id: 1, user_id: 7},
                              {position: 1, business_id: 5, user_id: 8}
                          ])
-
 
 
     Event.create!([

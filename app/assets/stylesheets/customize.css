@@ -108,8 +108,9 @@ form > .row {
 
 .input-group-label-head i.fa{
     font-size: 2em;
-    height:19px;
-    margin:0 5px 0 10px
+    line-height:18px;
+    margin:0 5px 3px 10px;
+    vertical-align: middle;
 }
 
 .input-group-input-head{

@@ -57,14 +57,11 @@ class BranchesController < ApplicationController
 
   private
   def set_branch_by_name
-    name = params[:name]
-    if name.include? '_'
-      name['_'] = ' '
-    end
+    name = params[:name].gsub('_',' ')
     @branch = Branch.where(name: name).first
 
     #Check if Branch exists:
-    if ! @branch
+    unless @branch
       flash[:alert] = "Branche wurde nicht gefunden"
       redirect_to branches_path
     end

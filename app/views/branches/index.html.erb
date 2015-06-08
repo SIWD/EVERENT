@@ -5,8 +5,9 @@
   <div id="options">
     <ul id="filters" class="option-set clearfix" data-option-key="filter">
       <li><a href="#filter" data-option-value="*" class="selected">All</a></li>
-      <% BranchCategory.all.each do |bc| %>
-          <li><a href="#filter" data-option-value=".<%= bc.name %>"><%= bc.name %></a></li>
+      <% BranchCategory.all.each do |bc|
+          %>
+          <li><a href="#filter" data-option-value=".<%= bc.name.gsub(/[ &,]/, '') %>"><%= bc.name %></a></li>
       <% end %>
     </ul>
   </div>
@@ -16,7 +17,7 @@
   <div class="row">
     <div class="portfolio">
       <% @branches.each do |b| %>
-          <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 <%= b.branchCategory.name %> jquery item">
+          <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 <%= b.branchCategory.name.gsub(/[ &,]/, '') %> jquery item">
             <%= link_to "Branche/#{b.name}" do %>
                 <div class="portfolio-item">
                   <div class="portfolio-item-title">

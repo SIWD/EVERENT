@@ -82,15 +82,7 @@
 
           <p>
             <strong>Beschreibung:</strong>
-            <%
-               @event.description.chars.each { |c|
-                 if c == "\n"
-            %><br><%
-                       else
-                    %><%= c %><%
-                   end
-                   }
-                %>
+            <%= @event.description.gsub(/\n/,'<br>').html_safe %>
           </p>
         </div>
         <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12 new-section">
