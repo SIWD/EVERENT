@@ -77,27 +77,24 @@
       <h3 class="title">Events:</h3>
 
       <div class="widget tabs animate_afb d1 animate_start">
+        <% if (params["privat"]=="true")
+             tab1 = "Private"
+             tab2 = "Öffentlich"
+             con1 = "content2"
+             con2 = "content1"
+           else
+             tab1 = "Öffentlich"
+             tab2 = "Private"
+             con1 = "content1"
+             con2 = "content2"
+           end %>
         <div id="horizontal-tabs">
           <ul class="tabs">
-
-            <% if (params["privat"]=="true")
-                 tab1 = "Private"
-                 tab2 = "Öffentlich"
-                 con1 = "content2"
-                 con2 = "content1"
-               else
-                 tab1 = "Öffentlich"
-                 tab2 = "Private"
-                 con1 = "content1"
-                 con2 = "content2"
-               end %>
-            <div id="horizontal-tabs">
-              <ul class="tabs">
-                <li id="tab1"><%= tab1 %></li>
-                <li id="tab2"><%= tab2 %></li>
-              </ul>
-              <div class="contents">
-                <div class="tabscontent" id="<%= con1 %>">
+            <li id="tab1"><%= tab1 %></li>
+            <li id="tab2"><%= tab2 %></li>
+          </ul>
+          <div class="contents">
+            <div class="tabscontent" id="<%= con1 %>">
               <div class="row">
                 <% unless (@loc_checked.nil?) %>
                     <div class="col-lg-12">
@@ -229,7 +226,7 @@
                 <% end %>
               </div>
             </div>
-                <div class="tabscontent" id="<%= con2 %>">
+            <div class="tabscontent" id="<%= con2 %>">
               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 small-new-section">
                 <h3 class="content-title">Privates Event finden:</h3>
                 <%= form_tag event_id_path, :method => :post do %>
