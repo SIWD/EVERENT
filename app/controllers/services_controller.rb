@@ -27,11 +27,23 @@ class ServicesController < ApplicationController
   end
 
   def create
-    @address = Address.create(address_params)
-    @contact = Contact.create(contact_params)
-    @service = Service.new(service_params)
-    @service.address_id = @address.id
-    @service.contact_id = @contact.id
+
+    @service = Service.create(service_params)
+
+    if @service.sameContactLikeBusiness
+      @service.contact_id = @service.business.contact_id
+    elsif !@service.sameContactLikeBusiness
+      contact = Contact.create(contact_params)
+      @service.contact = contact
+    end
+
+    if @service.sameAddressLikeBusiness
+      @service.address_id = @service.business.address_id
+    elsif !@service.sameAddressLikeBusiness
+      address = Address.create(address_params)
+      @service.address = address
+    end
+
     @service.save
     respond_with(@service)
   end
@@ -39,8 +51,10 @@ class ServicesController < ApplicationController
   def update
     @service.update(service_params)
 
-    if !@service.sameAddressLikeBusiness
-      if @address.nil?
+    if @service.sameAddressLikeBusiness
+      @service.address = @service.business.address
+    else
+      if @address.nil? || @service.address == @service.business.address
         if @address = Address.create(address_params)
           @service.address_id = @address.id
           @service.save
@@ -50,8 +64,10 @@ class ServicesController < ApplicationController
       end
     end
 
-    if !@service.sameContactLikeBusiness
-      if @contact.nil?
+    if @service.sameContactLikeBusiness
+      @service.contact = @service.business.contact
+    else
+      if @contact.nil? || @service.contact == @service.business.contact
         if @contact = Contact.create(contact_params)
           @service.contact_id = @contact.id
           @service.save
@@ -60,7 +76,8 @@ class ServicesController < ApplicationController
         @service.errors.add(:base, "Kontakt nicht vollständig ausgefüllt")
       end
     end
-
+    
+    @service.save
     respond_with(@service)
   end
 

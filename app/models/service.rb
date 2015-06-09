@@ -6,18 +6,9 @@ class Service < ActiveRecord::Base
   belongs_to :address
   belongs_to :contact
 
-  validates :branch, :business, :name, presence: true
+  validates :branch, :business_id, :name, presence: true
+  validates :address, :contact, :name, presence: true
 
 
-  before_validation do
-
-    if self.sameContactLikeBusiness
-      self.contact = self.business.contact
-    end
-
-    if self.sameAddressLikeBusiness
-      self.address = self.business.address
-    end
-  end
 
 end
