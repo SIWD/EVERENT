@@ -15,6 +15,7 @@
     <div class="row">
       <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 new-section">
         <h3 class="title">Facts</h3>
+
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <%= f.label :name, "Name des Events" %>
@@ -117,16 +118,52 @@
       </div>
 
       <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 new-section">
-            <h3 class="title">Art des Events</h3>
-            <%= collection_radio_buttons :event_genre, :event_genre_ids, EventGenre.all, :id, :name do |p| %>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                  <div class="row">
-                    <%= p.radio_button(checked: if !params[:event_genre] && EventGenre.first == p.object || @genre_map && @genre_map.include?(p.object.id.to_s) then
-                                                  true
-                                                end) + " " + p.label %>
+        <h3 class="title">Art des Events</h3>
+        <% if (!params[:event_genre]) || (EventGenre.find(params[:event_genre]['event_genre_ids']).privacy_id == 1)
+             tab1 = "Öffentlich"
+             tab2 = "Private"
+             con1 = "content1"
+             con2 = "content2"
+           else
+             tab1 = "Private"
+             tab2 = "Öffentlich"
+             con1 = "content2"
+             con2 = "content1"
+           end %>
+        <div id="horizontal-tabs">
+          <ul class="tabs">
+            <li id="tab1"><%= tab1 %></li>
+            <li id="tab2"><%= tab2 %></li>
+          </ul>
+          <div class="contents">
+
+            <div class="tabscontent padding10" id="<%= con1 %>">
+
+              <%= collection_radio_buttons :event_genre, :event_genre_ids, EventGenre.where(privacy_id: 1).all, :id, :name do |p| %>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="row">
+                      <%= p.radio_button(onchange: 'activateJeder()', class: "privacy#{p.object.privacy_id}", checked: if !params[:event_genre] && EventGenre.first == p.object || @genre_map && @genre_map.include?(p.object.id.to_s) then
+                                                                                                                         true
+                                                                                                                       end) + " " + p.label %>
+                    </div>
                   </div>
-                </div>
-            <% end %>
+              <% end %>
+            </div>
+
+            <div class="tabscontent padding10" id="<%= con2 %>">
+
+              <%= collection_radio_buttons :event_genre, :event_genre_ids, EventGenre.where(privacy_id: 2).all, :id, :name do |p| %>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="row">
+                      <%= p.radio_button(onchange: 'deactivateJeder()', class: "privacy#{p.object.privacy_id}", checked: if !params[:event_genre] && EventGenre.first == p.object || @genre_map && @genre_map.include?(p.object.id.to_s) then
+                                                                                                                           true
+                                                                                                                         end) + " " + p.label %>
+                    </div>
+                  </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
       </div>
 
 
@@ -150,14 +187,36 @@
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <h3 class="title">Privatsphäre</h3>
             <b>Wer darf das Event aufrufen?</b>
+
             <div class="row">
               <%= f.collection_radio_buttons :who_has_access_id, WhoHasAccessToEvent.all, :id, :who do |radio| %>
                   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <%= radio.label(class: "form-icon #{radio.object.who}") { radio.radio_button + image_tag(radio.object.icon) } %>
-                    <%= radio.label { radio.label } %>
+                    <%= radio.label(class: "form-icon #{radio.object.who} access#{radio.object.id}") { radio.radio_button + image_tag(radio.object.icon) } %>
+                    <%= radio.label(class: "#{radio.object.who} access#{radio.object.id}") %>
                   </div>
               <% end %>
             </div>
+            <script>
+                function activateJeder() {
+                    $(document).find('.access1').removeClass('not-active');
+                }
+
+
+                function deactivateJeder() {
+                    if ($(".privacy2").is(':checked')) {
+                        if ($(".access1 input").is(':checked')) {
+                            $(".access1 input").prop('checked', false);
+                            $(".access2 input").prop('checked', true);
+                        }
+                    }
+                    $(document).find('.access1').addClass('not-active')
+                }
+
+                $(document).ready(function () {
+                    if ($(".privacy2 input[type='radio']:checked").val() != "")
+                        $(document).find('.access1').addClass('not-active');
+                })
+            </script>
           </div>
 
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 optional-password">
@@ -165,16 +224,18 @@
             <%= f.text_field :password, class: "form-control" %>
           </div>
           <script>
-              $(document).ready(function () {
-                  $(document).on('click', 'form', function () {
-                      if ($('#event_who_has_access_id_2').is(':checked')) {
-                          $('.optional-password').slideDown();
-                      }
-                      else {
-                          $('.optional-password').slideUp();
-                      }
-                  });
+              $(document).on('click', 'form', function () {
+                  if ($('#event_who_has_access_id_2').is(':checked')) {
+                      $('.optional-password').slideDown();
+                  }
+                  else {
+                      $('.optional-password').slideUp();
+                  }
               });
+              $(document).ready(function () {
+                  if ($(".access2 input").is(':checked'))
+                      $('.optional-password').slideDown();
+              })
           </script>
 
         </div>

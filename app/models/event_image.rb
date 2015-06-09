@@ -1,7 +1,7 @@
 class EventImage < ActiveRecord::Base
   belongs_to :event
 
-  has_attached_file :image, styles: { banner: "1200x450>", event_index: "210x300>", thumb: "50x50>" },
+  has_attached_file :image, styles: { banner: "1200x450>", event_index: "680x300>", thumb: "50x50>" },
 
                     :url => '/assets/:class/:id/:style/Flyer.:extension'
                     #:url => ":rails_root/public/assets/:class/:id/:style.:extension"

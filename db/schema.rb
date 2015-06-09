@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150605131915) do
+ActiveRecord::Schema.define(version: 20150608223853) do
 
   create_table "addresses", force: true do |t|
     t.string   "city"
@@ -99,7 +99,12 @@ ActiveRecord::Schema.define(version: 20150605131915) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "privacy_id_id"
+    t.integer  "privacy_id"
   end
+
+  add_index "event_genres", ["privacy_id"], name: "index_event_genres_on_privacy_id"
+  add_index "event_genres", ["privacy_id_id"], name: "index_event_genres_on_privacy_id_id"
 
   create_table "event_images", force: true do |t|
     t.string   "album"
@@ -190,6 +195,12 @@ ActiveRecord::Schema.define(version: 20150605131915) do
     t.string   "address"
     t.float    "latitude"
     t.float    "longitude"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "privacies", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

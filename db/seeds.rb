@@ -9,7 +9,7 @@ admin = User.create!(email: "admin@partychamp.de", password: 'ibAvPChamp!', pass
 admin.add_role :admin
 address = Address.create(city: "Steinhagen")
 contact = Contact.create(mail: admin.email)
-profile = Profile.create(gender: 0, firstname: "Admin", lastname: "Partychamp", user_id: admin.id, address_id: address.id, contact_id: contact.id)
+Profile.create(gender: 0, firstname: "Admin", lastname: "Partychamp", user_id: admin.id, address_id: address.id, contact_id: contact.id)
 
 
 BranchCategory.destroy_all
@@ -87,18 +87,27 @@ EventUserStatus.create!([
                             {id: 3, status: "guest"}
                         ])
 
+Privacy.destroy_all
+Privacy.create([
+                      {id: 1, name: "public"},
+                      {id: 2, name: "private"}
+                  ])
+
 EventGenre.destroy_all
 EventGenre.create([
-                      {id: 1, name: "Club"},
-                      {id: 2, name: "Live Auftritt"},
-                      {id: 3, name: "Studentenparty"},
-                      {id: 4, name: "ABI-Party"},
-                      {id: 5, name: "Zeltparty"},
-                      {id: 6, name: "Scheunenball"},
-                      {id: 7, name: "Mottoparty"},
-                      {id: 8, name: "Sceneparty"},
-                      {id: 9, name: "Festival"},
-                      {id: 10, name: "Konzert"}
+                      {id: 1, name: "Club", privacy_id: "1"},
+                      {id: 2, name: "Live Auftritt", privacy_id: "1"},
+                      {id: 3, name: "Studentenparty", privacy_id: "1"},
+                      {id: 4, name: "ABI-Party", privacy_id: "1"},
+                      {id: 5, name: "Zeltparty", privacy_id: "1"},
+                      {id: 6, name: "Scheunenball", privacy_id: "1"},
+                      {id: 7, name: "Mottoparty", privacy_id: "1"},
+                      {id: 8, name: "Sceneparty", privacy_id: "1"},
+                      {id: 9, name: "Festival", privacy_id: "1"},
+                      {id: 10, name: "Konzert", privacy_id: "1"},
+                      {id: 11, name: "Hochzeit", privacy_id: "2"},
+                      {id: 12, name: "Geburtstag", privacy_id: "2"},
+                      {id: 13, name: "Firmenfeier", privacy_id: "2"}
                   ])
 
 

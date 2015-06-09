@@ -26,6 +26,14 @@ class Event < ActiveRecord::Base
   validates_format_of :time, :with => /(((([0]?|[1])[0-9])|([2][0-3])):([0-5])([0-9]))/, message: "hat ein ungültiges Format (Beispiel: 21:30)"
   validate :end_time, :check_end_time
 
+  validate :password_required?
+
+  def password_required?
+    if self.password.empty? && self.who_has_access_id == 2
+      errors.add(:base, "Es muss ein Passwort eingegeben werden")
+    end
+  end
+
   def check_end_time
     unless self.end_time.nil?
       validates_format_of :end_time, :with => /(((0?[0-9])|(1[0-9])|(2[0-3])):[0-5][0-9])/, message: "hat ein ungültiges Format (Beispiel: 21:30 oder leer lassen)"

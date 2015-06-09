@@ -398,7 +398,7 @@ class EventsController < ApplicationController
 
   def not_found
     flash[:error] = "Privates Event nicht gefunden."
-    redirect_to(events_path + '#privat')
+    redirect_to(events_path + '?privat=true')
   end
 
 end

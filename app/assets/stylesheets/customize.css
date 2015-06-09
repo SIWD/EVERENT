@@ -114,7 +114,6 @@ form > .row {
 }
 
 .input-group-input-head{
-
     background-color: transparent;
     color: #fafafa;
     cursor: pointer;
@@ -196,6 +195,7 @@ span.listing:last-of-type:after{
     margin-right: 20px;
     max-height: 500px;
     overflow: hidden;
+    margin-bottom: 10px;
 }
 
 .nice{
@@ -207,8 +207,13 @@ span.listing:last-of-type:after{
     margin-left:20px;
 }
 
-.portfolio-item .post-header h3.content-title{
+h3.content-title{
     margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.post-date{
+    margin-top: -10px;
 }
 
 .event-listings .portfolio-item p{
@@ -239,4 +244,9 @@ hr {
 
 td span.date{
     font-weight: 100;
+}
+
+#horizontal-tabs .tabscontent.padding10{
+    padding: 10px;
+
 }
