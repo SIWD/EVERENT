@@ -60,7 +60,7 @@ Rails.application.configure do
       :port                 => 587,
       :domain               => 'gmail.com',
       :user_name            => 'info@partychamp.de',
-      :password             => 'mnGPasswort',
+      :password             => 'mnGPasswort?',
       :authentication       => 'login',
       :enable_starttls_auto => true
   }
