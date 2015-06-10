@@ -46,3 +46,6 @@
 
 // require customize
 // require disablor
+
+
+//= require switcher.js

@@ -193,7 +193,8 @@ case Rails.env
                          ])
 
     Role.create!([
-                     {name: "global_admin", resource_id: nil, resource_type: nil},
+                     {name: "global_admin"},
+                     #{name: "global_admin", resource_id: nil, resource_type: nil},
                      {name: "business_admin", resource_id: 1, resource_type: "Business"},
                      {name: "business_admin", resource_id: 2, resource_type: "Business"},
                      {name: "business_admin", resource_id: 3, resource_type: "Business"},

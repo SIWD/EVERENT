@@ -23,6 +23,9 @@ end
 #Location
 gem 'geocoder'
 
+gem 'mail'
+
+
 gem 'devise'
 gem 'devise-bootstrap-views'
 

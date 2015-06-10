@@ -259,11 +259,11 @@
           </section>
           <section class="col-lg-3 col-md-3 col-xs-12 col-sm-12 footer-three">
             <h3>Verweise</h3>
-              <ul class=""> 
-                <li><%= link_to "Impressum", impressum_path %></li>
-                <li><%= link_to "AGB", agb_path %></li>
-                <li><%= link_to "Datenschutzerklärung", privacy_path %></li>
-              </ul>
+            <ul class="">
+              <li><%= link_to "Impressum", impressum_path %></li>
+              <li><%= link_to "AGB", agb_path %></li>
+              <li><%= link_to "Datenschutzerklärung", privacy_path %></li>
+            </ul>
           </section>
         </div>
       </div>
@@ -290,6 +290,36 @@
 </div>
 <!-- /wrap -->
 
+<section id="style-switcher">
+  <h2>Hilf mit! <a href="#"><i class="fa fa-heart"></i></a></h2>
+
+  <div>
+    <h3>Dir gefällt etwas nicht?</h3>
+    <%= form_tag("", method: :get) do %>
+        <div class="row">
+          <div class="col-lg-12 col-md-12">
+            <%= label :mail, :name %>
+            <%= text_field :mail, :name, class: "form-control" %>
+          </div>
+          <div class="col-lg-12 col-md-12">
+            <%= label :mail, :mail %>
+            <%= text_field :mail, :mail, type: 'email', required: true, class: "form-control" %>
+          </div>
+          <div class="col-lg-12 col-md-12">
+            <%= label :mail, :Betreff %>
+            <%= text_field :mail, :subject, class: "form-control" %>
+          </div>
+          <div class="col-lg-12 col-md-12">
+            <%= label :mail, :Nachricht %>
+            <%= text_area(:mail, :Nachricht, class: "form-control small-textarea")  %>
+          </div>
+          <div class="col-lg-12 col-md-12 ">
+            <%= submit_tag 'Senden', {class: "btn btn-special btn-color"} %>
+          </div>
+        </div>
+    <% end %>
+   </div>
+</section>
 </body>
 
 
