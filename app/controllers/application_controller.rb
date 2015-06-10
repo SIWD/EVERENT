@@ -5,6 +5,9 @@ class ApplicationController < ActionController::Base
 
   before_action :set_location_main
   before_action :set_range
+  before_action :send_mail
+
+  require 'mail'
 
   def set_location_main
 
@@ -37,5 +40,15 @@ class ApplicationController < ActionController::Base
     @range = params['range'] || 50
   end
 
-private
+  private
+  def send_mail
+    if params['mail']
+      if UserMailer.help_us_mail().deliver
+        flash[:notice] = "Nachricht wurde gesendet. Danke für deine Hilfe!"
+      else
+        flash[:alert] = "Nachricht konnte nicht gesendet werden."
+      end
+    end
+  end
+
 end

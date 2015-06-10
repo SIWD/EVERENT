@@ -273,6 +273,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   less-rails
+  mail
   paperclip!
   pg
   rails (= 4.1.6)

@@ -6,6 +6,9 @@ textarea {
     resize: vertical;
     min-height: 200px !important;
 }
+textarea.small-textarea {
+    min-height: 100px !important;
+}
 
 .form-icon{
     display: block;
