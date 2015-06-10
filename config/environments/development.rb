@@ -61,7 +61,7 @@ Rails.application.configure do
       :domain               => 'gmail.com',
       :user_name            => 'info@partychamp.de',
       :password             => 'mnGPasswort?',
-      :authentication       => 'login',
+      :authentication       => 'plain',
       :enable_starttls_auto => true
   }
 
