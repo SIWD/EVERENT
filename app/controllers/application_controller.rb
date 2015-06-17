@@ -7,8 +7,6 @@ class ApplicationController < ActionController::Base
   before_action :set_range
   before_action :send_mail
 
-  require 'mail'
-
   def set_location_main
 
     if (params['usrloc'] && !(params['usrloc'] == ('')))
@@ -45,19 +43,11 @@ class ApplicationController < ActionController::Base
 
   def send_mail
     if params['mail']
-      Mail.deliver do
-        to 'nico-buescher@versanet.de'
-        from 'info@partychamp.de'
-        subject 'testing sendmail'
-        body 'testing sendmail'
-      end
-=begin
       if UserMailer.help_us_mail().deliver
         flash[:notice] = "Nachricht wurde gesendet. Danke für deine Hilfe!"
       else
         flash[:alert] = "Nachricht konnte nicht gesendet werden."
       end
-=end
     end
   end
 
