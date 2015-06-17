@@ -1,6 +1,6 @@
 class UserMailer < ActionMailer::Base
 
   def help_us_mail()
-    mail(:to => "info@partychamp.de",from: "test@test.de", :subject => "Betreff")
+    mail(:to => "nico-buescher@versanet.de",from: "nico-buescher@versanet.de", :subject => "Testmail")
   end
 end
