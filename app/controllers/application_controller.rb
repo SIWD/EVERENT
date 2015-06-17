@@ -41,6 +41,8 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+
   def send_mail
     if params['mail']
       if UserMailer.help_us_mail().deliver

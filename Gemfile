@@ -23,7 +23,8 @@ end
 #Location
 gem 'geocoder'
 
-gem 'mail'
+#gem 'mail'
+gem 'pony'
 
 
 gem 'devise'
