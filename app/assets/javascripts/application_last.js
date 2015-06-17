@@ -13,5 +13,6 @@
 
 
 
-//= require custom.js
+//= require custom
 //= require disablor
+//= require switcher

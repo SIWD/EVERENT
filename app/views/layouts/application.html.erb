@@ -291,7 +291,7 @@
 <!-- /wrap -->
 
 <section id="style-switcher">
-  <h2>Hilf mit! <a href="#"><i class="fa fa-heart"></i></a></h2>
+  <h2>Verbesser Partychamp! <a href="#"><i class="fa fa-heart"></i></a></h2>
 
   <div>
     <h3>Dir gefällt etwas nicht?</h3>
@@ -299,11 +299,11 @@
         <div class="row">
           <div class="col-lg-12 col-md-12">
             <%= label :mail, :name %>
-            <%= text_field :mail, :name, class: "form-control" %>
+            <%= text_field :mail, :name, {value: "#{if current_user then Profile.where(user_id: current_user.id).first.name_with_initial end}", class: "form-control"} %>
           </div>
           <div class="col-lg-12 col-md-12">
             <%= label :mail, :mail %>
-            <%= text_field :mail, :mail, type: 'email', required: true, class: "form-control" %>
+            <%= text_field :mail, :mail, {value: "#{if current_user then Profile.where(user_id: current_user.id).first.contact.mail end}", class: "form-control", type: 'email', required: true} %>
           </div>
           <div class="col-lg-12 col-md-12">
             <%= label :mail, :Betreff %>
