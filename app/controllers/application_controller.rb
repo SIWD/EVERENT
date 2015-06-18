@@ -48,11 +48,11 @@ class ApplicationController < ActionController::Base
       @to = 'info@partychamp.de'
       @subject = params['mail']['subject']
       @message = params['mail']['message']
-      @ergebnis = IO.popen("php -f public/assets/php/mailer.php") # #{@from} #{@fromName} #{@to} #{@subject} #{@message}
+      #@ergebnis = IO.popen("php -f public/assets/php/mailer.php") # #{@from} #{@fromName} #{@to} #{@subject} #{@message}
       #@ergebnis = system('php -f public/assets/php/mailer.php') # #{@from} #{@fromName} #{@to} #{@subject} #{@message}
-     # ergebnis = `php -f app/assets/php/mailer.php #{@from} #{@fromName} #{@to} #{@subject} #{@message}`
+      @ergebnis = `php -f public/assets/php/mailer.php #{@from} #{@fromName} #{@to} #{@subject} #{@message}`
 
-      if @ergebnis
+      if @ergebnis == "true"
         flash[:notice] = "Nachricht wurde gesendet. Danke für deine Hilfe!"
       else
         flash[:alert] = "Nachricht konnte nicht gesendet werden."
