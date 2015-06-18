@@ -43,11 +43,26 @@ class ApplicationController < ActionController::Base
 
   def send_mail
     if params['mail']
+      @from = params['mail']['mail']
+      @fromName = params['mail']['name']
+      @to = 'info@partychamp.de'
+      @subject = params['mail']['subject']
+      @message = params['mail']['message']
+      ergebnis = IO.popen("php -f public/assets/php/mailer.php") # #{@from} #{@fromName} #{@to} #{@subject} #{@message}
+     # ergebnis = `php -f app/assets/php/mailer.php #{@from} #{@fromName} #{@to} #{@subject} #{@message}`
+
+      if ergebnis == "true"
+        flash[:notice] = "Nachricht wurde gesendet. Danke für deine Hilfe!"
+      else
+        flash[:alert] = "Nachricht konnte nicht gesendet werden."
+      end
+=begin
       if UserMailer.help_us_mail().deliver
         flash[:notice] = "Nachricht wurde gesendet. Danke für deine Hilfe!"
       else
         flash[:alert] = "Nachricht konnte nicht gesendet werden."
       end
+=end
     end
   end
 

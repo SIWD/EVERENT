@@ -311,7 +311,7 @@
           </div>
           <div class="col-lg-12 col-md-12">
             <%= label :mail, :Nachricht %>
-            <%= text_area(:mail, :Nachricht, class: "form-control small-textarea")  %>
+            <%= text_area(:mail, :message, class: "form-control small-textarea")  %>
           </div>
           <div class="col-lg-12 col-md-12 ">
             <%= submit_tag 'Senden', {class: "btn btn-special btn-color"} %>
@@ -320,8 +320,18 @@
     <% end %>
    </div>
 </section>
+<%= Rails.root.join('app', 'assets', 'php', 'mailer.php') %>
 </body>
 
 
 <%= javascript_include_tag "application_last" %>
+<%
+counter = 1
+file = File.new("public/assets/php/mailer.php", "r")
+while (line = file.gets)
+counter = counter + 1
+end
+file.close
+   %>
+<%= counter %>
 </html>
