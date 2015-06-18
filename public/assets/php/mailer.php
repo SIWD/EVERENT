@@ -1,10 +1,11 @@
 <?php
+    /*
     $from       = $_SERVER['argv'][1];
     $fromName   = $_SERVER['argv'][2];
     $to         = $_SERVER['argv'][3];
     $subject    = $_SERVER['argv'][4];
     $message    = $_SERVER['argv'][5];
-    
+    */
     
     $from = 'info@partychamp.de';
     $fromName = 'Partychamp';
