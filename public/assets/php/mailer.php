@@ -6,11 +6,11 @@
     $message    = $_SERVER['argv'][5];
     
     
-    @from = 'info@partychamp.de'
-    @fromName = 'Partychamp'
-    @to = 'nico-buescher@versanet.de'
-    @subject = 'Test'
-    @message = 'blablabla'
+    $from = 'info@partychamp.de';
+    $fromName = 'Partychamp';
+    $to = 'nico-buescher@versanet.de';
+    $subject = 'Test';
+    $message = 'blablabla';
     
     require('phpmailer/class.phpmailer.php');
     
