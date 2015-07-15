@@ -1,0 +1,31 @@
+<% content_for :title, 'Meine Gästelistenplätze' %>
+
+<table class="pretty-table">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Datum</th>
+    <th>Event</th>
+    <th>Angebot</th>
+    <th colspan="1"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @users_guestlists.each do |guestlist| %>
+      <tr>
+        <td class="guestlist-pic">
+          <% if guestlist.event.flyer.present? %>
+              <%= link_to guestlist.event.flyer.url, {rel: "prettyPhoto"} do %>
+                  <%= image_tag guestlist.event.flyer.url(:thumb), {alt: guestlist.user.profile.full_name} %>
+              <% end %>
+          <% end %>
+        </td>
+        <td><%= I18n.localize(guestlist.event.date, :format => "%a, %d. %B") %></td>
+        <td><%= link_to guestlist.event.name, guestlist.event %></td>
+        <td><%= GuestlistDetail.find(guestlist.guestlist_details_id).offer.gsub(/\n/, '<br>').html_safe %></td>
+        <td><%= link_to guestlist, method: :delete, data: {confirm: 'Wirklich von der Gästeliste löschen?'} do %><i class="fa fa-trash-o fa-3x"></i><% end %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

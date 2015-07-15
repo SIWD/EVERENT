@@ -3,6 +3,22 @@
 
 jQuery(document).ready(function () {
 
+
+    // initialize input widgets first
+    $('#datepair .time').timepicker({
+        'showDuration': true,
+        'timeFormat': 'H:i'
+    });
+
+    $('#datepair .date').datepicker({
+        'format': 'yyyy-m-d',
+        language: "de",
+        'autoclose': true
+    });
+
+    // initialize datepair
+    $('#datepair').datepair();
+
     jQuery('body').css('overflowY','hidden');
                 jQuery.waitForImages.hasImgProperties = ['background','backgroundImage'];
                 jQuery('body').waitForImages(function() {

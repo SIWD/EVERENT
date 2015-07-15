@@ -13,6 +13,13 @@
 
 
 
+
+//= require revolution-slider/js/jquery.themepunch.tools.min.js
+//= require revolution-slider/js/jquery.themepunch.revolution.min.js
+//= require superfish.js
+//= require jflickrfeed.js
+
+
 //= require custom
 //= require disablor
 //= require switcher

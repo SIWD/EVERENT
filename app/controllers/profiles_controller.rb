@@ -1,5 +1,5 @@
 class ProfilesController < ApplicationController
-  before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :set_profile, only: [:show, :edit, :update, :destroy, :destroy_photo]
   before_action :set_user_profile, only: [:show, :edit, :update, :destroy]
   before_action :check_access_right, only: [:edit, :update, :destroy]
 
@@ -75,6 +75,12 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def destroy_photo
+    @profile.photo = nil
+    @profile.save
+    respond_with(@profile)
+  end
+
 
   private
 
@@ -92,7 +98,7 @@ class ProfilesController < ApplicationController
   end
 
   def profile_params
-    params.require(:profile).permit(:gender, :firstname, :lastname, :phone, :photo)
+    params.require(:profile).permit(:gender, :firstname, :lastname, :phone, :photo, :birthday)
   end
 
   def address_params

@@ -1,0 +1,14 @@
+<% content_for :title, "Gästeliste bearbeiten von: #{Event.find(@guestlist_detail.event_id).name}" %>
+
+<%= link_to 'Zurück zum Event', event_path(Event.find(@guestlist_detail.event_id)) %>
+<div class="author-content">
+  <h3>Wichtiger Hinweis</h3>
+  <p>Du kannst das Angebot für die Gästeliste jederzeit ändern!<br>
+    ABER! Die Konditionen bleiben für Gäste gespeichert, die einem Angebot bereits beigetreten sind!<br>
+  <br>
+  <u>Du kannst keine Gäste von der Liste entfernten!</u></p>
+</div>
+<div class="divider"></div>
+<%= render 'form' %>
+<div class="divider"></div>
+<%= link_to 'Zurück zum Event', event_path(Event.find(@guestlist_detail.event_id)) %>

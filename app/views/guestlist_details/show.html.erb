@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Event:</strong>
+  <%= @guestlist_detail.event %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @guestlist_detail.active %>
+</p>
+
+<p>
+  <strong>Size:</strong>
+  <%= @guestlist_detail.size %>
+</p>
+
+<p>
+  <strong>Offer:</strong>
+  <%= @guestlist_detail.offer %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @guestlist_detail.end_date %>
+</p>
+
+<p>
+  <strong>End time:</strong>
+  <%= @guestlist_detail.end_time %>
+</p>
+
+<%= link_to 'Edit', edit_guestlist_detail_path(@guestlist_detail) %> |
+<%= link_to 'Back', guestlist_details_path %>

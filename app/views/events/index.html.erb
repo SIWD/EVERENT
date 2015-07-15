@@ -132,9 +132,7 @@
                        end
 
                        show_when = false
-                       if !params["when"]
-                         show_when = true
-                       elsif params["when"] == "future" && (event.date.today? || event.date.future?)
+                       if (!params["when"] || params["when"] == "future") && (event.is_event_now? || event.date.today? || event.date.future?)
                          show_when = true
                        elsif params["when"] == "past" && event.date.past?
                          show_when = true
@@ -201,11 +199,13 @@
                               </header>
 
                               <!-- Event-Body -->
+                              <% if event.teaser.present? %>
                               <%= link_to event do %>
                                   <p>
                                     <b>Beschreibung:</b><br>
-                                    <%= event.description[0, 200] %>
+                                    <%= event.teaser[0, 200] %>
                                   </p>
+                              <% end %>
                               <% end %>
                               <%= link_to "Klick für mehr Info", event, class: "btn btn-color col-lg-12 col-md-12 col-sm-12 col-xs-12" %>
                             </div>

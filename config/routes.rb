@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
 
+
+  resources :event_images
+  resources :guestlist_details
+
+  resources :guestlists
   resources :simple_sites
 
   post "/events/event_id" => "events#event_id", :as => 'event_id'
@@ -29,6 +34,8 @@ Rails.application.routes.draw do
   get 'Branche/neu', to:'branches#new'
   patch 'Branche/:name',to: 'branches#update'
 
+
+  post 'profiles/:id', to: 'profiles#destroy_photo'
   resources :profiles
 
   resources :services

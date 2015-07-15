@@ -1,15 +1,16 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
-  before_action :is_owner?, only: [:show, :edit]
+  before_action :load_hosts, only: [:show, :edit, :update]
+  before_action :is_owner?, only: [:show, :edit, :update]
   before_action :check_password_for_event, only: [:show]
   after_action :clear_flash, only: [:show]
   before_action :check_login_status, only: [:new, :edit, :update, :destroy]
   after_action :set_notice_nil, only: [:show]
   before_action :create_host_maps, only: [:new]
-  before_action :load_maps, only: [:edit]
-  before_action :load_hosts, only: [:show]
+  before_action :load_maps, only: [:edit, :update]
   before_action :fill_maps, only: [:create, :update]
   before_action :check_access_right, only: [:update, :edit, :destroy]
+  before_action :update_guestlist, only: [:show]
   respond_to :html
 
   def index
@@ -19,6 +20,14 @@ class EventsController < ApplicationController
   end
 
   def show
+    if guestlist_detail_params
+      detail = GuestlistDetail.new(guestlist_detail_params)
+      detail.event = @event
+      detail.active = true
+      detail.save
+    end
+
+
     respond_with(@event)
   end
 
@@ -56,6 +65,8 @@ class EventsController < ApplicationController
       address_error = false
     end
 
+    update_children_formular_status
+
     @eventLocation = EventLocation.new(eventlocation_params)
     @eventLocation.address_id = @address.id
     unless @eventLocation.save
@@ -67,7 +78,6 @@ class EventsController < ApplicationController
     end
 
     add_event_members
-
     if @member_count < 1
       @event.errors.add(:base, "Sie müssen mindestens einen Gastgeber auswählen")
     end
@@ -120,6 +130,7 @@ class EventsController < ApplicationController
       image.save
     end
 
+    update_children_formular_status
     update_event_genre
     update_event_member_status
 
@@ -173,7 +184,6 @@ class EventsController < ApplicationController
       end
       @image = @event.event_images.where(album: "Flyer").last
     end
-
   end
 
   def check_login_status
@@ -187,7 +197,7 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:name, :address_id, :description, :who_has_access_id, :password, :date, :time, :end_date, :end_time)
+    params.require(:event).permit(:name, :address_id, :teaser, :description, :who_has_access_id, :password, :date, :time, :end_date, :end_time, :accept_children_formular, :min_age)
   end
 
   def address_params
@@ -211,12 +221,32 @@ class EventsController < ApplicationController
   end
 
   def event_genre_params
-    params.require(:event_genre).permit(:event_genre_ids)
+    if params[:event_genre]
+      params.require(:event_genre).permit(:event_genre_ids)
+    else
+      nil
+    end
   end
 
   def image_params
     if params[:event_image]
       params.require(:event_image).permit(:image)
+    else
+      nil
+    end
+  end
+
+  def event_images_params
+    if params[:event_images]
+      params.require(:event_images).permit(images: [])
+    else
+      nil
+    end
+  end
+
+  def guestlist_detail_params
+    if params[:guestlist_detail]
+      params.require(:guestlist_detail).permit(:event_id, :active, :size, :offer, :end_date, :end_time)
     else
       nil
     end
@@ -244,7 +274,11 @@ class EventsController < ApplicationController
   end
 
   def create_event_genre
-    EventEventGenre.create(event_id: @event.id, event_genre_id: event_genre_params[:event_genre_ids])
+    if event_genre_params.nil?
+      @event.errors.add(:base, "Art des Events auswählen")
+    else
+      EventEventGenre.create(event_id: @event.id, event_genre_id: event_genre_params[:event_genre_ids])
+    end
   end
 
   def update_event_genre
@@ -287,26 +321,14 @@ class EventsController < ApplicationController
         }
       end
     else
-      @member_count = @event.event_businesses.count + @event.event_profiles.count + @event.event_services.count
+      @member_count = @event.event_hosts.count
     end
   end
 
   def destroy_event_members
     checker = true
-    EventProfile.where(event_id: @event.id).each do |eu|
-      unless eu.destroy
-        checker = false
-      end
-    end
-
-    EventBusiness.where(event_id: @event.id).each do |eb|
-      unless eb.destroy
-        checker = false
-      end
-    end
-
-    EventService.where(event_id: @event.id).each do |es|
-      unless es.destroy
+    EventHost.where(event_id: @event.id).each do |eh|
+      unless eh.destroy
         checker = false
       end
     end
@@ -315,19 +337,19 @@ class EventsController < ApplicationController
 
   def update_event_member_status
     host_profile_params.each { |host_profile_param|
-      EventProfile.where(profile_id: host_profile_param).each { |eu|
+      EventHost.where(profile_id: host_profile_param).each { |eu|
         join_and_admin_event(eu)
       }
     }
 
     host_business_params.each { |host_business_param|
-      EventBusiness.where(business_id: host_business_param).each { |eb|
+      EventHost.where(business_id: host_business_param).each { |eb|
         join_and_admin_event(eb)
       }
     }
 
     host_service_params.each { |host_service_param|
-      EventService.where(service_id: host_service_param).each { |es|
+      EventHost.where(service_id: host_service_param).each { |es|
         join_and_admin_event(es)
       }
     }
@@ -347,16 +369,11 @@ class EventsController < ApplicationController
   end
 
   def load_maps
-    @profiles_map = @event.event_profiles.map(&:profile_id).to_s
-    @businesses_map = @event.event_businesses.map(&:business_id).to_s
-    @services_map = @event.event_services.map(&:service_id).to_s
+    create_host_maps
+    @profiles_map = @profiles.map(&:profile_id).to_s unless @businesses.nil?
+    @businesses_map = @businesses.map(&:business_id).to_s unless @businesses.nil?
+    @services_map = @services.map(&:service_id).to_s unless @services.nil?
     @genre_map = @event.event_event_genres.map(&:event_genre_id).to_s
-  end
-
-  def load_hosts
-    @profiles = @event.event_profiles.all
-    @businesses = @event.event_businesses.all
-    @services = @event.event_services.all
   end
 
   def fill_maps
@@ -366,25 +383,27 @@ class EventsController < ApplicationController
     @genre_map = event_genre_params[:event_genre_ids]
   end
 
+  def load_hosts
+    @profiles = EventHost.where(profile: @event.profiles).where(event_id: @event.id)
+    @businesses = EventHost.where(business: @event.businesses).where(event_id: @event.id)
+    @services = EventHost.where(service: @event.services).where(event_id: @event.id)
+  end
+
   def is_owner?
     @owner = false
     if current_user
       businesses_ids = UserBusiness.where(user_id: current_user.id).map(&:business_id)
-      @event.event_profiles.each do |ep|
-        @owner = if ep.profile_id.in?(Profile.where(user_id: current_user.id).map(&:id)) then
-                   true
-                 end
-      end
-      @event.event_businesses.each do |eb|
-        @owner = if eb.business_id.in?(businesses_ids) then
-                   true
-                 end
-      end
-      @event.event_services.each do |es|
-        @owner = if es.service.business_id.in?(businesses_ids) then
-                   true
-                 end
-      end
+      @profiles.each do |ep|
+        @owner = true if ep.profile_id.in?(Profile.where(user_id: current_user.id).map(&:id))
+      end unless @profiles.nil?
+
+      @businesses.each do |eb|
+        @owner = true if eb.business_id.in?(businesses_ids)
+      end unless @businesses.nil?
+
+      @services.each do |es|
+        @owner = true if es.service.business_id.in?(businesses_ids)
+      end unless @services.nil?
     end
   end
 
@@ -401,4 +420,40 @@ class EventsController < ApplicationController
     redirect_to(events_path + '?privat=true')
   end
 
+  def update_guestlist
+    if (params[:guestlist] == "join" || params[:guestlist] == "leave")
+      if @event.guestlist_detail.present?
+        if params[:guestlist] == "join" && current_user
+          if !Guestlist.where(event_id: @event.id, user_id: current_user.id).first.nil?
+            flash[:notice] = "Du bist schon auf der Gästeliste."
+          elsif (@event.guestlist_details.last.size.nil? || @event.guestlists.count < @event.guestlist_details.last.size) && Guestlist.create(event_id: @event.id, user_id: current_user.id, guestlist_details_id: @event.guestlist_details.last.id)
+            flash[:notice] = "Herzlichen Glückwunsch! Du bist auf der Gästeliste!"
+          elsif @event.guestlists.count >= @event.guestlist_details.last.size &&
+              flash[:error] = "Schade, die Gästeliste ist schon voll! Versuch es später erneut."
+          else
+            flash[:error] = "Du konntest der Gästeliste nicht hinzugefügt werden. Versuch es später erneut."
+          end
+        elsif params[:guestlist] == "leave" && current_user
+          if !Guestlist.where(event_id: @event.id, user_id: current_user.id).first.nil? && Guestlist.where(event_id: @event.id, user_id: current_user.id).first.destroy
+            flash[:notice] = "Du bist nicht mehr auf der Gästeliste."
+          elsif Guestlist.where(event_id: @event.id, user_id: current_user.id).first.present?
+            flash[:error] = "Du konntest nicht von der Gästeliste entfernt werden. Versuch es später erneut."
+          else
+            flash[:notice] = "Du bist nicht auf der Gästeliste."
+          end
+        elsif params[:guestlist] == 'join' && !current_user
+          flash[:error] = "Melde Dich an um Dich auf die Gästeliste einzutragen."
+        end
+      elsif @event.guestlist_detail.nil?
+        flash[:error] = "Keine Gästeliste vorhanden."
+      end
+    end
+  end
+
+  def update_children_formular_status
+    unless event_params[:accept_children_formular] == "true"
+      @event.accept_children_formular = false
+      @event.save
+    end
+  end
 end

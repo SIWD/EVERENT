@@ -34,6 +34,7 @@ de:
           lastname: "Nachname"
           address_id: "Adresse"
           contact_id: "Kontakt"
+          birthday: "Geburtstag"
         business:
           address: "Adresse"
           name: "Name des Unternehmens"
@@ -53,6 +54,7 @@ de:
           time: "Startuhrzeit"
           end_time: "Enduhrzeit"
           name: "Name der Lacation"
+          teaser: "Kurzbeschreibung"
       errors:
         models:
           user:

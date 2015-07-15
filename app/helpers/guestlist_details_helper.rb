@@ -1,0 +1,2 @@
+module GuestlistDetailsHelper
+end

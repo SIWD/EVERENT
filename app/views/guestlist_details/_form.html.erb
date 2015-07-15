@@ -1,0 +1,36 @@
+<%= form_for(@guestlist_detail) do |f| %>
+    <% if @guestlist_detail.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@guestlist_detail.errors.count, "error") %> prohibited this guestlist_detail from being
+            saved:</h2>
+
+          <ul>
+            <% @guestlist_detail.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <% unless @guestlist_detail.active.nil? %>
+            <div style="widht:100%">
+              <%= f.check_box :active, { checked: @guestlist_detail.active  } , true, false %>
+              <%= f.label :active, 'Gästeliste aktiviert' %>
+            </div>
+        <% end %>
+        <%= f.label :offer, 'Angebot' %><br>
+        <%= f.text_area :offer, class: "form-control small-textarea" %>
+        <%= f.label :size, "Angebot limitiert für X Gäste" %><br>
+        <%= f.number_field :size, class: "form-control" %>
+        <%= f.label :end_date, "Angebot Endet:" %><br>
+        <div id="datepair" class="input-daterange input-group">
+          <%= f.text_field :end_date, {class: "date form-control", style: 'width:50%'} %>
+          <%= f.text_field :end_time, {class: "time form-control", style: 'width:50%'} %>
+        </div>
+        <%= f.submit "Speichern", class: "btn btn-normal btn-color submit" %>
+      </div>
+    </div>
+<% end %>

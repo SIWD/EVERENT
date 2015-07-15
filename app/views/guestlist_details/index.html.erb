@@ -1,0 +1,35 @@
+<h1>Listing guestlist_details</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Active</th>
+      <th>Size</th>
+      <th>Offer</th>
+      <th>End date</th>
+      <th>End time</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @guestlist_details.each do |guestlist_detail| %>
+      <tr>
+        <td><%= guestlist_detail.event %></td>
+        <td><%= guestlist_detail.active %></td>
+        <td><%= guestlist_detail.size %></td>
+        <td><%= guestlist_detail.offer %></td>
+        <td><%= guestlist_detail.end_date %></td>
+        <td><%= guestlist_detail.end_time %></td>
+        <td><%= link_to 'Show', guestlist_detail %></td>
+        <td><%= link_to 'Edit', edit_guestlist_detail_path(guestlist_detail) %></td>
+        <td><%= link_to 'Destroy', guestlist_detail, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Guestlist detail', new_guestlist_detail_path %>

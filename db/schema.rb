@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150608223853) do
+ActiveRecord::Schema.define(version: 20150713215857) do
 
   create_table "addresses", force: true do |t|
     t.string   "city"
@@ -71,20 +71,6 @@ ActiveRecord::Schema.define(version: 20150608223853) do
     t.datetime "updated_at"
   end
 
-  create_table "event_businesses", force: true do |t|
-    t.integer  "event_id"
-    t.integer  "business_id"
-    t.integer  "event_user_status_id"
-    t.integer  "event_user_join_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "event_businesses", ["business_id"], name: "index_event_businesses_on_business_id"
-  add_index "event_businesses", ["event_id"], name: "index_event_businesses_on_event_id"
-  add_index "event_businesses", ["event_user_join_id"], name: "index_event_businesses_on_event_user_join_id"
-  add_index "event_businesses", ["event_user_status_id"], name: "index_event_businesses_on_event_user_status_id"
-
   create_table "event_event_genres", force: true do |t|
     t.integer  "event_id"
     t.integer  "event_genre_id"
@@ -105,6 +91,24 @@ ActiveRecord::Schema.define(version: 20150608223853) do
 
   add_index "event_genres", ["privacy_id"], name: "index_event_genres_on_privacy_id"
   add_index "event_genres", ["privacy_id_id"], name: "index_event_genres_on_privacy_id_id"
+
+  create_table "event_hosts", force: true do |t|
+    t.integer  "event_id"
+    t.integer  "profile_id"
+    t.integer  "business_id"
+    t.integer  "service_id"
+    t.integer  "event_user_status_id"
+    t.integer  "event_user_join_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "event_hosts", ["business_id"], name: "index_event_hosts_on_business_id"
+  add_index "event_hosts", ["event_id"], name: "index_event_hosts_on_event_id"
+  add_index "event_hosts", ["event_user_join_id"], name: "index_event_hosts_on_event_user_join_id"
+  add_index "event_hosts", ["event_user_status_id"], name: "index_event_hosts_on_event_user_status_id"
+  add_index "event_hosts", ["profile_id"], name: "index_event_hosts_on_profile_id"
+  add_index "event_hosts", ["service_id"], name: "index_event_hosts_on_service_id"
 
   create_table "event_images", force: true do |t|
     t.string   "album"
@@ -127,34 +131,6 @@ ActiveRecord::Schema.define(version: 20150608223853) do
   end
 
   add_index "event_locations", ["address_id"], name: "index_event_locations_on_address_id"
-
-  create_table "event_profiles", force: true do |t|
-    t.integer  "event_id"
-    t.integer  "profile_id"
-    t.integer  "event_user_status_id"
-    t.integer  "event_user_join_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "event_profiles", ["event_id"], name: "index_event_profiles_on_event_id"
-  add_index "event_profiles", ["event_user_join_id"], name: "index_event_profiles_on_event_user_join_id"
-  add_index "event_profiles", ["event_user_status_id"], name: "index_event_profiles_on_event_user_status_id"
-  add_index "event_profiles", ["profile_id"], name: "index_event_profiles_on_profile_id"
-
-  create_table "event_services", force: true do |t|
-    t.integer  "event_id"
-    t.integer  "service_id"
-    t.integer  "event_user_status_id"
-    t.integer  "event_user_join_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "event_services", ["event_id"], name: "index_event_services_on_event_id"
-  add_index "event_services", ["event_user_join_id"], name: "index_event_services_on_event_user_join_id"
-  add_index "event_services", ["event_user_status_id"], name: "index_event_services_on_event_user_status_id"
-  add_index "event_services", ["service_id"], name: "index_event_services_on_service_id"
 
   create_table "event_user_joins", force: true do |t|
     t.string   "status"
@@ -181,10 +157,40 @@ ActiveRecord::Schema.define(version: 20150608223853) do
     t.integer  "who_has_access_id"
     t.string   "password"
     t.float    "dist"
+    t.string   "teaser"
+    t.integer  "min_age"
+    t.boolean  "accept_children_formular"
   end
 
   add_index "events", ["event_location_id"], name: "index_events_on_event_location_id"
   add_index "events", ["who_has_access_id"], name: "index_events_on_who_has_access_id"
+
+  create_table "guestlist_details", force: true do |t|
+    t.integer  "event_id"
+    t.boolean  "active"
+    t.integer  "size"
+    t.text     "offer"
+    t.date     "end_date"
+    t.string   "end_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "guestlist_details", ["event_id"], name: "index_guestlist_details_on_event_id"
+
+  create_table "guestlists", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "event_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "guestlistDetails_id"
+    t.integer  "guestlist_details_id"
+  end
+
+  add_index "guestlists", ["event_id"], name: "index_guestlists_on_event_id"
+  add_index "guestlists", ["guestlistDetails_id"], name: "index_guestlists_on_guestlistDetails_id"
+  add_index "guestlists", ["guestlist_details_id"], name: "index_guestlists_on_guestlist_details_id"
+  add_index "guestlists", ["user_id"], name: "index_guestlists_on_user_id"
 
   create_table "impressums", force: true do |t|
     t.datetime "created_at"
@@ -218,6 +224,7 @@ ActiveRecord::Schema.define(version: 20150608223853) do
     t.datetime "photo_updated_at"
     t.integer  "address_id"
     t.integer  "contact_id"
+    t.date     "birthday"
   end
 
   add_index "profiles", ["address_id"], name: "index_profiles_on_address_id"

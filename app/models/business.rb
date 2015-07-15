@@ -3,8 +3,8 @@ class Business < ActiveRecord::Base
   has_many :user_businesses
   has_many :users, through: :user_businesses
   has_many :services
-  has_many :event_businesses
-  has_many :events, through: :event_businesses
+  has_many :event_hosts
+  has_many :events, through: :event_hosts
   belongs_to :address
   belongs_to :contact
 

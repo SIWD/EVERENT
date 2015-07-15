@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
@@ -40,15 +40,6 @@
 
 </head>
 <body>
-<!--
-<div class="page-mask">
-  <div class="page-loader">
-
-    <div class="spinner"></div>
-    Loading...
-  </div>
-</div>
--->
 <div class="wrap">
   <!-- Header Start -->
   <header id="header">
@@ -66,7 +57,6 @@
 
               <li class="location">
                 <form action="" method="get">
-                  <!--<span class="input-group-label-head"><i class="fa fa-crosshairs fa-2x"></i></span>-->
                   <span class="input-group-label-head"><i class="fa fa-map-marker"></i></span>
                   <input type="text" class="input-group-input-head " placeholder="Münster" name="usrloc" value="<%= if @loc_checked then
                                                                                                                       @loc_checked.address
@@ -74,13 +64,6 @@
                 </form>
               </li>
             </ul>
-
-            <!--<div id="search-form" class="pull-right">
-              <form action="#" method="get">
-                <i class="fa fa-crosshairs fa-2x"></i>
-                  <input type="text" class="search-text-box" placeholder="Berlin" value="<%= %>">
-                </form>
-            </div>-->
           </div>
         </div>
       </div>
@@ -115,19 +98,50 @@
         <!-- Menu Start -->
         <nav class="collapse navbar-collapse menu">
           <ul class="nav navbar-nav sf-menu">
+            <li>
+              <%= link_to events_path, if request.original_fullpath.include?("events") then
+                                         {id: "current"}
+                                       end do %>
+                  Events <span class="sf-sub-indicator"><i class="fa fa-angle-down "></i></span>
+              <% end %>
+              <ul>
+                <li><%= link_to "Alle Events anzeigen", events_path, class: 'sf-with-ul' %></li>
+                <li><%= link_to "Neues Event erstellen", new_event_path, class: 'sf-with-ul' %></li>
+                <% if current_user %>
+                    <li><%= link_to "Gästelistenplätze anzeigen", guestlists_path, class: 'sf-with-ul' %></li>
+                <% end %>
+              </ul>
+            </li>
+            <li>
+              <%= link_to "Branchen", branches_path, if (request.original_fullpath.include?("Branchen") || request.original_fullpath.include?("branches")) then
+                                                       {id: "current"}
+                                                     end %>
+            </li>
             <% unless current_user %>
-                <li><%= link_to "Login", new_user_session_path %></li>
+                <li>
+                  <%= link_to new_user_session_path do %>
+                      Login<span class="sf-sub-indicator">
+                        <i class="fa fa-angle-down "></i>
+                      </span>
+                  <% end %>
+                  <ul>
+                    <li><%= link_to "Anmelden", new_user_session_path %></li>
+                    <li><%= link_to "Registrieren", new_user_registration_path %></li>
+                  </ul>
+                </li>
             <% else %>
                 <li>
                   <% if Profile.where(user_id: current_user.id).first.nil? %>
-                      <%= link_to new_profile_path, {id: "current"} do %>
+                      <%= link_to new_profile_path do %>
                           <%= User.find(current_user).email %>
                           <span class="sf-sub-indicator">
                         <i class="fa fa-angle-down "></i>
                       </span>
                       <% end %>
                   <% else %>
-                      <%= link_to profile_path(Profile.find_by_user_id(current_user)), {id: "current"} do %>
+                      <%= link_to profile_path(Profile.find_by_user_id(current_user)), if request.original_fullpath.include?("profile") then
+                                                                                         {id: "current"}
+                                                                                       end do %>
                           <%= Profile.find_by_user_id(current_user).name_with_initial %>
                           <span class="sf-sub-indicator">
                         <i class="fa fa-angle-down "></i>
@@ -166,21 +180,6 @@
                 <h2 class="title" style="color:red; background:yellow">NO HEADLINE</h2>
             <% end %>
           </div>
-
-          <!--
-          <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-            <div class="breadcrumbs pull-right">
-              <ul>
-                <li>Sie Sind hier:</li>
-                <li><%= link_to 'Partychamp', root_path %></li>
-                <% if params[:action] != 'index' && Rails.application.routes.routes.map { |route| route.defaults }.include?({:controller => controller_name, :action => action_name}) %>
-                    <li><%= link_to params[:controller].titleize, "/#{params[:controller]}" %></li>
-                <% end %>
-                <li><%= yield(:title) %></li>
-              </ul>
-            </div>
-          </div>
-          -->
         </div>
       </div>
     </div>
@@ -260,8 +259,8 @@
           <section class="col-lg-3 col-md-3 col-xs-12 col-sm-12 footer-three">
             <h3>Verweise</h3>
             <ul class="">
-              <li><%= link_to "Impressum", impressum_path %></li>
               <li><%= link_to "AGB", agb_path %></li>
+              <li><%= link_to "Impressum", impressum_path %></li>
               <li><%= link_to "Datenschutzerklärung", privacy_path %></li>
             </ul>
           </section>
@@ -278,7 +277,6 @@
               <li class="facebook">
                 <a href="https://www.facebook.com/partychamp" data-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a>
               </li>
-              <!--<li class="twitter"><a href="#" data-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a></li>-->
             </ul>
           </div>
         </div>
@@ -299,40 +297,23 @@
         <div class="row">
           <div class="col-lg-12 col-md-12">
             <%= label :mail, :name %>
-            <%= text_field :mail, :name, {value: "#{if current_user then Profile.where(user_id: current_user.id).first.name_with_initial end}", class: "form-control"} %>
+            <%= text_field :mail, :name, {value: "#{Profile.where(user_id: current_user.id).first.name_with_initial if current_user && Profile.where(user_id: current_user.id).first.present? }", class: "form-control"} %>
           </div>
           <div class="col-lg-12 col-md-12">
             <%= label :mail, :mail %>
-            <%= text_field :mail, :mail, {value: "#{if current_user then Profile.where(user_id: current_user.id).first.contact.mail end}", class: "form-control", type: 'email', required: true} %>
+            <%= text_field :mail, :mail, {value: "#{Profile.where(user_id: current_user.id).first.contact.mail if current_user && Profile.where(user_id: current_user.id).first.present? }", class: "form-control", type: 'email', required: true} %>
           </div>
           <div class="col-lg-12 col-md-12">
-            <%= label :mail, :Betreff %>
-            <%= text_field :mail, :subject, class: "form-control" %>
-          </div>
-          <div class="col-lg-12 col-md-12">
-            <%= label :mail, :Nachricht %>
-            <%= text_area(:mail, :message, class: "form-control small-textarea")  %>
+            <%= label :mail, :Nachricht %><span style="color:red"><i class="fa fa-asterisk"></i></span>
+            <%= text_area(:mail, :message, class: "form-control small-textarea", required: true) %>
           </div>
           <div class="col-lg-12 col-md-12 ">
             <%= submit_tag 'Senden', {class: "btn btn-special btn-color"} %>
           </div>
         </div>
     <% end %>
-   </div>
+  </div>
 </section>
-<%= Rails.root.join('app', 'assets', 'php', 'mailer.php') %>
 </body>
-
-
 <%= javascript_include_tag "application_last" %>
-<%
-counter = 1
-file = File.new("public/assets/php/mailer.php", "r")
-while (line = file.gets)
-counter = counter + 1
-end
-file.close
-   %>
-<%= counter %>
-<%= @ergebnis if @ergebnis%>
 </html>

@@ -21,77 +21,320 @@
             ((@event.who_has_access_id == 2) && (params['password_for_event'] == (@event.password))) %>
 
 
-          <% if @event.flyer %>
-                <div class="flyer-show">
-                  <%= image_tag @event.flyer.url(:banner) %>
+        <div class="row">
+          <div class="posts-block col-lg-9 col-md-9 col-sm-8 col-xs-12">
+            <% if @event.flyer %>
+                <div class="post-image">
+                  <div class="flyer-show">
+                    <%= image_tag @event.flyer.url(:banner) %>
+                  </div>
+                  <div class="clearfix"></div>
                 </div>
-          <% end %>
-
-        <div class="col-lg-7 col-md-9 col-sm-8 col-xs-8 new-section">
-
-          <p>
-            <strong>Gastgeber:</strong>
-          <ul>
-            <% @profiles.each do |profile| %>
-                <li><%= link_to profile.profile.firstname + " " + profile.profile.lastname, profile_path(profile.profile) %></li>
             <% end %>
-            <% @businesses.each do |business| %>
-                <li><%= link_to business.business.name, business_path(business.business) %></li>
+
+
+
+            <div class="post-content top-pad">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="event-show-small-info">
+                    Einlass ab<br>
+                    <strong>
+                      <%= @event.min_age %><i class="fa fa-plus"></i>
+                    </strong>
+                  </div>
+
+                  <div class="event-show-small-info">
+                    <% if @event.end_time.nil? || @event.end_date.nil? || @event.end_time =="" || @event.end_date == "" %>
+                        <%= I18n.localize(@event.date, :format => "%A, %d. %B") %><br>
+                        <strong><i class='fa fa-clock-o'></i><%= @event.time %></strong>
+                    <%
+                       elsif @event.time.to_time > @event.end_time.to_time && @event.date + 1.day == @event.end_date || #Event from Evening till next Morning
+                               @event.date == @event.end_date # Event which Begin and End is at the same day
+                    %>
+                        <%= I18n.localize(@event.date, :format => "%A, %d. %B") %><br>
+                        <strong><i class='fa fa-clock-o'></i> <%= "#{@event.time} - #{@event.end_time}" %></strong>
+
+                    <% else %>
+                        <table>
+                          <tr>
+                            <td rowspan="2"><i class='fa fa-clock-o fa-2x'></i></td>
+                            <td><%= I18n.localize(@event.date, :format => "%A") %></td>
+                          </tr>
+                          <tr style="border-bottom:1px solid">
+                            <td><%= I18n.localize(@event.date, :format => "%d. %B") %> <%= @event.time %></td>
+                          </tr>
+                          <tr>
+                            <td rowspan="2"><i class="fa fa-times-circle-o fa-2x"></i></td>
+                            <td><%= I18n.localize(@event.end_date, :format => "%A") %></td>
+                          </tr>
+                          <tr>
+                            <td><%= I18n.localize(@event.end_date, :format => "%d. %B") %> <%= @event.end_time %></td>
+                          </tr>
+                        </table>
+                    <% end %>
+                  </div>
+
+                  <div class="event-show-small-info">
+                    Art des Events<br>
+                    <strong>
+                      <%= @event.event_genres.first.name %>
+                    </strong>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+            <div class="post-content top-pad">
+              <%= @event.description.gsub(/\n/, '<br>').html_safe %>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 sidebar">
+            <% if @event.who_has_access_id == 2 %>
+                <div class="widget project_details">
+                  <h3 class="title">Zugangsdaten</h3>
+
+                  <div class="details-content">
+                <span>
+                  <strong>Event-ID</strong>
+                  <em><%= @event.id %></em>
+                </span>
+                <span>
+                  <strong>Passwort</strong>
+                  <em><%= @event.password %></em>
+                </span>
+                <span>
+                  <strong>www.partychamp.de<%= event_path(@event) %></strong>
+                </span>
+                  </div>
+
+                  <div class="clearfix"></div>
+                </div>
             <% end %>
-            <% @services.each do |service| %>
-                <li><%= link_to service.service.name, service_path(service.service) %></li>
+            <div class="widget tabs">
+              <div id="horizontal-tabs">
+                <ul class="tabs">
+                  <% counter = 0
+                     if @event.teaser.present?
+                       counter = counter + 1 %>
+                      <li id="tab<%= counter %>">Infos</li>
+                  <% end
+                     if @event.upload.present?
+                       counter = counter + 1 %>
+                      <li id="tab<%= counter %>">Fotos</li>
+                  <% end %>
+                  <li id="tab<%= counter + 1 %>">Anfahrt</li>
+                </ul>
+                <div class="contents">
+                  <% counter = 0
+                     if @event.teaser.present?
+                       counter = counter + 1 %>
+                      <div class="tabscontent" id="content<%= counter %>">
+                        <%= @event.teaser %>
+                      </div>
+                  <% end
+                     if @event.upload.present?
+                       counter = counter + 1 %>
+                      <div class="tabscontent" id="content<%= counter %>">
+                        <ul class="thumbs">
+
+                          <% counter_pic = 0 %>
+                          <% EventImage.where(event_id: @event.id).where(album: "Upload").order(created_at: :desc).each do |i| %>
+                              <% counter_pic = counter_pic + 1 %>
+                              <% if counter_pic < 9 %>
+                                  <li class="col-lg-4 col-md-4 col-sm-4 col-xs-6 image-thumb">
+                                    <%= link_to i.image.url, {rel: "prettyPhoto[pp_gal]"} do %>
+                                        <%= image_tag i.image.url(:thumb), {class: "row", alt: ""} %>
+                                    <% end %>
+                                  </li>
+                              <% elsif counter == 9 %>
+                                  <li class="col-lg-4 image-thumb">
+                                    <%= link_to event_image_path(@event.id) do %>
+                                        <div class="more-images" style="background-image: url(<%= i.image.url(:thumb) %>);">
+                                          <div>
+                                            <i class="fa fa-plus fa-5x"></i>
+                                          </div>
+                                        </div>
+                                    <% end %>
+                                  </li>
+                              <% end %>
+                          <% end %>
+                        </ul>
+                      </div>
+                  <% end %>
+
+                  <div class="tabscontent" id="content<%= counter + 1 %>">
+                    <iframe src="http://maps.google.de/maps?hl=de&amp;q=<%= @address.address %>&amp;ie=UTF8&amp;t=&amp;z=17&amp;iwloc=B&amp;output=embed"
+                            scrolling="no" marginheight="0" marginwidth="0" frameborder="0" height="300px" width="100%">
+                    </iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% if @owner %>
+                <div class="widget">
+                  <h3 class="title">Bilder hochladen</h3>
+
+                  <div class="author-content col-lg-12">
+                    <%= render 'event_images/form' %>
+
+                    (Diese Feld sehen nur Gastgeber)
+                  </div>
+
+                  <div class="clearfix"></div>
+                </div>
             <% end %>
-          </ul>
-          </p>
+            <!-- Tab End -->
 
-          <p>
-            <strong>Wer darf das Event aufrufen?:</strong>
-            <%= WhoHasAccessToEvent.find(@event.who_has_access_id).who %>
-          </p>
+            <% if (@event.guestlist_detail.present? && @event.guestlist_detail.active) || @owner || Guestlist.where(user_id: current_user.id).first.present? %>
+                <div class="widget">
+                  <h3 class="title">Gästeliste</h3>
 
-          <% if (@event.who_has_access_id == 2) %>
-              <p>
-                <strong>Passwort:</strong>
-                <%= @event.password %>
-              </p>
-          <% end %>
+                  <%= form_tag "", method: :get do %>
+                      <% if @event.guestlist_detail.nil? && !(params[:guestlist] == 'create') && @owner %>
 
-          <p>
-            <strong>Termin:</strong>
-            <% unless @event.end_date.nil? then "Von " end %>
-            <%= @event.date %> um <%= @event.time %> Uhr<% unless @event.end_date.nil? then " bis #{@event.end_date} um #{@event.end_time} Uhr" end %>
-          </p>
+                          <div class="author-content">
+                            <%= button_tag name: :guestlist, value: 'create', class: "btn btn-special col-lg-12 col-md-12 col-sm-12 col-xs-12" do %>
+                                <strong>Gästeliste erstellen</strong>
+                            <% end %>
+                            <div class="clearfix"></div>
+                          </div>
+                      <% elsif params[:guestlist] && params[:guestlist] == 'create' %>
 
-          <p>
-            <strong>Uhrzeit:</strong>
-            <%= @event.time %>
-          </p>
+                          <div class="author-content">
+                            <% @guestlist_detail = GuestlistDetail.new(end_date: @event.date, end_time: @event.time) %>
+                            <%= render 'guestlist_details/form' %>
+                            <div class="clearfix"></div>
+                          </div>
+                      <% elsif current_user && Guestlist.where(event_id: @event.id).where(user_id: current_user.id).first %>
 
-          <p>
-            <strong>Location:</strong>
-            <%= @event.event_location.name %>
-          </p>
+                          <div class="author-content">
+                            <strong>Dein Gästelisteplatz</strong><br>
+                            <%= @event.guestlist_details.find(Guestlist.where(user_id: current_user.id).where(event_id: @event.id).first.guestlist_details_id).offer.gsub(/\n/, '<br>').html_safe %>
+                            <%= button_tag name: :guestlist, value: 'leave', class: "btn btn-normal col-lg-12 col-md-12 col-sm-12 col-xs-12" do %>
+                                Von der<br><strong>Gästeliste</strong><br>austragen
+                            <% end %>
+                            <div class="clearfix"></div>
+                          </div>
+                      <% elsif @event.guestlist_detail.present? && @event.guestlist_detail.active %>
 
-          <p>
-            <strong>Adresse:</strong>
-            <%= @address.city %>
-            <%= @address.postalCode %><br>
-            <%= @address.street1 %><br>
-            <%= @address.street2 %>
-          </p>
+                          <div class="author-content">
+                            <strong>Angebot für Gästeliste</strong><br>
+                            <%= @event.guestlist_detail.offer.gsub(/\n/, '<br>').html_safe %>
+                            <%= button_tag name: :guestlist, value: 'join', class: "btn btn-special btn-color col-lg-12 col-md-12 col-sm-12 col-xs-12" do %>
+                                Auf die<br><strong>Gästeliste</strong><br>einschreiben
+                            <% end %>
+                            <div class="clearfix"></div>
+                          </div>
+                      <% end %>
+                  <% end %>
 
-          <p>
-            <strong>Beschreibung:</strong>
-            <%= @event.description.gsub(/\n/,'<br>').html_safe %>
-          </p>
-        </div>
-        <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12 new-section">
-          <div class="row">
-          <iframe src="http://maps.google.de/maps?hl=de&amp;q=<%= @address.latitude.to_s + " " + @address.longitude.to_s %>&amp;ie=UTF8&amp;t=&amp;z=17&amp;iwloc=B&amp;output=embed"
-                  scrolling="no" marginheight="0" marginwidth="0" frameborder="0" height="300px" width="100%">
-          </iframe>
+
+                  <% if @event.guestlist_detail.present? && @owner %>
+                      <div class="author-content col-md-12 col-md-12">
+                        <% unless @event.guestlist_detail.active %>
+                            <h4>Für weitere Gäste gesperrt</h4>
+                        <% end %>
+                        <%= link_to guestlist_path(@event.id), class: "btn btn-special btn-color col-lg-12 col-md-12 col-sm-12 col-xs-12" do %>
+                            Gästeliste <br>anzeigen
+                        <% end %>
+                        <%= link_to edit_guestlist_detail_path(@event.guestlist_detail), class: "btn btn-special btn-color col-lg-12 col-md-12 col-sm-12 col-xs-12" do %>
+                            <i class="fa fa-gears"></i> Angebot <br>bearbeiten
+                        <% end %>
+                        <br>(Diese Feld sehen nur Gastgeber)
+                      </div>
+                  <% end %>
+                  <div class="clearfix"></div>
+                </div>
+            <% end %>
+            <div class="widget project_details">
+              <h3 class="title">Event Details</h3>
+
+              <div class="details-content">
+                <span>
+                  <strong>Gastgeber</strong>
+                  <em>
+                    <% @profiles.each do |profile| %>
+                        <%= link_to profile.profile.name_with_initial, profile_path(profile.profile) %>
+                    <% end %>
+                    <% @businesses.each do |business| %>
+                        <%= link_to business.business.name, business_path(business.business) %>
+                    <% end %>
+                    <% @services.each do |service| %>
+                        <%= link_to service.service.name, service_path(service.service) %>
+                    <% end %>
+                  </em>
+                </span>
+                <span>
+                  <strong>Location</strong>
+                  <em>
+                    <%= @event.event_location.name %>
+                  </em>
+                </span>
+                <span>
+                    <strong>Adresse</strong>
+                  <em>
+                    <%= @address.city %>
+                    <%= @address.postalCode %><br>
+                    <%= @address.street1 %><br>
+                    <%= @address.street2 %>
+                  </em>
+                </span>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+
           </div>
         </div>
+        <div class="divider"></div>
+        <div class="row">
+          <!-- Recent works start-->
+          <div class="portfolio">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <h3 class="title">Andere Events der Gastgeber</h3>
+            </div>
+
+            <%
+               list = []
+               list.push @event
+               (EventHost.where(profile: @event.profiles) +
+                       EventHost.where(business: @event.businesses) +
+                       EventHost.where(service: @event.services)
+               ).sort_by { |eh| eh.date }.each { |eh|
+
+                 if eh.event.who_has_access_id == 1 && eh.event.flyer && !eh.event.in?(list) && list.count < 5 #Event has to be public, needs a flyer and only 1 time displayed
+                   list.push eh.event
+            %>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 item">
+                      <div class="portfolio-item">
+                        <%= link_to eh.event do %>
+                            <span class="portfolio-item-hover"></span>
+                            <span class="fullscreen"><i class="fa fa-eye"></i></span><%= image_tag eh.event.flyer %>
+                        <% end %>
+
+                        <div class="portfolio-item-title">
+                          <%= link_to eh.event.name, eh.event %>
+
+                          <p>
+                          </p>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                    </div>
+                <%
+                   end
+                   }
+                %>
+            <div class="clearfix"></div>
+
+          </div>
+        </div>
+        <!-- Recent work end-->
+
     <% elsif ((@event.who_has_access_id == 3) && (!@owner)) %>
         <p>
           <strong>Keine Berechtigung</strong>

@@ -1,0 +1,56 @@
+<% content_for :title, "Gäste für: #{@event.name}" %>
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Zurück zum Event', @event %>
+<div class="divider"></div>
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <% if @guestlists.count > 0 %>
+        <table class="pretty-table">
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Alter</th>
+            <th>Adresse</th>
+          </tr>
+          <% @guestlists.each do |guestlist| %>
+              <tr class="
+                  <% if guestlist.user.profile.has_birthday? %>highlight
+                  <% end %> ">
+                <td class="guestlist-pic">
+                  <% if guestlist.user.profile.photo.blank? %>
+                      <%= image_tag 'profile/default/original/Profilbild.jpeg' %>
+                  <% else %>
+
+                      <%= link_to guestlist.user.profile.photo.url, {rel: "prettyPhoto"} do %>
+                          <%= image_tag guestlist.user.profile.photo.url(:event_index), { alt: guestlist.user.profile.full_name} %>
+                      <% end %>
+                  <% end %>
+                </td>
+                <td><%= link_to guestlist.user.profile.full_name, guestlist.user.profile %></td>
+                <td>
+                  <% if guestlist.user.profile.has_birthday? %><span class="forth">Heute Geburtstag!</span><br>
+                  <% end %>
+                  <%= guestlist.user.profile.age %>
+                  (<%= I18n.localize(guestlist.user.profile.birthday, :format => "%d.%m.%Y") %>)
+                </td>
+                <td>
+                  <%= guestlist.user.profile.address.street1 %><br>
+                  <% if guestlist.user.profile.address.street2.present? then %> <%= guestlist.user.profile.address.street2 %>
+                      <br>
+                  <% end %>
+                  <%= guestlist.user.profile.address.postalCode %>
+                  <%= guestlist.user.profile.address.city %>
+                </td>
+              </tr>
+          <% end %>
+        </table>
+    <% else %>
+        <p>Es haben sich keine Gäste auf die Gästeliste eingetragen</p>
+    <% end %>
+  </div>
+</div>
+
+
+<div class="divider"></div>
+<%= link_to 'Zurück zum Event', @event %>

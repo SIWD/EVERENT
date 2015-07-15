@@ -1,0 +1,12 @@
+<% @event_image = EventImage.new %>
+<%= form_for @event_image, :html => {:multipart => true} do |f| %>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <%= fields_for :event do |e| %>
+            <%= hidden_field_tag :event_id, @event.id %>
+        <% end %>
+        <%= f.file_field :image, {class: "form-control", multiple: true} %>
+        <%= f.submit "Hochladen", class: "btn btn-special btn-color submit col-lg-12 col-md-12 col-sm-12 col-xs-12" %>
+      </div>
+    </div>
+<% end %>

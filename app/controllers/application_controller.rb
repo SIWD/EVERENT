@@ -3,9 +3,18 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  before_action :clear_flash
   before_action :set_location_main
   before_action :set_range
   before_action :send_mail
+
+  private
+
+  def clear_flash
+    flash[:alert] = nil
+    flash[:notice] = nil
+  end
+
 
   def set_location_main
 
@@ -38,32 +47,21 @@ class ApplicationController < ActionController::Base
     @range = params['range'] || 50
   end
 
-  private
-
 
   def send_mail
     if params['mail']
       @from = params['mail']['mail']
       @fromName = params['mail']['name']
       @to = 'info@partychamp.de'
-      @subject = params['mail']['subject']
+      @subject = ""
       @message = params['mail']['message']
-      #@ergebnis = IO.popen("php -f public/assets/php/mailer.php") # #{@from} #{@fromName} #{@to} #{@subject} #{@message}
-      #@ergebnis = system('php -f public/assets/php/mailer.php') # #{@from} #{@fromName} #{@to} #{@subject} #{@message}
-      @ergebnis = `php -f public/assets/php/mailer.php #{@from} #{@fromName} #{@to} #{@subject} #{@message}`
-
-      if @ergebnis == "true"
+      @url = request.referrer
+      @ergebnis = `php -f app/assets/php/mailer.php "#{@from}" "#{@fromName}" "#{@to}" "#{@subject}" "#{@message}" "#{@url}"`
+      if @ergebnis.include?('true')
         flash[:notice] = "Nachricht wurde gesendet. Danke für deine Hilfe!"
       else
         flash[:alert] = "Nachricht konnte nicht gesendet werden."
       end
-=begin
-      if UserMailer.help_us_mail().deliver
-        flash[:notice] = "Nachricht wurde gesendet. Danke für deine Hilfe!"
-      else
-        flash[:alert] = "Nachricht konnte nicht gesendet werden."
-      end
-=end
     end
   end
 
